@@ -1,0 +1,59 @@
+Header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: white;
+  min-height: 10vh;
+  width: 100%;
+  padding: 15px;
+  border-bottom: 1px solid black;
+  box-sizing: border-box; 
+
+  .box {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    &.left {
+      justify-content: flex-start;
+    }
+
+    a {
+      padding-top: 0.2em;
+      cursor: pointer;
+    }
+  }
+
+  .logo {
+    position: absolute;
+    width: 20%; 
+    max-width: 200px;
+    left: 50%; 
+    transform: translate(-50%, 0);
+    align-self: center;
+  }
+}
+
+
+Footer {
+  display: block;
+  background-color: black; 
+  height: 100px; 
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+main {
+  padding: 15px;
+}
+
+input,
+label {
+  display: block;
+}
+
+input {
+  margin-bottom: 0.5em;
+  width: 300px;
+}
