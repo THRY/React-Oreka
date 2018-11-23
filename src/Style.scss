@@ -1,3 +1,11 @@
+.bg-color-biete {
+ background-color: red;
+}
+
+.bg-color-suche {
+  background-color: blue;
+}
+
 Header {
   display: flex;
   flex-direction: row;
@@ -41,7 +49,6 @@ Footer {
   height: 100px; 
   width: 100%;
   position: absolute;
-  bottom: 0;
 }
 
 main {
