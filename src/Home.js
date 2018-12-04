@@ -3,6 +3,8 @@ import Layout from './components/Layout';
 
 
 class Home extends Component {
+
+  
   render() {
     return  (
       <Layout>

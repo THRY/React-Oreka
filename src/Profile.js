@@ -130,6 +130,14 @@ class Profile extends Component {
   componentWillMount() {
     if(localStorage.getItem('user')) {
       this.setState({
+        isSignedIn: true,
+      })
+    }
+  }
+
+  componentDidMount() {
+    if(localStorage.getItem('user')) {
+      this.setState({
         user: localStorage.getItem('user')
       }, () => {
         db.collection("users").doc(this.state.user)
