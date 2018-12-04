@@ -17,21 +17,36 @@ class Layout extends Component {
           loading: false,
           user: user
         });
+        localStorage.setItem('user', user.uid);
+        console.log(localStorage.getItem('user'));
       } else {
         console.log("not logged in");
         this.setState({
           isSignedIn: false,
           loading: false
         });
+        localStorage.removeItem('user');
+        console.log(localStorage.getItem('user'));
       }
     });
   }
 
   render() {
+    let props = {
+        isSignedIn: this.state.isSignedIn
+    };
+    let childrenWithProps = React.Children.map( this.props.children, function(child) {
+      if (React.isValidElement(child)){
+          return React.cloneElement(child, props);
+      }
+        return child;
+    });
+
+
     return (
       <>
         <Header user={this.state.user} isSignedIn={this.state.isSignedIn} />
-        <main>{ this.props.children }</main>
+        <main> { childrenWithProps }</main>
         <Footer />
       </>
     )

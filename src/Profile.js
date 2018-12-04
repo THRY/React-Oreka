@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Layout from './components/Layout';
+import Wrapper from './components/Wrapper';
 import { auth, signUp, signOut, logIn, db } from "./firebase";
 import GoogleMapsLoader from 'google-maps';
 
 class Profile extends Component {
   state = {
-    user: '',
   }
 
   loadMap = () => {
@@ -128,14 +128,14 @@ class Profile extends Component {
   }
 
   componentWillMount() {
-    this.setState(state => {
-      return {
-        user: this.props.match.params.value
-      }      
-    }, () => {
-      db.collection("users").doc(this.state.user)
+    if(localStorage.getItem('user')) {
+      this.setState({
+        user: localStorage.getItem('user')
+      }, () => {
+        db.collection("users").doc(this.state.user)
         .onSnapshot(this.handleOnNext, this.handleOnError);
-    });
+      });
+    }
   }
 
   handleOnNext = (doc) =>  {
@@ -181,63 +181,69 @@ class Profile extends Component {
 
   render() {
     return (
-      <Layout>
-        <p>Profil von User: {this.props.match.params.value}</p>  
-        <div style={{display:'block',position:'relative',width:'50PX',height:'50px'}} className={'bg-color-' + this.state.status} id="colortest"></div>
-
-        <form onSubmit={this.handleSubmit}>
-
-        <label htmlFor="status1">suche</label>
-        <input id="status1" name="status" type="radio" value="suche" onChange={this.handleChange} checked={(this.state.status === 'suche' ? true : false)}/>
-
-        <label htmlFor="status2">biete</label>
-        <input id="status2" name="status" type="radio" value="biete" onChange={this.handleChange} checked={(this.state.status === 'biete' ? true : false)} />
-
-        <label htmlFor="username">Enter username</label>
-        <input id="username" name="username" type="text" onChange={this.handleChange} defaultValue={this.state.username} />
-
-        <textarea id="description" name="description" onChange={this.handleChange} value={this.state.description} ></textarea>
-
-        <label htmlFor="email">Enter your email</label>
-        <input id="email" name="email" type="email" onChange={this.handleChange} defaultValue={this.state.email} />
-
-        <label htmlFor="birthdate">Enter your birth date</label>
-        <input id="birthdate" name="birthdate" type="text" onChange={this.handleChange} defaultValue={this.state.birthdate}/>
-
-        <label htmlFor="haushalt">Haushalt</label>
-        <input id="haushalt" name="haushalt" type="checkbox" onChange={this.handleChange} checked={this.state.haushalt || false} />
-
-        <label htmlFor="garten">Garten</label>
-        <input id="garten" name="garten" type="checkbox" onChange={this.handleChange} checked={this.state.garten || false} />
-
-        <label htmlFor="einkaufen">Einkaufen</label>
-        <input id="einkaufen" name="einkaufen" type="checkbox" onChange={this.handleChange} checked={this.state.einkaufen || false} />
-
-        <label htmlFor="finanzen">Finanzen</label>
-        <input id="finanzen" name="finanzen" type="checkbox" onChange={this.handleChange} checked={this.state.finanzen || false} />
-
-        <label htmlFor="behoerden">Behörden</label>
-        <input id="behoerden" name="behoerden" type="checkbox" onChange={this.handleChange} checked={this.state.behoerden || false} />
-
-        <label htmlFor="computer">Computer</label>
-        <input id="computer" name="computer" type="checkbox" onChange={this.handleChange} checked={this.state.computer || false} />
-
-        <label htmlFor="transport">Transport</label>
-        <input id="transport" name="transport" type="checkbox" onChange={this.handleChange} checked={this.state.transport || false} />
-
-        <label htmlFor="spezial">Spezial {(this.state.spezialDescr ? `(${this.state.spezialDescr})` : '')}</label>
-        <input id="spezial" name="spezial" type="checkbox" onChange={this.handleChange} checked={this.state.spezial || false} />
-
-        <label htmlFor="spezialDescr">Mein Spezial-Skill</label>
-        <input id="spezialDescr" name="spezialDescr" type="text" onChange={this.handleChange} defaultValue={this.state.spezialDescr}/>
-
-        <input type="text" id="search" />
-        <div style={{display:'block',position:'relative',width:'100%',height:'500px'}} id="map"></div>
-        <button>Alle Daten speichern</button>
-      </form>
-
-     
-      </Layout>  
+          <Layout>
+            { this.state.isSignedIn ? 
+            (
+              <div>
+                <p>Profil von User: {this.props.match.params.value}</p>  
+                <div style={{display:'block',position:'relative',width:'50PX',height:'50px'}} className={'bg-color-' + this.state.status} id="colortest"></div>
+                <form onSubmit={this.handleSubmit}>
+        
+                  <label htmlFor="status1">suche</label>
+                  <input id="status1" name="status" type="radio" value="suche" onChange={this.handleChange} checked={(this.state.status === 'suche' ? true : false)}/>
+          
+                  <label htmlFor="status2">biete</label>
+                  <input id="status2" name="status" type="radio" value="biete" onChange={this.handleChange} checked={(this.state.status === 'biete' ? true : false)} />
+          
+                  <label htmlFor="username">Enter username</label>
+                  <input id="username" name="username" type="text" onChange={this.handleChange} defaultValue={this.state.username} />
+          
+                  <textarea id="description" name="description" onChange={this.handleChange} value={this.state.description} ></textarea>
+          
+                  <label htmlFor="email">Enter your email</label>
+                  <input id="email" name="email" type="email" onChange={this.handleChange} defaultValue={this.state.email} />
+          
+                  <label htmlFor="birthdate">Enter your birth date</label>
+                  <input id="birthdate" name="birthdate" type="text" onChange={this.handleChange} defaultValue={this.state.birthdate}/>
+          
+                  <label htmlFor="haushalt">Haushalt</label>
+                  <input id="haushalt" name="haushalt" type="checkbox" onChange={this.handleChange} checked={this.state.haushalt || false} />
+          
+                  <label htmlFor="garten">Garten</label>
+                  <input id="garten" name="garten" type="checkbox" onChange={this.handleChange} checked={this.state.garten || false} />
+          
+                  <label htmlFor="einkaufen">Einkaufen</label>
+                  <input id="einkaufen" name="einkaufen" type="checkbox" onChange={this.handleChange} checked={this.state.einkaufen || false} />
+          
+                  <label htmlFor="finanzen">Finanzen</label>
+                  <input id="finanzen" name="finanzen" type="checkbox" onChange={this.handleChange} checked={this.state.finanzen || false} />
+          
+                  <label htmlFor="behoerden">Behörden</label>
+                  <input id="behoerden" name="behoerden" type="checkbox" onChange={this.handleChange} checked={this.state.behoerden || false} />
+          
+                  <label htmlFor="computer">Computer</label>
+                  <input id="computer" name="computer" type="checkbox" onChange={this.handleChange} checked={this.state.computer || false} />
+          
+                  <label htmlFor="transport">Transport</label>
+                  <input id="transport" name="transport" type="checkbox" onChange={this.handleChange} checked={this.state.transport || false} />
+          
+                  <label htmlFor="spezial">Spezial {(this.state.spezialDescr ? `(${this.state.spezialDescr})` : '')}</label>
+                  <input id="spezial" name="spezial" type="checkbox" onChange={this.handleChange} checked={this.state.spezial || false} />
+          
+                  <label htmlFor="spezialDescr">Mein Spezial-Skill</label>
+                  <input id="spezialDescr" name="spezialDescr" type="text" onChange={this.handleChange} defaultValue={this.state.spezialDescr}/>
+          
+                  <input type="text" id="search" />
+                  <div style={{display:'block',position:'relative',width:'100%',height:'500px'}} id="map"></div>
+                  <button>Alle Daten speichern</button>
+                </form>
+              </div>
+            ) : 
+            (
+              <p>Sie müssen eingeloggt sein, um Ihr Profil ansehen zu können.</p>
+            )
+          }
+        </Layout>  
     )
   }
 }
