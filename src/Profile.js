@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Layout from './components/Layout';
 import Wrapper from './components/Wrapper';
-import { auth, signUp, signOut, logIn, db } from "./firebase";
+import { storageRef, db } from "./firebase";
 import GoogleMapsLoader from 'google-maps';
 
 class Profile extends Component {
@@ -83,39 +83,59 @@ class Profile extends Component {
   handleSubmit = event => {  
     event.preventDefault();  
     db.collection("users").doc(this.state.user).set(this.state.userValues);
-
-    console.log(this.state);
-    /*
-    fetch('/api/form-submit-url', {
-      method: 'POST',
-      body: data,
-    });
-    */
   }
 
-  handleDivCheckboxState = (name) => {
-    console.log(name)
+  uploadFile = event => {
+    const input = event.target;
+    var file = input.files[0];
+    var imageRef = storageRef.child(`${file.name}`);
+
+    this.setState(prevState => ({
+        userValues: {
+          ...prevState.userValues,
+          'profilePic': file.name
+        }
+      })
+    ) 
+
+    console.log(file.name);
+    
+    imageRef.put(file).then(function(snapshot) {
+      console.log('Uploaded a blob or file!');
+    });
+  }
+
+  getFileUrl = () => {
+    storageRef.child(`${this.state.userValues.profilePic}`).getDownloadURL().then(function(url) {
+      console.log(url); 
+      var img = document.getElementById('myimg');
+      img.src = url;
+    });
   }
 
   render() {
     const { isSignedIn, isReadyToLoop } = this.state
+
+    let radios = [
+      {
+        type: 'radio',
+        name: 'status1',
+        radioName: 'status',
+        value: 'suche',
+        change: this.handleRadioChange,
+        label: 'suche'
+      },
+      {
+        type: 'radio',
+        name: 'status2',
+        radioName: 'status',
+        value: 'biete',
+        change: this.handleRadioChange,
+        label: 'biete'
+      },
+    ]
+
     let fields = [
-        {
-          type: 'radio',
-          name: 'status1',
-          radioName: 'status',
-          value: 'suche',
-          change: this.handleRadioChange,
-          label: 'suche'
-        },
-        {
-          type: 'radio',
-          name: 'status2',
-          radioName: 'status',
-          value: 'biete',
-          change: this.handleRadioChange,
-          label: 'biete'
-        },
         {
           type: 'checkbox',
           name: 'public',
@@ -223,19 +243,41 @@ class Profile extends Component {
                 <p>Profil von User: {this.props.match.params.value}</p>  
                 <div style={{display:'block',position:'relative',width:'50PX',height:'50px'}} className={'bg-color-' + this.state.status} id="colortest"></div>
                 <form onSubmit={this.handleSubmit}>
-                  {                    
-                    fields.map((field, index) => 
-                      <div key={index}>
-                        <label htmlFor={field.name}>{field.label}</label>
-                        { isReadyToLoop && this.externalFunction(field) }
+                  <div className="profile-top">
+                    <div className="profile left">
+                      { isReadyToLoop ?
+                      <img alt="participant" id="myimg" src={this.getFileUrl()} className="papipapo"/>
+                        : '' }
+                      
+                      <input type='file' onChange={ this.uploadFile }></input>
+                    </div>
+                    <div className="profile right">
+                      <div>                 
+                        {    
+                          radios.map((field, index) => 
+                            <>
+                              { isReadyToLoop && this.externalFunction(field) }
+                              <label htmlFor={field.name}>
+                                <p>{field.label}</p>  
+                              </label>
+                            </>
+                          )
+                        }
                       </div>
-                    )
-                  }
-
+                      {                    
+                        fields.map((field, index) => 
+                          <div key={index}>
+                            <label htmlFor={field.name}>{field.label}</label>
+                            { isReadyToLoop && this.externalFunction(field) }
+                          </div>
+                        )
+                      }
+                    </div>
+                  </div>
                   <div className="category-bar">
                   {                    
                     categories.map((field, index) => 
-                      <div key={index} onClick={this.handleDivCheckboxState.bind(this)} name={field.name}>
+                      <div key={index} name={field.name}>
                         { isReadyToLoop && this.externalFunction(field) }
                         { isReadyToLoop ? (
                           <label htmlFor={field.name}>

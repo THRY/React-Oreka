@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import 'firebase/firestore';
+import 'firebase/storage';
 
 import config from "./config";
 
@@ -48,6 +49,8 @@ export const logIn = (email, password, onSuccess, onError) => {
     onError(errorMessage);
   });
 }
+
+export const storageRef = firebase.storage().ref();
 
 export const signOut = (callback) => {
   firebase.auth().signOut().then(function() {
