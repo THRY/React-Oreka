@@ -32,21 +32,22 @@ class Layout extends Component {
   }
 
   render() {
-    let props = {
-        isSignedIn: this.state.isSignedIn
-    };
+    const { isSignedIn, user } = this.state
+
+    /*
     let childrenWithProps = React.Children.map( this.props.children, function(child) {
       if (React.isValidElement(child)){
           return React.cloneElement(child, props);
       }
         return child;
     });
+    */
 
 
     return (
       <>
-        <Header user={this.state.user} isSignedIn={this.state.isSignedIn} />
-        <main> { childrenWithProps }</main>
+        <Header user={user} isSignedIn={isSignedIn}/>
+        <main> { this.props.children }</main>
         <Footer />
       </>
     )
