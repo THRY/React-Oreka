@@ -34,6 +34,7 @@ class Profile extends Component {
     }), () => {
       console.log(this.state);
       this.loadMap();
+      this.getProfilePicUrl();
     });
   }
 
@@ -105,11 +106,14 @@ class Profile extends Component {
     });
   }
 
-  getFileUrl = () => {
-    storageRef.child(`${this.state.userValues.profilePic}`).getDownloadURL().then(function(url) {
+  getProfilePicUrl = () => {
+    storageRef.child(`${this.state.userValues.profilePic}`).getDownloadURL().then(url => {
       console.log(url); 
-      var img = document.getElementById('myimg');
-      img.src = url;
+      this.setState(prevState => ({
+        ...prevState,
+        'profilePicUrl': url
+        }) 
+      )
     });
   }
 
@@ -246,7 +250,7 @@ class Profile extends Component {
                   <div className="profile-top">
                     <div className="profile left">
                       { isReadyToLoop ?
-                      <img alt="participant" id="myimg" src={this.getFileUrl()} className="papipapo"/>
+                      <img alt="participant" id="myimg" src={this.state.profilePicUrl} className="papipapo"/>
                         : '' }
                       
                       <input type='file' onChange={ this.uploadFile }></input>
@@ -257,9 +261,11 @@ class Profile extends Component {
                           radios.map((field, index) => 
                             <>
                               { isReadyToLoop && this.externalFunction(field) }
-                              <label htmlFor={field.name}>
+                              { isReadyToLoop ? 
+                                <label htmlFor={field.name} className={this.state.userValues.status}>
                                 <p>{field.label}</p>  
-                              </label>
+                                </label>
+                              : '' }
                             </>
                           )
                         }
@@ -280,7 +286,7 @@ class Profile extends Component {
                       <div key={index} name={field.name}>
                         { isReadyToLoop && this.externalFunction(field) }
                         { isReadyToLoop ? (
-                          <label htmlFor={field.name}>
+                          <label htmlFor={field.name} className={this.state.userValues.status}>
                             <div className={field.name + ' logo'}></div>
                             <p>{(field.name == 'spezial' ? field.label + ` (${this.state.userValues.spezialDescr})` : field.label ) }</p>
                           </label>
