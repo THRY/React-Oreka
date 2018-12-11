@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Layout from './components/Layout';
-import Wrapper from './components/Wrapper';
+import { Link } from "react-router-dom";
 import { storageRef, db } from "./firebase";
 import GoogleMapsLoader from 'google-maps';
 
@@ -241,66 +241,87 @@ class Profile extends Component {
 
     return (
           <Layout>
-            { isSignedIn ? 
-            (
-              <div>
-                <p>Profil von User: {this.props.match.params.value}</p>  
-                <div style={{display:'block',position:'relative',width:'50PX',height:'50px'}} className={'bg-color-' + this.state.status} id="colortest"></div>
+            { isSignedIn ? (
+              <>
+              <nav class={isReadyToLoop && this.state.userValues.status}>
+                <div class="container">
+                  <Link to="/">zurück</Link>
+                  <p>Mein Profil</p>
+                </div>
+              </nav>
+              <div className="container">
+                
+                
                 <form onSubmit={this.handleSubmit}>
-                  <div className="profile-top">
-                    <div className="profile left">
-                      { isReadyToLoop ?
-                      <img alt="participant" id="myimg" src={this.state.profilePicUrl} className="papipapo"/>
-                        : '' }
-                      
-                      <input type='file' onChange={ this.uploadFile }></input>
+                  <section className="status">
+                    <p className="title">Mein Status:</p>
+                    <div>                 
+                    {    
+                      radios.map((field, index) => 
+                        <>
+                          { isReadyToLoop && this.externalFunction(field) }
+                          { isReadyToLoop ? 
+                            <label htmlFor={field.name} className={this.state.userValues.status}>
+                            <p>{field.label}</p>  
+                            </label>
+                          : '' }
+                        </>
+                      )
+                    }
                     </div>
-                    <div className="profile right">
-                      <div>                 
-                        {    
-                          radios.map((field, index) => 
-                            <>
+                  </section>
+                  <section>                    
+                    <p className="title">Angaben zu mir: </p>
+                    <div className="profile-top">
+                      <div className="profile left">
+                        <div className="image-cropper">
+                          { isReadyToLoop ?
+                          <img alt="participant" id="myimg" src={this.state.profilePicUrl} className="papipapo"/>
+                            : '' }
+                        </div>
+                        <input type='file' onChange={ this.uploadFile }></input>
+                      </div>
+                      <div className="profile right">
+                        {                    
+                          fields.map((field, index) => 
+                            <div key={index}>
+                              <label htmlFor={field.name}>{field.label}</label>
                               { isReadyToLoop && this.externalFunction(field) }
-                              { isReadyToLoop ? 
-                                <label htmlFor={field.name} className={this.state.userValues.status}>
-                                <p>{field.label}</p>  
-                                </label>
-                              : '' }
-                            </>
+                            </div>
                           )
                         }
                       </div>
-                      {                    
-                        fields.map((field, index) => 
-                          <div key={index}>
-                            <label htmlFor={field.name}>{field.label}</label>
-                            { isReadyToLoop && this.externalFunction(field) }
-                          </div>
-                        )
-                      }
                     </div>
-                  </div>
-                  <div className="category-bar">
-                  {                    
-                    categories.map((field, index) => 
-                      <div key={index} name={field.name}>
-                        { isReadyToLoop && this.externalFunction(field) }
-                        { isReadyToLoop ? (
-                          <label htmlFor={field.name} className={this.state.userValues.status}>
-                            <div className={field.name + ' logo'}></div>
+                  </section>
+                  <section>
+                    <p className="title">Bereiche, in denen ich Hilfe {isReadyToLoop && this.state.userValues.status === 'suche' ? 'suche' : 'anbiete' }:</p>
+                    <div className="category-bar">
+                    {                    
+                      categories.map((field, index) => 
+                        <div key={index} name={field.name}>
+                          { isReadyToLoop && this.externalFunction(field) }
+                          { isReadyToLoop ? (
+                            <>
+                            <label htmlFor={field.name} className={this.state.userValues.status}>
+                              <div className={field.name + ' logo'}></div>
+                            </label>
                             <p>{(field.name == 'spezial' ? field.label + ` (${this.state.userValues.spezialDescr})` : field.label ) }</p>
-                          </label>
-                        ) : '' }
-                      </div>
-                    )
-                  }
-                  </div>
-
-                  <input type="text" id="search" />
-                  <div style={{display:'block',position:'relative',width:'100%',height:'500px'}} id="map"></div>
+                            </>
+                          ) : '' }
+                        </div>
+                      )
+                    }
+                    </div>
+                  </section>
+                  <section>
+                    <p className="title">Mein Wohnort</p>
+                    <input type="text" id="search" />
+                    <div style={{display:'block',position:'relative',width:'100%',height:'500px'}} id="map"></div>
+                  </section>
                   <button>Alle Daten speichern</button>
                 </form>
               </div>
+              </>
             ) : 
             (
               <p>Sie müssen eingeloggt sein, um Ihr Profil ansehen zu können.</p>

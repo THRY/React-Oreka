@@ -60,7 +60,6 @@ Header {
   }
 }
 
-
 Footer {
   display: block;
   background-color: black; 
@@ -70,8 +69,28 @@ Footer {
 }
 
 main {
-  padding: 15px;
+  padding: 0;
   min-height: 80vh;
+  position: relative; 
+  margin: 0 auto; 
+}
+
+nav {
+  position: relative; 
+  left: 0; 
+  top: 0;
+  margin-top: -15px;
+  width: 100%; 
+  height: 70px; 
+  display: block;
+
+  &.biete {
+    background-color: $biete; 
+  }
+
+  &.suche {
+    background-color: $suche; 
+  }
 }
 
 input,
@@ -79,26 +98,104 @@ label {
   display: block;
 }
 
-input {
-  margin-bottom: 0.5em;
-  width: 300px;
+.container {
+  max-width: 1200px; 
+  padding: 15px; 
+  position: relative;
+  margin: 0 auto; 
+  margin-top: 2em;
+}
+
+section {
+  border-top: 1px solid black; 
+  margin-top: 1.5em;
+  margin: 0 auto; 
+  margin-bottom: 2em;
+}
+
+section p.title {
+  margin-top: 0.2em;
+}
+
+
+section.status {
+  label {
+    font-size: 0.8em;
+    margin-top: 1.7em;
+  }
+  
+  input {
+    margin-bottom: 0.5em;
+    width: 300px;
+  }
+  
+  input[type=radio] {
+    display:none;
+  }
+  
+  input[type=radio]:first-child + label {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-right: 0;
+  }
+  
+  input[type=radio]#status2 + label {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+  
+  input[type=radio] + label {
+    display: inline-block;
+    width: 100px; 
+    height: 50px; 
+    cursor: pointer;
+    text-align: center;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid black;
+  
+    p {
+      position: relative;
+      margin: 0; 
+      font-size: 1.5em;
+      transform: translate(0, 50%);
+    }
+  }
+  
+  input[type=radio]:checked + label.suche {
+    background-color: $suche;
+  }
+  
+  input[type=radio]:checked + label.biete {
+    background-color: $biete;
+  }
 }
 
 .profile-top {
   width: 100%; 
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 4em;
+  justify-content: flex-start;
 
   .left {
+    .image-cropper {
+      width: 100%; 
+      max-width: 450px; 
+      padding-bottom: 15px;
+      padding-right: 15px;
+      display: inline-block;
+    }
+
     img {
-      width: 80%;
+      width: 100%;
+      height: 100%; 
+      object-fit: cover;
     }
   }
 
   .right {
     width: 55%; 
+    flex: 1;
 
     label {
       font-size: 0.8em;
@@ -121,77 +218,20 @@ input {
       border-bottom: 1px solid black;
       border-radius: 0;
     }
-
-    input[type=radio] {
-      display:none;
-    }
-    
-    input[type=radio]:first-child + label {
-      border-top-left-radius: 5px;
-      border-bottom-left-radius: 5px;
-      border-right: 0;
-    }
-
-    input[type=radio]#status2 + label {
-      border-top-right-radius: 5px;
-      border-bottom-right-radius: 5px;
-    }
-
-    input[type=radio] + label {
-      display: inline-block;
-      width: 100px; 
-      height: 50px; 
-      cursor: pointer;
-      text-align: center;
-      margin: 0;
-      overflow: hidden;
-      border: 1px solid black;
-
-      p {
-        position: relative;
-        margin: 0; 
-        font-size: 1.5em;
-        transform: translate(0, 50%);
-      }
-    }
-  
-    input[type=radio]:checked + label.suche {
-      background-color: $suche;
-    }
-
-    input[type=radio]:checked + label.biete {
-      background-color: $biete;
-    }
-  }
-
-  .left {
-    width: 45%; 
-  }
-
-  @media (max-width: 768px) {
-    .left,
-    .right {
-      width: 100%;
-      display: block;
-    }
   }
 }
 
-.category-bar {
-  * {
-    box-sizing: border-box;
-  }
-
+.category-bar { 
   display: flex;
   flex-direction: row;
   justify-content: center;
   border: 1px solid black;
   border-radius: 5px;
   box-sizing: border-box;
-  margin-top: 1em;
-  margin-bottom: 1em;
   height: 75px;
   overflow: hidden;
+  position: relative;
+  margin: 4em 1em;
 
   div {
     display: inline-block;
