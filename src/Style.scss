@@ -1,6 +1,8 @@
 // VARIABLES
 $suche: #DFA3C4;
 $biete: #DFD7A3;
+$suche-light: rgb(221, 179, 202);
+$biete-light: rgb(243, 236, 180);
 
 * {
   box-sizing: border-box;
@@ -75,14 +77,50 @@ main {
   margin: 0 auto; 
 }
 
+a {
+  color: black; 
+  text-decoration: none; 
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 nav {
-  position: relative; 
-  left: 0; 
-  top: 0;
-  margin-top: -15px;
+  position: relative;   
   width: 100%; 
   height: 70px; 
   display: block;
+  margin-bottom: 1em;
+
+  .container {
+    display: flex; 
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .site-title {
+    align-self: center;
+    margin: 0 auto; 
+  }
+
+  a {
+    position: absolute;
+
+    &:before {
+      content: "";
+      width: 1em; 
+      height: 1em; 
+      display: inline-block; 
+      position: relative;
+      top: 3px;
+      background: url('./images/back.svg');
+      background-repeat: no-repeat; 
+      background-size: 100% 100%; 
+      background-position: center center; 
+    }
+  }
 
   &.biete {
     background-color: $biete; 
@@ -103,7 +141,6 @@ label {
   padding: 15px; 
   position: relative;
   margin: 0 auto; 
-  margin-top: 2em;
 }
 
 section {
@@ -119,14 +156,10 @@ section p.title {
 
 
 section.status {
-  label {
-    font-size: 0.8em;
-    margin-top: 1.7em;
-  }
-  
-  input {
-    margin-bottom: 0.5em;
-    width: 300px;
+  .options {
+    display: flex;
+    flex-direction: row; 
+    justify-content: flex-start;
   }
   
   input[type=radio] {
@@ -145,6 +178,8 @@ section.status {
   }
   
   input[type=radio] + label {
+    font-size: 0.8em;
+    margin-top: 1.7em;
     display: inline-block;
     width: 100px; 
     height: 50px; 
@@ -168,6 +203,61 @@ section.status {
   
   input[type=radio]:checked + label.biete {
     background-color: $biete;
+  }
+
+  input[type=checkbox] {
+    display:none;
+  }
+
+  input[type=checkbox]:checked + label {
+    &.suche {
+      background-color: $suche; 
+    }
+
+    &.biete {
+      background-color: $biete; 
+    }
+  }
+
+  input[type=checkbox] + label {
+    width: auto;  
+    height: 50px; 
+    margin-left: 2em; 
+    position: relative;
+    border-radius: 5px;
+    border: 1px solid black; 
+    background-color: #F5F5F5;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    padding: 0 1em;
+  }
+
+  button {
+    height: 50px; 
+    background-color: white; 
+    border: 1px solid black; 
+    border-radius: 5px; 
+    margin-left: auto; 
+    font-size: 1em; 
+    cursor: pointer; 
+
+    &.biete:hover {
+      background-color: $biete-light;
+    }
+
+    &.suche:hover {
+      background-color: $suche-light;
+    }
+
+    &.saved.suche {
+      background-color: $suche;
+    }
+
+    &.saved.biete {
+      background-color: $biete;
+    }
   }
 }
 
@@ -217,6 +307,7 @@ section.status {
       border: 0;
       border-bottom: 1px solid black;
       border-radius: 0;
+      background-color: lightgrey; 
     }
   }
 }
@@ -326,5 +417,17 @@ section.status {
     left: 0;
     width: 100%;
     text-align: center; 
+  }
+}
+
+.map {
+  input[type=text] {
+    width: 100%;
+    font-size: 1.2em;
+    border: 0;
+    border-bottom: 1px solid black;
+    border-radius: 0;
+    margin-bottom: 1em; 
+    background-color: lightgrey; 
   }
 }

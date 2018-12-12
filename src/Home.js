@@ -35,12 +35,14 @@ class Home extends Component {
   render() {
     return  (
       <Layout>
+        <div className="container">
         <p>This is home</p>
         { 
           this.state.searchResult.map((item, i) => {
             return <p>{ item.user }</p>
           })
         }
+        </div>
       </Layout>
     )
   }

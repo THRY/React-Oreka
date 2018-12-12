@@ -6,7 +6,8 @@ import GoogleMapsLoader from 'google-maps';
 
 class Profile extends Component {
   state = {
-    isReadyToLoop: false
+    isReadyToLoop: false,
+    safed: true,
   }
 
   componentWillMount() {
@@ -41,6 +42,7 @@ class Profile extends Component {
   handleTextChange = event => {
     const { id, value} = event.target
     this.setState( prevState => ({
+      safed: false,
       userValues: {
         ...prevState.userValues,
         [id]: value
@@ -51,9 +53,10 @@ class Profile extends Component {
   handleRadioChange = event => {
     const { name, value} = event.target
     this.setState( prevState => ({
+      safed: false,
       userValues: {
         ...prevState.userValues,
-        [name]: value
+        [name]: value,
      }
     }), () => console.log(this.state));
   }
@@ -61,6 +64,7 @@ class Profile extends Component {
   handleCheckboxChange = event => {
     const { id, checked } = event.target
     this.setState( prevState => ({
+      safed: false,
       userValues: {
         ...prevState.userValues,
         [id]: checked
@@ -71,6 +75,7 @@ class Profile extends Component {
   handleCatCheckboxChange = event => {
     const { id, checked } = event.target
     this.setState( prevState => ({
+      safed: false,
       userValues: {
         ...prevState.userValues,
         categories: {
@@ -83,6 +88,11 @@ class Profile extends Component {
 
   handleSubmit = event => {  
     event.preventDefault();  
+    this.setState( prevState => ({
+        safed: true
+      }
+    ));
+
     db.collection("users").doc(this.state.user).set(this.state.userValues);
   }
 
@@ -139,13 +149,16 @@ class Profile extends Component {
       },
     ]
 
+    let isPublic = [
+      {
+        type: 'checkbox',
+        name: 'public',
+        change: this.handleCheckboxChange,
+        label: 'Veröffentlicht'
+      },
+    ]
+
     let fields = [
-        {
-          type: 'checkbox',
-          name: 'public',
-          change: this.handleCheckboxChange,
-          label: 'Veröffentlicht'
-        },
         {
           type: 'text',
           name: 'username',
@@ -243,10 +256,10 @@ class Profile extends Component {
           <Layout>
             { isSignedIn ? (
               <>
-              <nav class={isReadyToLoop && this.state.userValues.status}>
-                <div class="container">
+              <nav className={isReadyToLoop && this.state.userValues.status}>
+                <div className="container">
                   <Link to="/">zurück</Link>
-                  <p>Mein Profil</p>
+                  <span className="site-title">Mein Profil</span>
                 </div>
               </nav>
               <div className="container">
@@ -255,19 +268,40 @@ class Profile extends Component {
                 <form onSubmit={this.handleSubmit}>
                   <section className="status">
                     <p className="title">Mein Status:</p>
-                    <div>                 
-                    {    
-                      radios.map((field, index) => 
-                        <>
-                          { isReadyToLoop && this.externalFunction(field) }
-                          { isReadyToLoop ? 
-                            <label htmlFor={field.name} className={this.state.userValues.status}>
-                            <p>{field.label}</p>  
-                            </label>
-                          : '' }
-                        </>
-                      )
-                    }
+                    <div className="options">
+                      <div>                 
+                      {    
+                        radios.map((field, index) => 
+                          <>
+                            { isReadyToLoop && this.externalFunction(field) }
+                            { isReadyToLoop ? 
+                              <label htmlFor={field.name} className={this.state.userValues.status}>
+                              <p>{field.label}</p>  
+                              </label>
+                            : '' }
+                          </>
+                        )
+                      }
+                      </div>
+                      <div>
+                      {    
+                        isPublic.map((field, index) => 
+                          <>
+                            { isReadyToLoop && this.externalFunction(field) }
+                            { isReadyToLoop ? 
+                              <label htmlFor={field.name} className={this.state.userValues.status}>
+                              <p>{this.state.userValues.public ? 'Veröffentlicht': 'Entwurf'}</p>  
+                              </label>
+                            : '' }
+                          </>
+                        )
+                      }
+                      </div>
+                      <button 
+                        onClick={this.checkIfSaved} 
+                        className={(isReadyToLoop && this.state.userValues.status) + " " + (isReadyToLoop && this.state.safed ? 'saved' : 'not-saved') }>
+                          { (isReadyToLoop && this.state.safed ? 'Gespeichert' : 'Speichern') }
+                        </button>
                     </div>
                   </section>
                   <section>                    
@@ -301,12 +335,10 @@ class Profile extends Component {
                         <div key={index} name={field.name}>
                           { isReadyToLoop && this.externalFunction(field) }
                           { isReadyToLoop ? (
-                            <>
                             <label htmlFor={field.name} className={this.state.userValues.status}>
                               <div className={field.name + ' logo'}></div>
+                              <p>{(field.name == 'spezial' ? field.label + ` (${this.state.userValues.spezialDescr})` : field.label ) }</p>
                             </label>
-                            <p>{(field.name == 'spezial' ? field.label + ` (${this.state.userValues.spezialDescr})` : field.label ) }</p>
-                            </>
                           ) : '' }
                         </div>
                       )
@@ -315,10 +347,11 @@ class Profile extends Component {
                   </section>
                   <section>
                     <p className="title">Mein Wohnort</p>
-                    <input type="text" id="search" />
-                    <div style={{display:'block',position:'relative',width:'100%',height:'500px'}} id="map"></div>
+                    <div className="map">
+                      <input type="text" id="search" />
+                      <div style={{display:'block',position:'relative',width:'100%',height:'500px'}} id="map"></div>
+                    </div>
                   </section>
-                  <button>Alle Daten speichern</button>
                 </form>
               </div>
               </>
@@ -398,7 +431,18 @@ class Profile extends Component {
       const map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 47.43142, lng: 8.49187},
         zoom: 8,
-        mapTypeId: 'roadmap'
+        mapTypeId: 'roadmap', 
+        styles: [
+          {
+            featureType: 'poi',
+            stylers: [{visibility: 'off'}]
+          },
+          {
+            featureType: 'transit',
+            elementType: 'labels.icon',
+            stylers: [{visibility: 'off'}]
+          }
+        ]
       });
 
       const geocoder = new google.maps.Geocoder();
@@ -406,15 +450,6 @@ class Profile extends Component {
 
       if(this.state.userValues.location) {
         console.log(this.state.userValues.location);
-        /*
-        const marker = new google.maps.Marker({
-          map: map,
-          position: this.state.location
-        });
-
-        map.setZoom(10);
-        map.panTo(marker.position);
-        */
 
         geocoder.geocode({'location': this.state.userValues.location}, (results, status) => {
           if (status === 'OK') {
@@ -452,6 +487,7 @@ class Profile extends Component {
         const location = {lat: places[0].geometry.location.lat(), lng: places[0].geometry.location.lng() }; 
 
         this.setState(prevState => ({
+          safed: false,
           userValues: {
             ...prevState.userValues,
             'location': location
