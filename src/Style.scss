@@ -77,6 +77,12 @@ main {
   margin: 0 auto; 
 }
 
+h1 {
+  font-weight: normal; 
+  font-size: 2.5em; 
+  line-height: 1.3em; 
+}
+
 a {
   color: black; 
   text-decoration: none; 
@@ -84,6 +90,12 @@ a {
   &:hover {
     text-decoration: underline;
   }
+}
+
+nav.plakat {
+  background-color: #73859E;
+  height: auto;
+  color: white;  
 }
 
 nav {
@@ -143,6 +155,10 @@ label {
   margin: 0 auto; 
 }
 
+.home section {
+  border: 0; 
+}
+
 section {
   border-top: 1px solid black; 
   margin-top: 1.5em;
@@ -155,108 +171,113 @@ section p.title {
 }
 
 
-section.status {
+section.filter-bar { 
+
+}
+
+section.status,
+section.filter-bar  {
   .options {
     display: flex;
     flex-direction: row; 
     justify-content: flex-start;
-  }
-  
-  input[type=radio] {
-    display:none;
-  }
-  
-  input[type=radio]:first-child + label {
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-right: 0;
-  }
-  
-  input[type=radio]#status2 + label {
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-  }
-  
-  input[type=radio] + label {
-    font-size: 0.8em;
-    margin-top: 1.7em;
-    display: inline-block;
-    width: 100px; 
-    height: 50px; 
-    cursor: pointer;
-    text-align: center;
-    margin: 0;
-    overflow: hidden;
-    border: 1px solid black;
-  
-    p {
-      position: relative;
-      margin: 0; 
-      font-size: 1.5em;
-      transform: translate(0, 50%);
+
+    input[type=radio] {
+      display:none;
     }
-  }
-  
-  input[type=radio]:checked + label.suche {
-    background-color: $suche;
-  }
-  
-  input[type=radio]:checked + label.biete {
-    background-color: $biete;
-  }
-
-  input[type=checkbox] {
-    display:none;
-  }
-
-  input[type=checkbox]:checked + label {
-    &.suche {
-      background-color: $suche; 
+    
+    input[type=radio]:first-child + label {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      border-right: 0;
     }
-
-    &.biete {
-      background-color: $biete; 
+    
+    input[type=radio]#status2 + label {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
     }
-  }
-
-  input[type=checkbox] + label {
-    width: auto;  
-    height: 50px; 
-    margin-left: 2em; 
-    position: relative;
-    border-radius: 5px;
-    border: 1px solid black; 
-    background-color: #F5F5F5;
-    display: inline-block;
-    text-align: center;
-    vertical-align: middle;
-    cursor: pointer;
-    padding: 0 1em;
-  }
-
-  button {
-    height: 50px; 
-    background-color: white; 
-    border: 1px solid black; 
-    border-radius: 5px; 
-    margin-left: auto; 
-    font-size: 1em; 
-    cursor: pointer; 
-
-    &.biete:hover {
-      background-color: $biete-light;
+    
+    input[type=radio] + label {
+      font-size: 0.8em;
+      margin-top: 1.7em;
+      display: inline-block;
+      width: 100px; 
+      height: 55px; 
+      cursor: pointer;
+      text-align: center;
+      margin: 0;
+      overflow: hidden;
+      border: 1px solid black;
+    
+      p {
+        position: relative;
+        margin: 0; 
+        font-size: 1.5em;
+        transform: translate(0, 70%);
+      }
     }
-
-    &.suche:hover {
-      background-color: $suche-light;
-    }
-
-    &.saved.suche {
+    
+    input[type=radio]:checked + label.suche {
       background-color: $suche;
     }
-
-    &.saved.biete {
+    
+    input[type=radio]:checked + label.biete {
       background-color: $biete;
+    }
+  
+    input[type=checkbox] {
+      display:none;
+    }
+  
+    input[type=checkbox]:checked + label {
+      &.suche {
+        background-color: $suche; 
+      }
+  
+      &.biete {
+        background-color: $biete; 
+      }
+    }
+  
+    input[type=checkbox] + label {
+      width: auto;  
+      height: 50px; 
+      margin-left: 2em; 
+      position: relative;
+      border-radius: 5px;
+      border: 1px solid black; 
+      background-color: #F5F5F5;
+      display: inline-block;
+      text-align: center;
+      vertical-align: middle;
+      cursor: pointer;
+      padding: 0 1em;
+    }
+  
+    button {
+      height: 50px; 
+      background-color: white; 
+      border: 1px solid black; 
+      border-radius: 5px; 
+      margin-left: auto; 
+      font-size: 1em; 
+      cursor: pointer; 
+  
+      &.biete:hover {
+        background-color: $biete-light;
+      }
+  
+      &.suche:hover {
+        background-color: $suche-light;
+      }
+  
+      &.saved.suche {
+        background-color: $suche;
+      }
+  
+      &.saved.biete {
+        background-color: $biete;
+      }
     }
   }
 }
@@ -312,6 +333,60 @@ section.status {
   }
 }
 
+.home .category-bar {
+  width: 70%;
+  margin-top: 0; 
+  margin-left: auto; 
+}
+
+.home .label-bar {
+  width: 70%;
+  position: relative; 
+  float: right;
+  margin-right: 1em; 
+  padding: 0; 
+  font-size: 0.85em;
+}
+
+.home .options {
+  position: absolute;
+  margin-bottom: 0.5em;
+
+  label {
+    height: 55px; 
+  }
+
+  p.label {
+    width: 100%; 
+    text-align: center;
+    position: absolute;
+    align-self: flex-end;
+    bottom: -2.5em;
+    font-size: 0.85em;  
+  }
+}
+
+.label-bar {
+  padding: 0 1em;
+  width: 100%;
+  position: relative;
+  display: inline-block;
+  vertical-align: top; /* here */
+
+  p {
+    width: 12.5%; 
+    display: inline-block;
+    text-align: center;
+    margin: 0; 
+    vertical-align:top;
+
+    span:nth-child(2) {
+      display: block;
+      font-size: 12px;
+    }
+  }
+}
+
 .category-bar { 
   display: flex;
   flex-direction: row;
@@ -319,10 +394,10 @@ section.status {
   border: 1px solid black;
   border-radius: 5px;
   box-sizing: border-box;
-  height: 75px;
-  overflow: hidden;
+  height: 55px;
   position: relative;
-  margin: 4em 1em;
+  margin: 2em 1em;
+  margin-bottom: 0.5em;
 
   div {
     display: inline-block;
@@ -332,9 +407,20 @@ section.status {
     flex-direction: column;
     justify-content: flex-end;
     align-items: flex-end;
+    overflow: hidden;
 
     &:not(:first-child) {
       border-left: 1px solid black;
+    }
+
+    &:first-child {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+
+    &:last-child {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
     }
   }
 
@@ -416,7 +502,7 @@ section.status {
 
   p {
     position: absolute;
-    bottom: 0;
+    bottom: -2em;
     margin-bottom: 0.5em;
     left: 0;
     width: 100%;

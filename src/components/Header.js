@@ -11,9 +11,10 @@ class Header extends Component {
     }
     signOut(goToHome);
   }
-
+  
   render() {
-    const { isSignedIn } = this.props 
+    const { isSignedIn } = this.props;
+
     return (
       <header>
          <div className="box left">

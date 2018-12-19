@@ -335,12 +335,25 @@ class Profile extends Component {
                         <div key={index} name={field.name}>
                           { isReadyToLoop && this.externalFunction(field) }
                           { isReadyToLoop ? (
+                            <>
                             <label htmlFor={field.name} className={this.state.userValues.status}>
                               <div className={field.name + ' logo'}></div>
-                              <p>{(field.name == 'spezial' ? field.label + ` (${this.state.userValues.spezialDescr})` : field.label ) }</p>
                             </label>
+                            </>
                           ) : '' }
                         </div>
+                      )
+                    }
+                    </div>
+                    <div className="label-bar">
+                    {                    
+                      categories.map((field, index) => 
+                        <p>
+                        <span>{ field.label }</span>
+                        { isReadyToLoop && (field.name === 'spezial') ? 
+                          <span>({ this.state.userValues.spezialDescr })</span>
+                          : '' }
+                        </p>
                       )
                     }
                     </div>
