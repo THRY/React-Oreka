@@ -11,7 +11,7 @@ class Home extends Component {
   }
 
   componentWillMount() {
-    db.collection("users").where("public", "==", true)
+    db.collection("users").where("categories.haushalt", "==", true)
     .get()
     .then( querySnapshot => {
       console.log(querySnapshot);
