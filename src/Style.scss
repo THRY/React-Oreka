@@ -170,11 +170,6 @@ section p.title {
   margin-top: 0.2em;
 }
 
-
-section.filter-bar { 
-
-}
-
 section.status,
 section.filter-bar  {
   .options {
@@ -241,7 +236,7 @@ section.filter-bar  {
   
     input[type=checkbox] + label {
       width: auto;  
-      height: 50px; 
+      height: 55px; 
       margin-left: 2em; 
       position: relative;
       border-radius: 5px;
@@ -520,4 +515,15 @@ section.filter-bar  {
     margin-bottom: 1em; 
     background-color: lightgrey; 
   }
+}
+
+section.searchResults {
+   display: flex; 
+   justify-content: flex-start; 
+   flex-direction: row;
+}
+
+.search-list,
+.search-map {
+  width: 50%; 
 }

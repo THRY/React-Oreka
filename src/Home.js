@@ -57,11 +57,11 @@ class Home extends Component {
 
       if(filterCatIsSet) {
         Object.keys(this.state.searchCat).forEach(key =>  {
-          if(this.state.searchCat[key] && user[key] && !matchedUsers.includes(user)) {
+          if(this.state.searchCat[key] && user[key] && !matchedUsers.includes(user) && user['public']) {
             matchedUsers.push(user);
           };          
         })
-      } else {
+      } else if(user['public']) {
         matchedUsers.push(user);
       }
     })
@@ -229,12 +229,18 @@ class Home extends Component {
               }
             </div>                    
           </section>
-          <section>
-          { 
+          <section className="searchResults">
+            <div className="search-list">
+            { 
               this.state.searchResult.map((item, i) => {
                 return <p>{ item.username }</p>
               })
             }
+            </div>
+            <div className="search-map">
+            huhu
+            </div>
+          
           </section>
            
         </div>
