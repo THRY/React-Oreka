@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Layout from './components/Layout';
+import ListItem from './components/ListItem';
 import { auth, signUp, signOut, logIn, db } from "./firebase";
 
 
@@ -193,14 +194,14 @@ class Home extends Component {
             <div className="options">      
               {    
                 radios.map((field, index) => 
-                  <>
+                  <React.Fragment key={index}>
                     { true && this.externalFunction(field) }
                     { true ? 
                       <label htmlFor={field.name} className={this.state.searchingFor}>
                       <p>{field.label}</p>  
                       </label>
                     : '' }
-                  </>
+                  </React.Fragment>
                 )
               }
               <p className="label">Nachbarn, die Hilfe {this.state.searchingFor}n</p>
@@ -222,7 +223,7 @@ class Home extends Component {
             <div className="label-bar">
               {                    
                 categories.map((field, index) => 
-                  <p>
+                  <p key={index}>
                     <span>{ field.label }</span>
                   </p>
                 )
@@ -232,8 +233,8 @@ class Home extends Component {
           <section className="searchResults">
             <div className="search-list">
             { 
-              this.state.searchResult.map((item, i) => {
-                return <p>{ item.username }</p>
+              this.state.searchResult.map((user, i) => {
+                return <ListItem user={ user } key={i}/>
               })
             }
             </div>

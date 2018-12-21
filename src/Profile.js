@@ -11,6 +11,7 @@ class Profile extends Component {
   }
 
   componentWillMount() {
+    console.log(localStorage.getItem('user'));
     if(localStorage.getItem('user')) {
       this.setState({
         isSignedIn: true,
@@ -29,13 +30,14 @@ class Profile extends Component {
       isReadyToLoop: true,
       userValues: {
         ...prevState.userValues,
-        ...data,
-        categories: {}
-     }
+        ...data
+      }
     }), () => {
       console.log(this.state);
       this.loadMap();
-      this.getProfilePicUrl();
+      if(this.state.userValues.profilePic) {
+        this.getProfilePicUrl();
+      }
     });
   }
 
@@ -72,15 +74,20 @@ class Profile extends Component {
     }), () => console.log(this.state));
   }
 
-  handleCatCheckboxChange = event => {
+  handleCatCheckboxChange = event => { 
     const { id, checked } = event.target
+    const label = event.target.dataset.label
+    console.log(label);
     this.setState( prevState => ({
       safed: false,
       userValues: {
         ...prevState.userValues,
         categories: {
           ...prevState.userValues.categories,
-          [id]: checked
+          [id]: {
+            label: label,
+            checked: checked
+          }
         }
       }
     }), () => console.log(this.state));
@@ -92,6 +99,8 @@ class Profile extends Component {
         safed: true
       }
     ));
+
+    console.log(this.state.userValues);
 
     db.collection("users").doc(this.state.user).set(this.state.userValues);
   }
@@ -196,56 +205,56 @@ class Profile extends Component {
         type: 'checkbox',
         case: 'category',
         name: 'haushalt',
-        change: this.handleCheckboxChange,
+        change: this.handleCatCheckboxChange,
         label: 'Haushalt'
       },
       {
         type: 'checkbox',
         case: 'category',
         name: 'garten',
-        change: this.handleCheckboxChange,
+        change: this.handleCatCheckboxChange,
         label: 'Garten'
       },
       {
         type: 'checkbox',
         case: 'category',
         name: 'einkaufen',
-        change: this.handleCheckboxChange,
+        change: this.handleCatCheckboxChange,
         label: 'Einkaufen'
       },
       {
         type: 'checkbox',
         case: 'category',
         name: 'finanzen',
-        change: this.handleCheckboxChange,
+        change: this.handleCatCheckboxChange,
         label: 'Finanzen'
       },
       {
         type: 'checkbox',
         case: 'category',
         name: 'behoerden',
-        change: this.handleCheckboxChange,
+        change: this.handleCatCheckboxChange,
         label: 'Behörden'
       },
       {
         type: 'checkbox',
         case: 'category',
         name: 'computer',
-        change: this.handleCheckboxChange,
+        change: this.handleCatCheckboxChange,
         label: 'Computer'
       },
       {
         type: 'checkbox',
         case: 'category',
         name: 'transport',
-        change: this.handleCheckboxChange,
+        change: this.handleCatCheckboxChange,
         label: 'Transport'
       },
       {
         type: 'checkbox',
         case: 'category',
         name: 'spezial',
-        change: this.handleCheckboxChange,
+        change: this.handleCatCheckboxChange,
         label: 'Spezial'
       },
     ]
@@ -385,8 +394,12 @@ class Profile extends Component {
             id={field.name} 
             name={field.name} 
             type={field.type} 
+            data-label={field.label}
             onChange={field.change} 
-            checked={this.state.userValues[field.name] || false } 
+            checked={
+              Object.keys(this.state.userValues.categories).length > 0 && this.state.userValues.categories[field.name] ?
+              this.state.userValues.categories[field.name].checked : false 
+            } 
           />
         );
       case 'checkbox-spezial':
@@ -396,7 +409,7 @@ class Profile extends Component {
             name={field.name} 
             type={field.type} 
             onChange={field.change} 
-            checked={this.state.userValues[field.name] || false } 
+            checked={this.state.userValues.categories[field.name] || false } 
           />
         );
       case 'textarea':

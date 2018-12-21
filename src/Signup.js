@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
 import Layout from './components/Layout';
-import { auth, signUp, signOut, logIn } from "./firebase";
+import { auth, signUp, signOut, logIn, db} from "./firebase";
 
 class Signin extends Component {
   state = {
     isSignedIn: false,
     loading: true,
     password: "",
-    email: ""
+    email: "",
+    userValues: {
+      status: 'suche',
+      birthdate: "",
+      categories: {},
+      description: "",
+      public: false,
+      spezialDescr: "",
+      username: "",
+      user: ""
+    }
   };  
 
   handlePassword = (e) => {
@@ -26,9 +36,24 @@ class Signin extends Component {
 
   handleSignUp = () => {
     const onSignedUp = () => {
-      this.props.history.push('/')
+      const userId = auth.currentUser.uid;
+      console.log(userId)
+      this.setState(prevState => ({
+          userValues: {
+            ...prevState.userValues,
+            user: userId
+          }
+        }), () => {
+          this.createUserProfile();
+          //this.props.history.push('/')
+        })
     }
     signUp(this.state.email, this.state.password, onSignedUp);
+  }
+
+  createUserProfile() {
+    console.log(this.state.userValues.user);
+    db.collection("users").doc(this.state.userValues.user).set(this.state.userValues);
   }
 
   render() {
