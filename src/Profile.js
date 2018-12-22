@@ -4,6 +4,10 @@ import { Link } from "react-router-dom";
 import { storageRef, db } from "./firebase";
 import GoogleMapsLoader from 'google-maps';
 import { radios } from './functions/fields.js';
+import StatusSelector from './components/StatusSelector/StatusSelector.js'
+import CategorySelector from './components/CategorySelector/CategorySelector.js'
+
+
 
 class Profile extends Component {
   state = {
@@ -140,11 +144,6 @@ class Profile extends Component {
   render() {
     const { isSignedIn, isReadyToLoop } = this.state
 
-    let statusFields = radios.map(field => {
-      field.change = this.handleRadioChange;
-      return field;
-    })
-
     let isPublic = [
       {
         type: 'checkbox',
@@ -187,67 +186,6 @@ class Profile extends Component {
         },
       ]
 
-    let categories = [
-      {
-        type: 'checkbox',
-        case: 'category',
-        name: 'haushalt',
-        change: this.handleCatCheckboxChange,
-        label: 'Haushalt'
-      },
-      {
-        type: 'checkbox',
-        case: 'category',
-        name: 'garten',
-        change: this.handleCatCheckboxChange,
-        label: 'Garten'
-      },
-      {
-        type: 'checkbox',
-        case: 'category',
-        name: 'einkaufen',
-        change: this.handleCatCheckboxChange,
-        label: 'Einkaufen'
-      },
-      {
-        type: 'checkbox',
-        case: 'category',
-        name: 'finanzen',
-        change: this.handleCatCheckboxChange,
-        label: 'Finanzen'
-      },
-      {
-        type: 'checkbox',
-        case: 'category',
-        name: 'behoerden',
-        change: this.handleCatCheckboxChange,
-        label: 'Behörden'
-      },
-      {
-        type: 'checkbox',
-        case: 'category',
-        name: 'computer',
-        change: this.handleCatCheckboxChange,
-        label: 'Computer'
-      },
-      {
-        type: 'checkbox',
-        case: 'category',
-        name: 'transport',
-        change: this.handleCatCheckboxChange,
-        label: 'Transport'
-      },
-      {
-        type: 'checkbox',
-        case: 'category',
-        name: 'spezial',
-        change: this.handleCatCheckboxChange,
-        label: 'Spezial'
-      },
-    ]
-
-    
-
     return (
           <Layout>
             { isSignedIn ? (
@@ -265,20 +203,11 @@ class Profile extends Component {
                   <section className="status">
                     <p className="title">Mein Status:</p>
                     <div className="options">
-                      <div>                 
-                      {    
-                        statusFields.map((field, index) => 
-                          <>
-                            { isReadyToLoop && this.externalFunction(field) }
-                            { isReadyToLoop ? 
-                              <label htmlFor={field.name} className={this.state.userValues.status}>
-                              <p>{field.label}</p>  
-                              </label>
-                            : '' }
-                          </>
-                        )
-                      }
-                      </div>
+                     { isReadyToLoop &&
+                      <StatusSelector change={this.handleRadioChange} userValues={this.state.userValues} />
+                     }
+
+
                       <div>
                       {    
                         isPublic.map((field, index) => 
@@ -325,34 +254,11 @@ class Profile extends Component {
                   </section>
                   <section>
                     <p className="title">Bereiche, in denen ich Hilfe {isReadyToLoop && this.state.userValues.status === 'suche' ? 'suche' : 'anbiete' }:</p>
-                    <div className="category-bar">
-                    {                    
-                      categories.map((field, index) => 
-                        <div key={index} name={field.name}>
-                          { isReadyToLoop && this.externalFunction(field) }
-                          { isReadyToLoop ? (
-                            <>
-                            <label htmlFor={field.name} className={this.state.userValues.status}>
-                              <div className={field.name + ' logo'}></div>
-                            </label>
-                            </>
-                          ) : '' }
-                        </div>
-                      )
+                    {
+                      isReadyToLoop &&   
+                      <CategorySelector userValues={this.state.userValues} change={this.handleCatCheckboxChange} />
                     }
-                    </div>
-                    <div className="label-bar">
-                    {                    
-                      categories.map((field, index) => 
-                        <p>
-                        <span>{ field.label }</span>
-                        { isReadyToLoop && (field.name === 'spezial') ? 
-                          <span>({ this.state.userValues.spezialDescr })</span>
-                          : '' }
-                        </p>
-                      )
-                    }
-                    </div>
+
                   </section>
                   <section>
                     <p className="title">Mein Wohnort</p>

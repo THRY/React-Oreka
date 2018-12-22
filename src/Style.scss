@@ -361,12 +361,14 @@ section.filter-bar  {
   }
 }
 
+
+/*
 .label-bar {
   padding: 0 1em;
   width: 100%;
   position: relative;
   display: inline-block;
-  vertical-align: top; /* here */
+  vertical-align: top; 
 
   p {
     width: 12.5%; 
@@ -504,6 +506,7 @@ section.filter-bar  {
     text-align: center; 
   }
 }
+*/
 
 .map {
   input[type=text] {

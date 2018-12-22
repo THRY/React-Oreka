@@ -3,6 +3,7 @@ import Layout from './components/Layout';
 import { auth, signUp, signOut, logIn, db} from "./firebase";
 import { Link } from "react-router-dom";
 import getInputFields from './functions/getInputFields.js';
+import StatusSelector from './components/StatusSelector/StatusSelector.js'
 import { radios } from './functions/fields.js';
 import './Options.scss';
 
@@ -93,20 +94,8 @@ class Signin extends Component {
         </nav>
         <div className="container signup">
           <p>Erstellen Sie Ihren eigenen Account:</p>
-          <div className="options">                 
-          {    
-            statusFields.map((field, index) => 
-              <>
-                { getInputFields(field, this.state) }
-                {  
-                  <label htmlFor={field.name} className={this.state.userValues.status}>
-                  <p>{field.label}</p>  
-                  </label>
-                }
-              </>
-            )
-          }
-          </div>
+          <StatusSelector change={this.handleRadioChange} userValues={this.state.userValues} />
+       
           <label htmlFor='email'>E-Mail-Adresse</label>
           <input type="text" name="email" id="email" onChange={this.handleEmail}></input>
           <label htmlFor='password'>Passwort</label>
