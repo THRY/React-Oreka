@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Layout from './components/Layout';
 import { auth, signUp, signOut, logIn } from "./firebase";
 import { Link } from "react-router-dom"; 
+  
 
 class Signin extends Component {
   state = {
@@ -45,14 +46,22 @@ class Signin extends Component {
   render() {
     return (
       <Layout>
-        <p>Melden Sie sich hier an:</p>
-        <label htmlFor='email'>E-Mail-Adresse</label>
-        <input type="text" name="email" id="email" onChange={this.handleEmail}></input>
-        <label htmlFor='password'>Passwort</label>
-        <input type="text" name="password" id="password" onChange={this.handlePassword}></input>
-        <button onClick={this.handleLogIn}>Log In</button>          
-        <p ref="errorRef"></p>
-        <p>Noch kein Login? Erstellen Sie <Link to="/signup">hier</Link> eines.</p>
+         <nav className="plakat">
+          <div className="container">
+            <Link to="/">zurück</Link>
+            <span className="site-title">Melden Sie sich an</span>
+          </div>
+        </nav>
+        <div className="container login">
+          <p>Melden Sie sich hier an:</p>
+          <label htmlFor='email'>E-Mail-Adresse</label>
+          <input type="text" name="email" id="email" onChange={this.handleEmail}></input>
+          <label htmlFor='password'>Passwort</label>
+          <input type="text" name="password" id="password" onChange={this.handlePassword}></input>
+          <button onClick={this.handleLogIn}>Log In</button>          
+          <p ref="errorRef"></p>
+          <p>Noch kein Login? Erstellen Sie <Link to="/signup">hier</Link> eines.</p>
+        </div>
       </Layout>  
     )
   }

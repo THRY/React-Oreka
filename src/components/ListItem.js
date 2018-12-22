@@ -16,7 +16,6 @@ class ListItem extends Component {
     if(Object.keys(this.props.user.categories).length > 0) {
       this.createCatList();
     }
-
   }
 
   render() {

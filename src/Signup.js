@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import Layout from './components/Layout';
 import { auth, signUp, signOut, logIn, db} from "./firebase";
+import { Link } from "react-router-dom";
+import getInputFields from './functions/getInputFields.js';
+import { radios } from './functions/fields.js';
+import './Options.scss';
+
 
 class Signin extends Component {
   state = {
@@ -29,9 +34,14 @@ class Signin extends Component {
 
   handleEmail = (e) => {
     console.log(e.target.value);
-    this.setState ({
-      email: e.target.value
-    })
+    this.setState(prevState => ({
+        email: e.target.value,
+        userValues: {
+          ...prevState.userValues,
+          email:  e.target.value
+        }
+      })
+    )
   }   
 
   handleSignUp = () => {
@@ -51,20 +61,58 @@ class Signin extends Component {
     signUp(this.state.email, this.state.password, onSignedUp);
   }
 
+  handleRadioChange = event => {
+    const { name, value} = event.target
+    this.setState( prevState => ({
+      safed: false,
+      userValues: {
+        ...prevState.userValues,
+        [name]: value,
+     }
+    }), () => console.log(this.state));
+  }
+
   createUserProfile() {
     console.log(this.state.userValues.user);
     db.collection("users").doc(this.state.userValues.user).set(this.state.userValues);
   }
 
   render() {
+    let statusFields = radios.map(field => {
+      field.change = this.handleRadioChange;
+      return field;
+    })
+
     return (
       <Layout>
-        <p>Erstellen Sie Ihren eigenen Account:</p>
-        <label htmlFor='email'>E-Mail-Adresse</label>
-        <input type="text" name="email" id="email" onChange={this.handleEmail}></input>
-        <label htmlFor='password'>Passwort</label>
-        <input type="text" name="password" id="password" onChange={this.handlePassword}></input>
-        <button onClick={this.handleSignUp}>Sign Up</button>    
+        <nav className="plakat">
+          <div className="container">
+            <Link to="/">zurück</Link>
+            <span className="site-title">Erstellen Sie einen Login</span>
+          </div>
+        </nav>
+        <div className="container signup">
+          <p>Erstellen Sie Ihren eigenen Account:</p>
+          <div className="options">                 
+          {    
+            statusFields.map((field, index) => 
+              <>
+                { getInputFields(field, this.state) }
+                {  
+                  <label htmlFor={field.name} className={this.state.userValues.status}>
+                  <p>{field.label}</p>  
+                  </label>
+                }
+              </>
+            )
+          }
+          </div>
+          <label htmlFor='email'>E-Mail-Adresse</label>
+          <input type="text" name="email" id="email" onChange={this.handleEmail}></input>
+          <label htmlFor='password'>Passwort</label>
+          <input type="text" name="password" id="password" onChange={this.handlePassword}></input>
+          <button onClick={this.handleSignUp}>Sign Up</button>
+        </div>
       </Layout>  
     )
   }

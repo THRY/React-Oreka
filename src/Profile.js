@@ -3,6 +3,7 @@ import Layout from './components/Layout';
 import { Link } from "react-router-dom";
 import { storageRef, db } from "./firebase";
 import GoogleMapsLoader from 'google-maps';
+import { radios } from './functions/fields.js';
 
 class Profile extends Component {
   state = {
@@ -139,24 +140,10 @@ class Profile extends Component {
   render() {
     const { isSignedIn, isReadyToLoop } = this.state
 
-    let radios = [
-      {
-        type: 'radio',
-        name: 'status1',
-        radioName: 'status',
-        value: 'suche',
-        change: this.handleRadioChange,
-        label: 'suche'
-      },
-      {
-        type: 'radio',
-        name: 'status2',
-        radioName: 'status',
-        value: 'biete',
-        change: this.handleRadioChange,
-        label: 'biete'
-      },
-    ]
+    let statusFields = radios.map(field => {
+      field.change = this.handleRadioChange;
+      return field;
+    })
 
     let isPublic = [
       {
@@ -280,7 +267,7 @@ class Profile extends Component {
                     <div className="options">
                       <div>                 
                       {    
-                        radios.map((field, index) => 
+                        statusFields.map((field, index) => 
                           <>
                             { isReadyToLoop && this.externalFunction(field) }
                             { isReadyToLoop ? 
