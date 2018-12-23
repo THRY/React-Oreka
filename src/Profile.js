@@ -3,7 +3,6 @@ import Layout from './components/Layout';
 import { Link } from "react-router-dom";
 import { storageRef, db } from "./firebase";
 import GoogleMapsLoader from 'google-maps';
-import { radios } from './functions/fields.js';
 import StatusSelector from './components/StatusSelector/StatusSelector.js';
 import CategorySelector from './components/CategorySelector/CategorySelector.js';
 import getInputFields from './functions/getInputFields.js';
@@ -282,7 +281,7 @@ class Profile extends Component {
   }
 
   loadMap() {
-    GoogleMapsLoader.KEY = 'AIzaSyDLvGyZym2wxHq1yWFe4gF3EZAT90bJOb0';
+    GoogleMapsLoader.KEY = REACT_APP_PIPI;
     GoogleMapsLoader.LIBRARIES = ['geometry', 'places'];
     GoogleMapsLoader.LANGUAGE = 'de';
     GoogleMapsLoader.REGION = 'DE';

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom"; 
-import { storageRef, db } from "../firebase";
+import { storageRef, db } from "../../firebase";
+import './listitem-style.scss';
 
 class ListItem extends Component {
 
@@ -30,8 +31,8 @@ class ListItem extends Component {
           <p className="description">{ this.props.user.description }</p>
           <p className="categories">
             {
-              Object.keys(this.state.catList).map(key => 
-                <span>{ /*this.props.user.categories[key].label */}</span>  
+              Object.keys(this.state.catList).map((key, index) => 
+                <span key={index}>{ this.props.user.categories[this.state.catList[key]].label }</span>  
               )
             }
           </p>
@@ -44,7 +45,9 @@ class ListItem extends Component {
   createCatList = () => {
     let filtered = Object.keys(this.props.user.categories).filter(key => {
       return this.props.user.categories[key].checked === true;
-    })
+    });
+
+    console.log(filtered);
 
     this.setState(prevState => ({
       catList: filtered

@@ -1,0 +1,35 @@
+.search-list .list-item {
+  background-color: lightgray;
+  display: flex; 
+  flex-direction: row; 
+  justify-content: flex-start; 
+  position: relative;
+  
+  a {
+    display: block; 
+    padding: 0; 
+  }
+
+  .categories {
+    span {
+      position: relative;
+      display: inline-block;
+      margin-right: 0.5em; 
+    }
+
+    span:first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  .img-cropper {
+    width: 20%; 
+    padding: 0.5em;  
+
+    img {
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover; 
+    }
+  }
+}

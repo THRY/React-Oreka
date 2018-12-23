@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Layout from './components/Layout';
-import ListItem from './components/ListItem';
+import ListItem from './components/ListItem/ListItem.js';
 import { auth, signUp, signOut, logIn, db } from "./firebase";
 import CategorySelector from './components/CategorySelector/CategorySelector.js'
 import StatusSelector from './components/StatusSelector/StatusSelector.js'
