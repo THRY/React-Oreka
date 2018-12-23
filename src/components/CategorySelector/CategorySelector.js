@@ -53,12 +53,8 @@ class CategorySelector extends Component {
               data-label={field.label}
               onChange={this.props.change}
               checked={
-                // IF IT IS CALLED FROM PROFILE
-                this.props.userValues ?
-                ( Object.keys(this.props.userValues.categories).length > 0 && this.props.userValues.categories[field.name] ?
-                this.props.userValues.categories[field.name].checked : false ) :
-                // OR CALLED FROM HOME WEHERE THERE ARE NO USER VALUES
-                ( Object.keys(this.props.searchCat).length > 0 && this.props.searchCat[field.name] ? this.props.searchCat[field.name].checked : false )
+                ( Object.keys(this.props.categories).length > 0 && this.props.categories[field.name] ?
+                this.props.categories[field.name].checked : false ) 
               } 
               />
               <label htmlFor={field.name} className={this.props.userValues ? this.props.userValues.status : this.props.searchingFor}>

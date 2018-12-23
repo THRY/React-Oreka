@@ -119,7 +119,7 @@ class Home extends Component {
               <p className="label">Nachbarn, die Hilfe {this.state.searchingFor}n</p>
             </div>
             
-            <CategorySelector change={this.handleCheckboxChange} searchCat={this.state.searchCat} searchingFor={this.state.searchingFor} />
+            <CategorySelector change={this.handleCheckboxChange} categories={this.state.searchCat} searchCat={this.state.searchCat} searchingFor={this.state.searchingFor} />
                               
           </section>
           <section className="searchResults">

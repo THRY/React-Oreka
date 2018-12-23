@@ -4,8 +4,9 @@ import { Link } from "react-router-dom";
 import { storageRef, db } from "./firebase";
 import GoogleMapsLoader from 'google-maps';
 import { radios } from './functions/fields.js';
-import StatusSelector from './components/StatusSelector/StatusSelector.js'
-import CategorySelector from './components/CategorySelector/CategorySelector.js'
+import StatusSelector from './components/StatusSelector/StatusSelector.js';
+import CategorySelector from './components/CategorySelector/CategorySelector.js';
+import getInputFields from './functions/getInputFields.js';
 
 
 
@@ -202,32 +203,33 @@ class Profile extends Component {
                 <form onSubmit={this.handleSubmit}>
                   <section className="status">
                     <p className="title">Mein Status:</p>
+                    { isReadyToLoop && 
                     <div className="options">
-                     { isReadyToLoop &&
                       <StatusSelector change={this.handleRadioChange} userValues={this.state.userValues} />
-                     }
-
-
-                      <div>
-                      {    
-                        isPublic.map((field, index) => 
-                          <>
-                            { isReadyToLoop && this.externalFunction(field) }
-                            { isReadyToLoop ? 
-                              <label htmlFor={field.name} className={this.state.userValues.status}>
-                              <p>{this.state.userValues.public ? 'Veröffentlicht': 'Entwurf'}</p>  
-                              </label>
-                            : '' }
-                          </>
-                        )
-                      }
+                      <div> 
+                        <input 
+                          id="public"
+                          name="public"
+                          type="checkbox"
+                          data-label="Veröffentlicht"
+                          onChange={this.handleCheckboxChange} 
+                          checked={
+                            this.state.userValues.public ?
+                            this.state.userValues.public : false 
+                          } 
+                        />
+                      
+                        <label htmlFor="public" className={this.state.userValues.status}>
+                          <p>{this.state.userValues.public ? 'Veröffentlicht': 'Entwurf'}</p>  
+                        </label>
                       </div>
                       <button 
                         onClick={this.checkIfSaved} 
                         className={(isReadyToLoop && this.state.userValues.status) + " " + (isReadyToLoop && this.state.safed ? 'saved' : 'not-saved') }>
                           { (isReadyToLoop && this.state.safed ? 'Gespeichert' : 'Speichern') }
-                        </button>
+                      </button>
                     </div>
+                    }
                   </section>
                   <section>                    
                     <p className="title">Angaben zu mir: </p>
@@ -245,7 +247,7 @@ class Profile extends Component {
                           fields.map((field, index) => 
                             <div key={index}>
                               <label htmlFor={field.name}>{field.label}</label>
-                              { isReadyToLoop && this.externalFunction(field) }
+                              { isReadyToLoop && getInputFields(field, this.state) }
                             </div>
                           )
                         }
@@ -256,7 +258,7 @@ class Profile extends Component {
                     <p className="title">Bereiche, in denen ich Hilfe {isReadyToLoop && this.state.userValues.status === 'suche' ? 'suche' : 'anbiete' }:</p>
                     {
                       isReadyToLoop &&   
-                      <CategorySelector userValues={this.state.userValues} change={this.handleCatCheckboxChange} />
+                      <CategorySelector userValues={this.state.userValues} categories={this.state.userValues.categories} change={this.handleCatCheckboxChange} />
                     }
 
                   </section>
@@ -277,67 +279,6 @@ class Profile extends Component {
           }
         </Layout>  
     )
-  }
-
-  externalFunction(field) {
-    switch(field.type) {
-      case 'checkbox':
-        return (
-          <input 
-            id={field.name} 
-            name={field.name} 
-            type={field.type} 
-            data-label={field.label}
-            onChange={field.change} 
-            checked={
-              Object.keys(this.state.userValues.categories).length > 0 && this.state.userValues.categories[field.name] ?
-              this.state.userValues.categories[field.name].checked : false 
-            } 
-          />
-        );
-      case 'checkbox-spezial':
-        return (
-          <input 
-            id={field.name} 
-            name={field.name} 
-            type={field.type} 
-            onChange={field.change} 
-            checked={this.state.userValues.categories[field.name] || false } 
-          />
-        );
-      case 'textarea':
-        return (
-            <textarea 
-              id={field.name} 
-              name={field.name} 
-              type={field.type} 
-              onChange={field.change}
-              value={this.state.userValues[field.name]}
-            />
-        );
-      case 'radio': 
-          return (
-            <input 
-              id={field.name} 
-              name={field.radioName} 
-              type={field.type} 
-              value={field.value} 
-              onChange={this.handleRadioChange} 
-              checked={(this.state.userValues.status === field.value ? true : false)}
-            />
-          )
-      default:
-      case 'text':
-        return (
-            <input 
-              id={field.name} 
-              name={field.name} 
-              type={field.type} 
-              onChange={field.change}
-              defaultValue={this.state.userValues[field.name]}
-            />
-        );
-    }
   }
 
   loadMap() {
