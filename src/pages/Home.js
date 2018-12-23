@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import Layout from './components/Layout';
-import ListItem from './components/ListItem/ListItem.js';
-import { auth, signUp, signOut, logIn, db } from "./firebase";
-import CategorySelector from './components/CategorySelector/CategorySelector.js'
-import StatusSelector from './components/StatusSelector/StatusSelector.js'
+import Layout from '../components/Layout';
+import ListItem from '../components/ListItem.js';
+import { auth, signUp, signOut, logIn, db } from "../firebase";
+import CategorySelector from '../components/CategorySelector.js'
+import StatusSelector from '../components/StatusSelector.js'
 
 
 class Home extends Component {
@@ -131,7 +131,7 @@ class Home extends Component {
             }
             </div>
             <div className="search-map">
-            huhu
+            
             </div>
           
           </section>

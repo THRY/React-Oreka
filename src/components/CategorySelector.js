@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './categoryselector-style.scss';
 
 
 class CategorySelector extends Component {

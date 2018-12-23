@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Layout from './components/Layout';
-import { auth, signUp, signOut, logIn } from "./firebase";
+import Layout from '../components/Layout';
+import { auth, signUp, signOut, logIn } from "../firebase";
 import { Link } from "react-router-dom"; 
   
 

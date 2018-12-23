@@ -1,0 +1,169 @@
+section.status {
+  .options {
+    display: flex;
+    flex-direction: row; 
+    justify-content: flex-start;
+
+    input[type=radio] {
+      display:none;
+    }
+    
+    input[type=radio]:first-child + label {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      border-right: 0;
+    }
+    
+    input[type=radio]#status2 + label {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+    
+    input[type=radio] + label {
+      font-size: 0.8em;
+      margin-top: 1.7em;
+      display: inline-block;
+      width: 100px; 
+      height: 55px; 
+      cursor: pointer;
+      text-align: center;
+      margin: 0;
+      overflow: hidden;
+      border: 1px solid black;
+    
+      p {
+        position: relative;
+        margin: 0; 
+        font-size: 1.5em;
+        transform: translate(0, 70%);
+      }
+    }
+    
+    input[type=radio]:checked + label.suche {
+      background-color: $suche;
+    }
+    
+    input[type=radio]:checked + label.biete {
+      background-color: $biete;
+    }
+  
+    input[type=checkbox] {
+      display:none;
+    }
+  
+    input[type=checkbox]:checked + label {
+      &.suche {
+        background-color: $suche; 
+      }
+  
+      &.biete {
+        background-color: $biete; 
+      }
+    }
+  
+    input[type=checkbox] + label {
+      width: auto;  
+      height: 55px; 
+      margin-left: 2em; 
+      position: relative;
+      border-radius: 5px;
+      border: 1px solid black; 
+      background-color: #F5F5F5;
+      display: inline-block;
+      text-align: center;
+      vertical-align: middle;
+      cursor: pointer;
+      padding: 0 1em;
+    }
+  
+    button {
+      height: 50px; 
+      background-color: white; 
+      border: 1px solid black; 
+      border-radius: 5px; 
+      margin-left: auto; 
+      font-size: 1em; 
+      cursor: pointer; 
+  
+      &.biete:hover {
+        background-color: $biete-light;
+      }
+  
+      &.suche:hover {
+        background-color: $suche-light;
+      }
+  
+      &.saved.suche {
+        background-color: $suche;
+      }
+  
+      &.saved.biete {
+        background-color: $biete;
+      }
+    }
+  }
+}
+
+.profile-top {
+    width: 100%; 
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+  
+    .left {
+      .image-cropper {
+        width: 100%; 
+        max-width: 450px; 
+        padding-bottom: 15px;
+        padding-right: 15px;
+        display: inline-block;
+      }
+  
+      img {
+        width: 100%;
+        height: 100%; 
+        object-fit: cover;
+      }
+    }
+  
+    .right {
+      width: 55%; 
+      flex: 1;
+  
+      label {
+        font-size: 0.8em;
+        margin-top: 1.7em;
+      }
+  
+      textarea {
+        display: inline-block;
+        resize: none;
+        font-size: 1.2em;
+        height: 5em;
+        border: 1px solid black;
+        width: 100% !important;
+      }
+  
+      input[type=text] {
+        width: 100%;
+        font-size: 1.2em;
+        border: 0;
+        border-bottom: 1px solid black;
+        border-radius: 0;
+        background-color: lightgrey; 
+      }
+    }
+  }
+
+  .map {
+    input[type=text] {
+      width: 100%;
+      font-size: 1.2em;
+      border: 0;
+      border-bottom: 1px solid black;
+      border-radius: 0;
+      margin-bottom: 1em; 
+      background-color: lightgrey; 
+    }
+  }
+  

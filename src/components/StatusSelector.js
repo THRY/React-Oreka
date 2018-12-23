@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './statusselector-style.scss';
 
 
 class StatusSelector extends Component {

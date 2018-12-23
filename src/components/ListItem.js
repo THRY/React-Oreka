@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom"; 
-import { storageRef, db } from "../../firebase";
-import './listitem-style.scss';
+import { storageRef, db } from "../firebase";
 
 class ListItem extends Component {
 

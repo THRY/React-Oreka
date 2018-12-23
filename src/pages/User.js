@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import Layout from './components/Layout';
+import Layout from '../components/Layout';
 import { Link } from "react-router-dom";
-import { storageRef, db } from "./firebase";
+import { storageRef, db } from "../firebase";
 import GoogleMapsLoader from 'google-maps';
-import { radios } from './functions/fields.js';
-import StatusSelector from './components/StatusSelector/StatusSelector.js';
-import CategorySelector from './components/CategorySelector/CategorySelector.js';
-import getInputFields from './functions/getInputFields.js';
+import { radios } from '../functions/fields.js';
+import StatusSelector from '../components/StatusSelector.js';
+import CategorySelector from '../components/CategorySelector.js';
+import getInputFields from '../functions/getInputFields.js';
 
 
 
@@ -64,10 +64,14 @@ class User extends Component {
           <nav className={isReadyToLoop && this.state.userValues.status}>
             <div className="container">
               <Link to="/">zurück</Link>
-              <span className="site-title">{this.state.userValues.username}</span>
+              <span className="site-title">Profil von {this.state.userValues.username}</span>
             </div>
           </nav>
-          <div className="container"></div> 
+          <div className="container">
+            <div class="image-cropper">
+              <img src={this.state.profilePicUrl} />
+            </div>
+          </div> 
           </>
           }
       </Layout>  

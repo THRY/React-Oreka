@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import Home from './Home';
-import Login from './Login';
-import Signup from './Signup';
-import Profile from './Profile';
-import User from './User';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Profile from './pages/Profile';
+import User from './pages/User';
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom"; 
-import './Style.scss';
+import './main.scss';
 
 
 class App extends Component {
