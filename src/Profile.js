@@ -142,16 +142,7 @@ class Profile extends Component {
   }
 
   render() {
-    const { isSignedIn, isReadyToLoop } = this.state
-
-    let isPublic = [
-      {
-        type: 'checkbox',
-        name: 'public',
-        change: this.handleCheckboxChange,
-        label: 'Veröffentlicht'
-      },
-    ]
+    const { isSignedIn, isReadyToLoop } = this.state;
 
     let fields = [
         {
@@ -281,7 +272,7 @@ class Profile extends Component {
   }
 
   loadMap() {
-    GoogleMapsLoader.KEY = REACT_APP_PIPI;
+    GoogleMapsLoader.KEY = process.env.REACT_APP_MAPS_KEY;
     GoogleMapsLoader.LIBRARIES = ['geometry', 'places'];
     GoogleMapsLoader.LANGUAGE = 'de';
     GoogleMapsLoader.REGION = 'DE';

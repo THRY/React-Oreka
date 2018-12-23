@@ -21,24 +21,24 @@ class ListItem extends Component {
 
   render() {
     return (
-    <Link to={`/user/${this.props.user.user}`}>
-      <div className="list-item">
-        <div className="img-cropper">
-          <img alt="Profile" src={ this.state.profilePicUrl } />
+      <Link to={`/user/${this.props.user.user}`}>
+        <div className="list-item">
+          <div className="img-cropper">
+            <img alt="Profile" src={ this.state.profilePicUrl } />
+          </div>
+          <div className="infos">
+            <p className="name">{ this.props.user.username }</p>
+            <p className="description">{ this.props.user.description }</p>
+            <p className="categories">
+              {
+                Object.keys(this.state.catList).map((key, index) => 
+                  <span key={index}>{ this.props.user.categories[this.state.catList[key]].label }</span>  
+                )
+              }
+            </p>
+          </div>
         </div>
-        <div className="infos">
-          <p className="name">{ this.props.user.username }</p>
-          <p className="description">{ this.props.user.description }</p>
-          <p className="categories">
-            {
-              Object.keys(this.state.catList).map((key, index) => 
-                <span key={index}>{ this.props.user.categories[this.state.catList[key]].label }</span>  
-              )
-            }
-          </p>
-        </div>
-      </div>
-    </Link>
+      </Link>
     )
   }
 
