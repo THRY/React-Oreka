@@ -6,6 +6,7 @@ import GoogleMapsLoader from 'google-maps';
 import StatusSelector from '../components/StatusSelector.js';
 import CategorySelector from '../components/CategorySelector.js';
 import getInputFields from '../functions/getInputFields.js';
+import styles from '../Stylesheets/pages/profile.scss';
 
 class Profile extends Component {
   state = {

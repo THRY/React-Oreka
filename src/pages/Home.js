@@ -4,6 +4,8 @@ import ListItem from '../components/ListItem.js';
 import { auth, signUp, signOut, logIn, db } from "../firebase";
 import CategorySelector from '../components/CategorySelector.js'
 import StatusSelector from '../components/StatusSelector.js'
+import styles from '../Stylesheets/pages/home.scss';
+
 
 
 class Home extends Component {

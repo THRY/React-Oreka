@@ -1,3 +1,5 @@
+@import '../base/variables';
+
 .category-bar { 
   display: flex;
   flex-direction: row;
@@ -71,39 +73,39 @@
     background-repeat: no-repeat;
   
     &.haushalt {
-      background-image: url(./images/haushalt.svg);  
+      background-image: url(../../images/haushalt.svg);  
     }
 
     &.garten {
-      background-image: url(./images/garten.svg);  
+      background-image: url(../../images/garten.svg);  
     }
 
     &.einkaufen {
-      background-image: url(./images/einkaufen.svg);  
+      background-image: url(../../images/einkaufen.svg);  
     }
 
     &.einkaufen {
-      background-image: url(./images/einkaufen.svg);  
+      background-image: url(../../images/einkaufen.svg);  
     }
 
     &.behoerden {
-      background-image: url(./images/behoerden.svg);  
+      background-image: url(../../images/behoerden.svg);  
     }
 
     &.finanzen {
-      background-image: url(./images/finanzen.svg);  
+      background-image: url(../../images/finanzen.svg);  
     }
 
     &.computer {
-      background-image: url(./images/computer.svg);  
+      background-image: url(../../images/computer.svg);  
     }
 
     &.transport {
-      background-image: url(./images/transport.svg);  
+      background-image: url(../../images/transport.svg);  
     }
 
     &.spezial {
-      background-image: url(./images/spezial.svg);  
+      background-image: url(../../images/spezial.svg);  
       
       span {
         font-size: 0.5em;

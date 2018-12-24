@@ -2,49 +2,22 @@ import React, { Component } from 'react';
 import styles from '../Stylesheets/components/CategorySelector-style.scss';
 
 
-class CategorySelector extends Component {
+class CategoryDisplay extends Component {
+
+  state = {
+    catList: []
+  }
+
+  componentWillMount() {
+    this.createCatList();
+  }
 
   render() {
-    let categories = [
-      {
-        name: 'haushalt',
-        label: 'Haushalt'
-      },
-      {
-        name: 'garten',
-        label: 'Garten'
-      },
-      {
-        name: 'einkaufen',
-        label: 'Einkaufen'
-      },
-      {
-        name: 'finanzen',
-        label: 'Finanzen'
-      },
-      {
-        name: 'behoerden',
-        label: 'Behörden'
-      },
-      {
-        name: 'computer',
-        label: 'Computer'
-      },
-      {
-        name: 'transport',
-        label: 'Transport'
-      },
-      {
-        name: 'spezial',
-        label: 'Spezial'
-      },
-    ]
-
     return (
       <div class="category-selector">
-        <div className="category-bar">
+      <div className="category-bar" style={ {width: this.state.catList.length * 12.5 + "%" } }>
         {                    
-          categories.map((field, index) => 
+          this.state.catList.map((field, index) => 
             <div key={index} name={field.name}>
               <input 
               id={field.name} 
@@ -52,10 +25,7 @@ class CategorySelector extends Component {
               type='checkbox'
               data-label={field.label}
               onChange={this.props.change}
-              checked={
-                ( Object.keys(this.props.categories).length > 0 && this.props.categories[field.name] ?
-                this.props.categories[field.name].checked : false ) 
-              } 
+              checked={ true }
               />
               <label htmlFor={field.name} className={this.props.userValues ? this.props.userValues.status : this.props.searchingFor}>
                 <div className={field.name + ' logo'}></div>
@@ -66,7 +36,7 @@ class CategorySelector extends Component {
         </div>
         <div className="label-bar">
         {                    
-          categories.map((field, index) => 
+           this.state.catList.map((field, index) => 
             <p>
             <span key={index}>{ field.label }</span>
             { (field.name === 'spezial') && this.props.userValues ? 
@@ -82,6 +52,30 @@ class CategorySelector extends Component {
       </div>
     )
   }
+
+  createCatList = () => {
+
+    console.log(this.props.userValues); 
+    
+    let filtered = Object.keys(this.props.userValues.categories).filter(key => {
+      return this.props.userValues.categories[key].checked === true;
+    });
+
+    let categories = []; 
+
+    filtered.forEach((key, index) => {
+      let entry = {
+        name: key,
+        label: this.props.userValues.categories[key].label
+      };
+      categories.push(entry);
+    });
+
+    this.setState(prevState => ({
+      catList: categories
+      })
+    )
+  }
 }
 
-export default CategorySelector; 
+export default CategoryDisplay; 
