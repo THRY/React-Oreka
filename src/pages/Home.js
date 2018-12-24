@@ -53,6 +53,7 @@ class Home extends Component {
       console.log(this.state.searchCat);
       let filterCatIsSet = false;   
 
+      // Check if any filter is selected
       Object.keys(this.state.searchCat).forEach(key =>  {
         if(this.state.searchCat[key]) {
           filterCatIsSet = true;
@@ -60,12 +61,17 @@ class Home extends Component {
         }
       })
 
+      // Check conditions
       if(filterCatIsSet) {
         Object.keys(this.state.searchCat).forEach(key =>  {
-          if(this.state.searchCat[key] && user[key] && !matchedUsers.includes(user) && user['public']) {
-            matchedUsers.push(user);
-          };          
+          // 
+          if(user.categories[key]) {
+            if(this.state.searchCat[key] && user.categories[key].checked && !matchedUsers.includes(user) && user['public']) {
+              matchedUsers.push(user);
+            };  
+          } 
         })
+      // If no filter is set, add it to matched useres
       } else if(user['public']) {
         matchedUsers.push(user);
       }
