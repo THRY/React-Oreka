@@ -75,13 +75,18 @@ class User extends Component {
           </nav>
           <div className="container user">
             <section className="top">
-              <div className="image-cropper">
-                <img src={this.state.profilePicUrl} />
+              <div className="left">
+                <div className="image-cropper">
+                  <img src={this.state.profilePicUrl} />
+                </div>
               </div>
-              <div className="infos">
-                <h1>{this.state.userValues.username}</h1>
-                <h2 className="caption">«{this.state.userValues.description}»</h2>
-                <a className={"message " + this.state.userValues.status}>Nachricht senden</a>
+
+              <div className="right">
+                <div className="infos">
+                  <h1>{this.state.userValues.username}</h1>
+                  <h2 className="caption">«{this.state.userValues.description}»</h2>
+                  <a className={"message " + this.state.userValues.status}>Nachricht senden</a>
+                </div>
               </div>
             </section>
             <section className="categories">

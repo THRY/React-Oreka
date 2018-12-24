@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef, useRef } from 'react';
 import Layout from '../components/Layout';
 import { Link } from "react-router-dom";
 import { storageRef, db } from "../firebase";
@@ -13,6 +13,8 @@ class Profile extends Component {
     isReadyToLoop: false,
     safed: true,
   }
+
+  inputRef = createRef();
 
   static contextTypes = {
     router: () => true, // replace with PropTypes.object if you use them
@@ -102,7 +104,10 @@ class Profile extends Component {
   }
 
   handleSubmit = event => {  
-    event.preventDefault();  
+    if(event) {
+      event.preventDefault();  
+    }
+    
     this.setState( prevState => ({
         safed: true
       }
@@ -114,23 +119,27 @@ class Profile extends Component {
   }
 
   uploadFile = event => {
+    console.log('filed changed');
+
     const input = event.target;
     var file = input.files[0];
     var imageRef = storageRef.child(`${file.name}`);
+    let filenameThumb = 'thumb_' + file.name;
+
+    console.log(filenameThumb);
 
     this.setState(prevState => ({
         userValues: {
           ...prevState.userValues,
-          'profilePic': file.name
+          'profilePic': filenameThumb
         }
-      })
-    ) 
-
-    console.log(file.name);
-    
-    imageRef.put(file).then(function(snapshot) {
-      console.log('Uploaded a blob or file!');
-    });
+      }), () => {
+        console.log('put file to server');
+        imageRef.put(file).then((snapshot) => {
+          console.log('Uploaded a blob or file!');
+          this.handleSubmit(); 
+      });
+    })  
   }
 
   getProfilePicUrl = () => {
@@ -228,12 +237,13 @@ class Profile extends Component {
                     <p className="title">Angaben zu mir: </p>
                     <div className="profile-top">
                       <div className="profile left">
-                        <div className="image-cropper">
+                        <div className={"image-cropper " + (isReadyToLoop && this.state.userValues.status) } >
                           { isReadyToLoop ?
-                          <img alt="participant" id="myimg" src={this.state.profilePicUrl} className="papipapo"/>
+                          <img alt=" " id="myimg" src={this.state.profilePicUrl} />
                             : '' }
                         </div>
-                        <input type='file' onChange={ this.uploadFile }></input>
+                        <input type="file" id="selectedFile" ref={input => this.inputRef = input} onChange={ this.uploadFile } style={{display: 'none'}} />
+                        <input type="button" value={this.state.profilePic !== '' ? 'Bild ändern' : 'Bild hochladen'} onClick={() => this.inputRef.click()} />
                       </div>
                       <div className="profile right">
                         {                    
