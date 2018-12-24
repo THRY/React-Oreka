@@ -1,20 +1,141 @@
+@import '../base/variables';
+
 .search-list .list-item {
-  background-color: lightgray;
-  display: flex; 
-  flex-direction: row; 
-  justify-content: flex-start; 
   position: relative;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row; 
+  padding: 0.5em; 
+  border-bottom: 1px solid black; 
+
+  &:hover.link-to-profile {
+    text-decoration: underline; 
+  }
+
+  &.biete:hover {
+    background-color: $biete-light; 
+  }
+
+  &.suche {
+    .img-cropper {
+      background-color: $suche-light; 
+    }
+  }
+
+  &.biete {
+    .img-cropper {
+      background-color: $biete-light; 
+    }
+  }
+
+  &.suche:hover {
+    background-color: $suche-light; 
+  }
+
+
+  .column {
+    display: inline-block;
+    position: relative;
+    flex: 1 1 auto; 
+    height: 100%; 
+  }
+
+  .column.left {
+    width: 20%; 
+  }
+
+  .column.right {
+    width: 80%; 
+    padding-left: 1em; 
+  }
   
   a {
     display: block; 
     padding: 0; 
   }
 
+  .infos {
+    display: inline-block; 
+
+    p {
+      line-height: 1.3em; 
+    }
+
+    p.name {
+      margin-top: 0.3em; 
+      font-weight: bold; 
+    }
+  }
+
   .categories {
     span {
       position: relative;
       display: inline-block;
-      margin-right: 0.5em; 
+      width: 1.5em; 
+      height: 1em; 
+      margin-right: 0.25em; 
+      background-size: 100% auto; 
+      background-repeat: no-repeat;  
+      background-position: center bottom;
+
+      &.haushalt {
+        background-image: url(../../images/haushalt-n.svg);  
+      }
+  
+      &.garten {
+        background-image: url(../../images/garten-n.svg);  
+      }
+  
+      &.einkaufen {
+        background-image: url(../../images/einkaufen-n.svg);  
+      }
+  
+      &.einkaufen {
+        background-image: url(../../images/einkaufen-n.svg);  
+      }
+  
+      &.behoerden {
+        background-image: url(../../images/behoerden-n.svg);  
+      }
+  
+      &.finanzen {
+        background-image: url(../../images/finanzen-n.svg);  
+      }
+  
+      &.computer {
+        background-image: url(../../images/computer-n.svg);  
+      }
+  
+      &.transport {
+        background-image: url(../../images/transport-n.svg);  
+      }
+  
+      &.spezial {
+        background-image: url(../../images/spezial-n.svg);  
+      }
+
+      &.link-to-profile {
+        position: absolute;
+        right: 0; 
+        width: auto; 
+        display: inline-block; 
+        font-size: 0.8em; 
+
+        &:after {
+          content: "";
+          width: 0.8em; 
+          height: 0.8em; 
+          display: inline-block; 
+          position: relative;
+          top: 1px;
+          margin-left: 3px; 
+          background: url('../../images/back.svg');
+          background-repeat: no-repeat; 
+          background-size: 100% 100%; 
+          background-position: center center; 
+          transform: rotate(180deg)
+        }
+      }
     }
 
     span:first-letter {
@@ -23,17 +144,25 @@
   }
 
   .img-cropper {
+    width: 100%;
     display: inline-block;
-    width: 100px; 
-    height: 100px; 
+    position: relative;
+    height: 0; 
+    padding-bottom: 100%;  
     border-radius: 100%; 
     overflow: hidden;
-    padding: 0.5em;  
 
     img {
+      position: absolute;
+      top: 0; 
+      left: 0; 
       width: 100%; 
       height: 100%; 
       object-fit: cover; 
+
+      &[src=''] {
+        display: none; 
+      }
     }
   }
 }

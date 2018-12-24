@@ -63,6 +63,10 @@
       div {
         display: flex; 
         flex: 1; 
+        
+        label {
+          cursor: auto; 
+        }
       }
     }
 

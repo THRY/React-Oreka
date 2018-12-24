@@ -122,6 +122,7 @@ nav {
 
   a {
     position: absolute;
+    cursor: pointer; 
 
     &:before {
       content: "";

@@ -14,6 +14,10 @@ class Profile extends Component {
     safed: true,
   }
 
+  static contextTypes = {
+    router: () => true, // replace with PropTypes.object if you use them
+  }
+
   componentWillMount() {
     console.log(localStorage.getItem('user'));
     if(localStorage.getItem('user')) {
@@ -182,7 +186,7 @@ class Profile extends Component {
               <>
               <nav className={isReadyToLoop && this.state.userValues.status}>
                 <div className="container">
-                  <Link to="/">zurück</Link>
+                  <a onClick={ this.context.router.history.goBack }>zurück</a>
                   <span className="site-title">Mein Profil</span>
                 </div>
               </nav>
