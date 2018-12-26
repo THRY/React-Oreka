@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
 import User from './pages/User';
+import Messages from './pages/Messages';
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom"; 
 import './main.scss';
 
@@ -18,6 +19,8 @@ class App extends Component {
           <Route path='/signup' component={Signup}/>
           <Route path='/profile/:value' component={Profile}/>
           <Route path='/user/:value' component={User}/>
+          <Route path='/messages/:value' component={Messages}/>
+          <Route path='/messages' component={Messages}/>
           
         </Switch>
       </Router>

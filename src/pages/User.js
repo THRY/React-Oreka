@@ -85,7 +85,7 @@ class User extends Component {
                 <div className="infos">
                   <h1>{this.state.userValues.username}</h1>
                   <h2 className="caption">«{this.state.userValues.description}»</h2>
-                  <a className={"message " + this.state.userValues.status}>Nachricht senden</a>
+                  <Link className={"message " + this.state.userValues.status} to={`/messages?to=${this.state.userValues.user}`}>Nachricht senden</Link>
                 </div>
               </div>
             </section>
