@@ -32,12 +32,14 @@ class Signin extends Component {
   }
 
   handleEmail = (e) => {
-    console.log(e.target.value);
+    const email = e.target.value;
+    console.log(email);
+
     this.setState(prevState => ({
-        email: e.target.value,
+        email: email,
         userValues: {
           ...prevState.userValues,
-          email:  e.target.value
+          email: email
         }
       })
     )

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Layout from '../components/Layout';
+import Messenger from '../components/Messenger';
 import { storageRef, db } from "../firebase";
 import qs from 'query-string';
 import styles from '../Stylesheets/pages/messages.scss';
@@ -12,7 +13,8 @@ class Messages extends Component {
     isReadyToLoop: false,
     existingMessagesLoaded: false,
     messageTo: '',
-    currentConversation: 'OOID9EUjj2PcmpnE0Y27',
+    currentConversation: '',
+    userConversations: [],
     messagesInCurrentConversation: []
   }
 
@@ -22,7 +24,12 @@ class Messages extends Component {
 
   componentWillMount() {
     var parsedUrl = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }); 
-    let messageTo = parsedUrl.to;
+
+    let messageTo = '';
+
+    if(parsedUrl.to) {
+      messageTo = parsedUrl.to;
+    }
 
     console.log(localStorage.getItem('user'));
     if(localStorage.getItem('user')) {
@@ -40,16 +47,6 @@ class Messages extends Component {
     console.log('CHECK IF CONVERSATION WITH THAT PERSON ALREADY EXISTS'); 
     console.log('IF NOT, CREATE NEW CONVERSATION'); 
     console.log('IF YES, SHOW CONEVERSATION WITH THAT USER');  
-
-    db.collection("messages").doc(this.state.currentConversation)
-    .onSnapshot( doc => {
-        //var source = doc.metadata.hasPendingWrites ? "Local" : "Server";
-        let messages = doc.data().messages;
-        this.setState(prevState => ({
-          messagesInCurrentConversation: messages
-          })
-        )
-    })
   } 
 
     handleOnNext = (doc) =>  {
@@ -63,25 +60,12 @@ class Messages extends Component {
       }
     }), () => {
       console.log('Saved User Values to State');
-      this.setupConversations();
+      this.getExistingMessages(); 
     });
   }
 
-  setupConversations() {
-    this.getExistingMessages(); 
-  }
-
-  searchForExistingConversations() {
-    if(!this.doesConversationAlreadyExists()) {
-      console.log('create new conversation'); 
-      this.createNewConversation(); 
-    } else {
-      console.log('open existing conversation'); 
-      //this.openExistionConversation()
-    } 
-  } 
-
   getExistingMessages() {
+    // get all my messages
     db.collection("messages").where("participantIds", "array-contains", this.state.userValues.user)
     .get()
     .then( (querySnapshot) => {
@@ -101,7 +85,23 @@ class Messages extends Component {
         }), () => {
           console.log('conversations added to state');
           console.log(this.state.userConversations);
-          console.log(this.state.userConversations[0].messages.sort(this.sortMessagesFn));
+          console.log(this.state.messageTo);
+          
+          if(this.state.messageTo !== '') {
+            let existingConv = this.checkExistingConv();
+            if(existingConv.exists) {
+              console.log('open existing cinversation with ID: ' + existingConv.id); 
+              this.setState(prevState => ({
+                  currentConversation: existingConv.id
+                })
+              )
+            } else {
+              this.createNewConversation();
+              console.log('create new conversation')
+            }
+          } else {
+            console.log('just show all current conversations');
+          }
         });
     })
     .catch(function(error) {
@@ -109,23 +109,52 @@ class Messages extends Component {
     });
   }
 
-  doesConversationAlreadyExists = () => {
-    console.log(this.state.myConversations);
-    let conversationExists = false;
-    for (const [index, el] of this.state.myConversations.entries()) {
-      if(el.participants.includes(this.state.userValues.user) && el.participants.includes(this.state.messageTo)) {
-        conversationExists = true;
+  checkExistingConv = () => {
+    let conversation = {
+      exists: false,
+      id: ''
+    };
+
+    for (const [index, el] of this.state.userConversations.entries()) {
+      if(el.participantIds.includes(this.state.userValues.user) && el.participantIds.includes(this.state.messageTo)) {
+        conversation.exists = true;
+        conversation.id = el.id;
+        console.log(conversation);
         break;
       }
     }
-    return conversationExists;
+    return conversation;
   }
 
   createNewConversation() {
-    db.collection("messages").doc().set({
-      participants: [this.state.userValues.user, this.state.messageTo], 
+    db.collection("users").doc(this.state.messageTo).get().then( doc => {
+      const conversationPartner = doc.data();
+
+      const conversationRef = db.collection("messages").doc();
+
+      conversationRef.set({
+        messages: [],
+        participantIds: [this.state.userValues.user, this.state.messageTo], 
+        participants: [
+          { 
+            name: this.state.userValues.username,
+            id: this.state.userValues.user
+          },
+          { 
+            name: conversationPartner.username,
+            id: conversationPartner.user
+          }
+        ]
+      }).then(() => {
+        console.log("Created new conversation");
+        console.log(conversationRef);
+        const convId = conversationRef.id;
+        this.setState(prevState => ({
+            currentConversation: convId
+          })
+        )
+      });
     });
-    this.getMyConversations();
   }
 
   getPartnerName(conversation) {
@@ -134,6 +163,15 @@ class Messages extends Component {
     })
     console.log(partnerName);
     return partnerName[0].name;
+  }
+
+  openConversation = (event) => {
+    let currentConvId = event.target.dataset.conversationid;
+
+    this.setState(prevState => ({
+        currentConversation: currentConvId
+      })
+    )
   }
 
   sortMessagesFn(a, b) {
@@ -189,29 +227,34 @@ class Messages extends Component {
             <span className="site-title">Meine Nachrichten</span>
           </div>
         </nav>
-        <div className="container">
-          <p>Users</p>
+        <div className="container messages">
+          <div className="column left">
+          <p>Conversations</p>
           { this.state.existingMessagesLoaded && this.state.userConversations.map((conversation, index) => {
             let partnerName = this.getPartnerName(conversation);
             return (
-              <p>{ partnerName } </p>
+              <p  
+                  onClick={ this.openConversation } 
+                  data-conversationid={conversation.id}
+                  className={'conv-item ' + (conversation.id == this.state.currentConversation ? 'active' : '' )}
+              >
+                { partnerName } 
+              </p>
             )
           })
-          
-          }
-
-          <div className="messages">
-            <p>Messages</p>
-            { this.state.existingMessagesLoaded && this.state.messagesInCurrentConversation.sort(sortMessageFn).map((message, index) => {
-                return (
-                  <p className={'message ' + (message.sender.id == this.state.userValues.user ? 'right' : 'left')}>{message.message}</p>
-                )
-              })
-            }
+          }          
           </div>
-          <div className="input">
-            <input type="text" onChange={this.handleInputChange} />
-            <button type="text" onClick={this.submitMessage}>SENDEN</button>
+
+          <div className="column right">
+          {
+            this.state.currentConversation != '' && isReadyToLoop ?
+            <Messenger 
+              currentConversation={this.state.currentConversation }
+              currentUser={this.state.userValues}  
+              handleInputChange={this.handleInputChange}
+              handleSubmit={this.submitMessage}
+            /> : ''
+          }          
           </div>
         </div>
       </Layout>

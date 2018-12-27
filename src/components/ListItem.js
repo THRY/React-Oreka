@@ -25,7 +25,7 @@ class ListItem extends Component {
         <div className={ "list-item " + this.props.user.status }>
           <div className="column left">
             <div className="img-cropper">
-              <img alt="Profile" src={ this.state.profilePicUrl } />
+              <img src={ this.state.profilePicUrl } />
             </div>
           </div>
           <div className="column right">
@@ -61,6 +61,7 @@ class ListItem extends Component {
   }
 
   getProfilePicUrl = (filename) => {
+    console.log('GET PROFILE PIC FOR ' + this.props.user.username);
     storageRef.child(filename).getDownloadURL().then(url => {
       console.log(url); 
       this.setState(prevState => ({
