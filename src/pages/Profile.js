@@ -11,10 +11,12 @@ import styles from '../Stylesheets/pages/profile.scss';
 class Profile extends Component {
   state = {
     isReadyToLoop: false,
+    isUploadingFile: false,
     safed: true,
   }
 
   inputRef = createRef();
+  imageUplaodWaitMessageRef = createRef();
 
   static contextTypes = {
     router: () => true, // replace with PropTypes.object if you use them
@@ -45,9 +47,6 @@ class Profile extends Component {
     }), () => {
       console.log(this.state);
       this.loadMap();
-      if(this.state.userValues.profilePic) {
-        this.getProfilePicUrl();
-      }
     });
   }
 
@@ -132,14 +131,35 @@ class Profile extends Component {
         userValues: {
           ...prevState.userValues,
           'profilePic': filenameThumb
-        }
+        },
+        isUploadingFile: true,
       }), () => {
         console.log('put file to server');
         imageRef.put(file).then((snapshot) => {
           console.log('Uploaded a blob or file!');
           this.handleSubmit(); 
+          setTimeout(() => {
+            this.saveProfilePicUrl(filenameThumb);
+          }, 4000);
+          
       });
     })  
+  }
+
+  saveProfilePicUrl(filenameThumb) {
+    storageRef.child(filenameThumb).getDownloadURL().then(url => {
+      console.log(url); 
+      this.setState(prevState => ({
+        userValues: {
+          ...prevState.userValues,
+          'profilePicUrl': url,
+        },
+        isUploadingFile: false
+        }), () => {
+          this.handleSubmit(); 
+        } 
+      )
+    });
   }
 
   getProfilePicUrl = () => {
@@ -239,11 +259,12 @@ class Profile extends Component {
                       <div className="profile left">
                         <div className={"image-cropper " + (isReadyToLoop && this.state.userValues.status) } >
                           { isReadyToLoop ?
-                          <img alt=" " id="myimg" src={this.state.profilePicUrl} />
+                          <img alt=" " id="myimg" src={this.state.userValues.profilePicUrl} />
                             : '' }
                         </div>
                         <input type="file" id="selectedFile" ref={input => this.inputRef = input} onChange={ this.uploadFile } style={{display: 'none'}} />
                         <input type="button" value={this.state.profilePic !== '' ? 'Bild ändern' : 'Bild hochladen'} onClick={() => this.inputRef.click()} />
+                        <p className="upload-message" isloading={this.state.isUploadingFile ? 'true':''}>{ this.state.isUploadingFile ? 'Bitte warten Sie einen Moment, bis das Bild verarbeitet wurde' : '' }</p>
                       </div>
                       <div className="profile right">
                         {                    

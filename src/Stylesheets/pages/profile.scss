@@ -113,6 +113,25 @@ section.status {
         position: relative;
         margin: 0 auto;
       }
+
+      .upload-message[isloading="true"] {
+        position: relative;
+        text-align: center;
+        font-style: italic;
+ 
+        &:after {
+          content: '';
+          position: absolute;
+          display: inline-block;
+          width: 1.5em; 
+          height: 1.5em;
+          margin-left: 0.2em; 
+          background-image: url('../../images/loader.gif');
+          background-size: 100% 100%;
+          background-repeat: no-repeat;
+          background-position: center;
+        }
+      }
     }
   
     .right {

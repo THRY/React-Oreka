@@ -11,9 +11,6 @@ class ListItem extends Component {
   }
 
   componentWillMount() {
-    if(this.props.user.profilePic) {
-      this.getProfilePicUrl(this.props.user.profilePic);
-    }
     if(Object.keys(this.props.user.categories).length > 0) {
       this.createCatList();
     }
@@ -25,7 +22,7 @@ class ListItem extends Component {
         <div className={ "list-item " + this.props.user.status }>
           <div className="column left">
             <div className="img-cropper">
-              <img src={ this.state.profilePicUrl } />
+              <img alt={this.props.user.username} src={ this.props.user.profilePicUrl } />
             </div>
           </div>
           <div className="column right">
@@ -58,17 +55,6 @@ class ListItem extends Component {
       catList: filtered
       })
     )
-  }
-
-  getProfilePicUrl = (filename) => {
-    console.log('GET PROFILE PIC FOR ' + this.props.user.username);
-    storageRef.child(filename).getDownloadURL().then(url => {
-      console.log(url); 
-      this.setState(prevState => ({
-          profilePicUrl: url
-        }) 
-      )
-    });
   }
 }
 

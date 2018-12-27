@@ -134,7 +134,7 @@ class Home extends Component {
             <div className="search-list">
             { 
               this.state.searchResult.map((user, i) => {
-                return <ListItem user={ user } key={i}/>
+                return <ListItem user={ user } key={ user.user }/>
               })
             }
             </div>

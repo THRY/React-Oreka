@@ -6,4 +6,23 @@
   .column {
     width: 50%; 
   }
+
+  .conversation {
+    .column {
+      display: inline-block;
+      position: relative;
+      flex: 1 1 auto; 
+      height: 100%; 
+    }
+  
+    .column.left {
+      width: 20%; 
+    }
+  
+    .column.right {
+      width: 80%; 
+      padding-left: 1em; 
+    }
+  }
+
 }

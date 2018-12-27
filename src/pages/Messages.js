@@ -101,6 +101,14 @@ class Messages extends Component {
             }
           } else {
             console.log('just show all current conversations');
+            if(this.state.userConversations.length > 0) {
+              this.setState(prevState => ({
+                  currentConversation: this.state.userConversations[0].id
+                })
+              )
+            } else {
+              console.log('show empty state');
+            }
           }
         });
     })
@@ -165,8 +173,21 @@ class Messages extends Component {
     return partnerName[0].name;
   }
 
+  getProfilePicUrl(conversation) {
+    let partnerName = conversation.participants.filter( participant => {
+      return participant.id != this.state.userValues.user;
+    })
+
+    let partnerId = partnerName[0].id;
+
+    db.collection('users').doc(partnerId).get().then((doc) => {
+      return doc.data().profilePic
+    });
+  }
+
   openConversation = (event) => {
-    let currentConvId = event.target.dataset.conversationid;
+    const currentConvId = event.currentTarget.getAttribute('data-conversationid');
+    console.log(currentConvId);
 
     this.setState(prevState => ({
         currentConversation: currentConvId
@@ -231,15 +252,25 @@ class Messages extends Component {
           <div className="column left">
           <p>Conversations</p>
           { this.state.existingMessagesLoaded && this.state.userConversations.map((conversation, index) => {
-            let partnerName = this.getPartnerName(conversation);
+            let partnerName = this.getPartnerName(conversation)
+            console.log(conversation.id);
+            //let profilePicUrl = this.getProfilePicUrl(conversation);
             return (
-              <p  
-                  onClick={ this.openConversation } 
-                  data-conversationid={conversation.id}
-                  className={'conv-item ' + (conversation.id == this.state.currentConversation ? 'active' : '' )}
-              >
-                { partnerName } 
-              </p>
+              <div 
+                className={'conversation ' + (conversation.id == this.state.currentConversation ? 'active' : '' )} 
+                onClick={ this.openConversation } 
+                data-conversationid={ conversation.id } 
+                key={ conversation.id }
+                >
+                <div className="column left">
+                  <div className="img-cropper">
+                    
+                  </div>
+                </div>
+                <div className="column right">
+                  { partnerName } 
+                </div>
+              </div>
             )
           })
           }          
@@ -249,7 +280,7 @@ class Messages extends Component {
           {
             this.state.currentConversation != '' && isReadyToLoop ?
             <Messenger 
-              currentConversation={this.state.currentConversation }
+              currentConversationId={ this.state.currentConversation }
               currentUser={this.state.userValues}  
               handleInputChange={this.handleInputChange}
               handleSubmit={this.submitMessage}

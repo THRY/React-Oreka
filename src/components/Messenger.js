@@ -17,7 +17,8 @@ class Messenger extends Component {
   unsubscribeListener = '';
 
   subscribe() {
-    this.unsubscribeListener = db.collection("messages").doc(this.props.currentConversation)
+    console.log(this.props.currentConversationId);
+    this.unsubscribeListener = db.collection("messages").doc(this.props.currentConversationId)
     .onSnapshot( doc => {
         //var source = doc.metadata.hasPendingWrites ? "Local" : "Server";
         let messages = doc.data().messages;
@@ -31,7 +32,7 @@ class Messenger extends Component {
 
   componentDidUpdate = (prevProps) => {
     console.log('DID UPDATE');
-    if(prevProps.currentConversation !== this.props.currentConversation) {
+    if(prevProps.currentConversationId !== this.props.currentConversationId) {
       console.log('unsubscribe listener');
       this.unsubscribeListener();
       this.unsubscribeListener = '';
@@ -41,11 +42,12 @@ class Messenger extends Component {
 
   componentDidMount() {
     console.log('DID MOUNT');
+    console.log(this.props.currentConversationId);
     this.subscribe();
   }
 
-  componentWillUnmount() {
-    this.subscribe();
+  componentWillUnmount = () => {
+    //this.unsubscribeListener();
   }
 
   sortMessagesFn(a, b) {

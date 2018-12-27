@@ -43,20 +43,6 @@ class User extends Component {
     }), () => {
       console.log(this.state);
       this.loadMap();
-      if(this.state.userValues.profilePic) {
-        this.getProfilePicUrl();
-      }
-    });
-  }
-
-  getProfilePicUrl = () => {
-    storageRef.child(`${this.state.userValues.profilePic}`).getDownloadURL().then(url => {
-      console.log(url); 
-      this.setState(prevState => ({
-        ...prevState,
-        'profilePicUrl': url
-        }) 
-      )
     });
   }
 
@@ -77,7 +63,7 @@ class User extends Component {
             <section className="top">
               <div className="left">
                 <div className="image-cropper">
-                  <img src={this.state.profilePicUrl} />
+                  <img src={this.state.userValues.profilePicUrl} />
                 </div>
               </div>
 
