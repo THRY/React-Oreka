@@ -42,6 +42,8 @@ class Messenger extends Component {
       this.unsubscribeListener = '';
       this.subscribe();
     }
+
+    this.refs.messages.scrollTop = this.refs.messages.scrollHeight; 
   }
 
   componentDidMount() {
@@ -53,7 +55,11 @@ class Messenger extends Component {
   componentWillUnmount = () => {
     //this.unsubscribeListener();
   }
-
+  
+  clearInputField() {
+    this.refs.messageToSend.value = ''; 
+  }
+  
   getPartnerName(conversation) {
     let partnerName = conversation.participants.filter( participant => {
       return participant.id != this.state.userValues.user;
@@ -83,7 +89,7 @@ class Messenger extends Component {
     return (
       <div className="messenger">
         <p className='title'>Unterhaltung mit {this.state.partnerName}</p>
-        <div className="messages">
+        <div className="messages" ref='messages'>
           { this.state.conversationLoaded && this.state.messagesInCurrentConversation.sort(this.sortMessageFn).map((message, index) => {
               return (
                 <p className={'message ' + (message.sender.id == this.state.userValues.user ? 'right' : 'left') + ' ' + this.state.userValues.status } key={ index }>
@@ -96,8 +102,11 @@ class Messenger extends Component {
           }
         </div>
         <div className="input">
-          <input type="text" onChange={this.props.handleInputChange} />
-          <button type="text" onClick={this.props.handleSubmit}>SENDEN</button>
+          <textarea ref='messageToSend' onChange={this.props.handleInputChange} />
+          <button type="text" onClick={() => {
+            this.props.handleSubmit();
+            this.clearInputField();
+          }}>SENDEN</button>
         </div>
       </div>
     )

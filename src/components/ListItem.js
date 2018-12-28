@@ -22,7 +22,11 @@ class ListItem extends Component {
         <div className={ "list-item " + this.props.user.status }>
           <div className="column left">
             <div className="img-cropper">
-              <img alt={this.props.user.username} src={ this.props.user.profilePicUrl } />
+              <img 
+                alt={this.props.user.username}
+                src={ this.props.user.profilePicUrl } 
+                style={ (!this.props.user.profilePicUrl) ? {display: 'none'}: {} }
+              />
             </div>
           </div>
           <div className="column right">

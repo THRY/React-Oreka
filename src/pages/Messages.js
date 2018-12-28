@@ -302,7 +302,10 @@ class Messages extends Component {
                 >
                 <div className="column left">
                   <div className="img-cropper">   
-                    <img src={ this.state.profilePicUrls[conversation.id] } />
+                    <img 
+                      src={ this.state.profilePicUrls[conversation.id] } 
+                      style={ ( !this.state.profilePicUrls[conversation.id] ) ? {display: 'none'}: {} }
+                    />
                   </div>
                 </div>
                 <div className="column right">

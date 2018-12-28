@@ -67,10 +67,6 @@
           width: 102%; 
           height: 102%; 
           object-fit: cover; 
-    
-          &[src=''] {
-            display: none;
-          }
         }
       }
     }
