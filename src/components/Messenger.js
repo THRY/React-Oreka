@@ -21,10 +21,14 @@ class Messenger extends Component {
     this.unsubscribeListener = db.collection("messages").doc(this.props.currentConversationId)
     .onSnapshot( doc => {
         //var source = doc.metadata.hasPendingWrites ? "Local" : "Server";
-        let messages = doc.data().messages;
+        let conversation = doc.data();
+        let messages = conversation.messages;
+        let partnerName = this.getPartnerName(conversation);
         this.setState(prevState => ({
-          messagesInCurrentConversation: messages,
-          conversationLoaded: true
+            messagesInCurrentConversation: messages,
+            conversationLoaded: true,
+            currentConversation: conversation,
+            partnerName: partnerName
           })
         )
     })
@@ -50,6 +54,14 @@ class Messenger extends Component {
     //this.unsubscribeListener();
   }
 
+  getPartnerName(conversation) {
+    let partnerName = conversation.participants.filter( participant => {
+      return participant.id != this.state.userValues.user;
+    })
+    console.log(partnerName);
+    return partnerName[0].name;
+  }
+
   sortMessagesFn(a, b) {
     const timeA = a.created.seconds;
     const timeB = b.created.seconds;
@@ -70,15 +82,19 @@ class Messenger extends Component {
   render() {
     return (
       <div className="messenger">
-      Current Conversation {this.props.currentConversation}
-      <p>Messages</p>
-        { this.state.conversationLoaded && this.state.messagesInCurrentConversation.sort(this.sortMessageFn).map((message, index) => {
-            return (
-              <p className={'message ' + (message.sender.id == this.state.userValues.user ? 'right' : 'left')}>{message.message}</p>
-            )
-          })
-        }
-        
+        <p className='title'>Unterhaltung mit {this.state.partnerName}</p>
+        <div className="messages">
+          { this.state.conversationLoaded && this.state.messagesInCurrentConversation.sort(this.sortMessageFn).map((message, index) => {
+              return (
+                <p className={'message ' + (message.sender.id == this.state.userValues.user ? 'right' : 'left') + ' ' + this.state.userValues.status } key={ index }>
+                  <span>
+                    {message.message}
+                  </span>
+                </p>
+              )
+            })
+          }
+        </div>
         <div className="input">
           <input type="text" onChange={this.props.handleInputChange} />
           <button type="text" onClick={this.props.handleSubmit}>SENDEN</button>

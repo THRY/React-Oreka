@@ -1,28 +1,55 @@
-.container.messages {
-  display: flex; 
-  flex-direction: row; 
-  justify-content: flex-start;
+@import '../base/variables';
 
-  .column {
-    width: 50%; 
+.messenger {
+
+  .messages {
+    margin: 0 auto; 
+    padding: 0 10%; 
+    max-height: 500px; 
+    overflow-y: scroll; 
   }
 
-  .conversation {
-    .column {
-      display: inline-block;
+  .input {
+    max-width: 350px; 
+    margin: 0 auto; 
+
+    input,
+    button {
       position: relative;
-      flex: 1 1 auto; 
-      height: 100%; 
-    }
-  
-    .column.left {
-      width: 20%; 
-    }
-  
-    .column.right {
-      width: 80%; 
-      padding-left: 1em; 
+      margin-left: auto; 
     }
   }
 
+  p.title {
+    text-align: center; 
+    margin-bottom: 2em; 
+    margin-top: 1em; 
+  }
+
+  .message span {
+    border-radius: 10px;
+    padding: 0.2em 0.5em; 
+    max-width: 250px; 
+    display: inline-block;
+    word-wrap:break-word;
+  }
+
+  .message.biete span {
+    background-color: $biete-light;
+    border: 1px solid $biete; 
+  }
+
+  .message.suche span {
+    background-color: $suche-light;
+    border: 1px solid $suche; 
+  }
+
+  .message.left {
+    text-align: left;
+  }
+  
+  .message.right {
+    text-align: right;
+  }
 }
+

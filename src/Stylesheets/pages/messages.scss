@@ -1,13 +1,85 @@
-.conv-item.active {
-  background-color: red;
-  cursor: pointer; 
-}
+@import '../base/variables';
 
+.container.messages {
+  display: flex; 
+  flex-direction: row; 
+  justify-content: flex-start;
 
-.message.left {
-  text-align: left;
-}
+  .column {
+    width: 50%; 
 
-.message.right {
-  text-align: right;
+    &.left {
+      padding-right: 1em; 
+    }
+  }
+
+  .conversation {
+    cursor: pointer; 
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    padding: 0.5em 0; 
+    border-bottom: 1px solid black; 
+
+    &:hover {
+      background-color: rgb(233, 233, 233);
+    }
+
+    &.active {
+      background-color: rgb(233, 233, 233);
+    }
+
+    .column {
+      position: relative;
+      height: 100%; 
+      position: relative;
+      display: flex;
+      flex-direction: column; 
+      justify-content: center;
+      margin: 0.5em 0;
+    }
+
+    &.suche {
+      .img-cropper {
+        background-color: $suche-light; 
+      }
+    }
+  
+    &.biete {
+      .img-cropper {
+        background-color: $biete-light; 
+      }
+    }
+  
+    .column.left {
+      width: 20%; 
+
+      .img-cropper {
+        display: flex;
+        width: 75px;
+        height: 75px;
+        flex: 0 0 auto;
+        position: relative;
+        border-radius: 100%; 
+        overflow: hidden;
+    
+        img {
+          width: 102%; 
+          height: 102%; 
+          object-fit: cover; 
+    
+          &[src=''] {
+            display: none;
+          }
+        }
+      }
+    }
+  
+    .column.right {
+      width: 80%; 
+      padding-left: 1em; 
+      display: flex; 
+      align-self: center;
+    }
+  }
 }
