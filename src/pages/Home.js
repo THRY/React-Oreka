@@ -4,6 +4,7 @@ import ListItem from '../components/ListItem.js';
 import { auth, signUp, signOut, logIn, db } from "../firebase";
 import CategorySelector from '../components/CategorySelector.js'
 import StatusSelector from '../components/StatusSelector.js'
+import GoogleMaps from '../components/GoogleMaps.js'
 import styles from '../Stylesheets/pages/home.scss';
 
 
@@ -11,9 +12,11 @@ import styles from '../Stylesheets/pages/home.scss';
 class Home extends Component {
 
   state = {
+    filterResultsUpdatedAt: 0,
     searchResult: [],
     searchingFor: 'biete',
-    searchCat: {}
+    searchCat: {},
+    filteredResults: []
   }
 
   componentWillMount() {
@@ -29,13 +32,12 @@ class Home extends Component {
       var allData = [];
         querySnapshot.forEach( doc => {
             // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
             var data = doc.data();
             allData.push(data);
         });
 
         this.setState(prevState => ({
-          searchResult: allData
+          searchResult: allData,
         }), () => this.filterForCats());
     })
     .catch(function(error) {
@@ -46,6 +48,7 @@ class Home extends Component {
   filterForCats() {
     console.log('filterForCats');
     console.log(this.state.searchResult);
+    console.log(this.state.searchUpdatedAt);
     let matchedUsers = [];
 
     this.state.searchResult.forEach(user => {
@@ -78,8 +81,11 @@ class Home extends Component {
     })
     console.log(matchedUsers)
 
-    this.setState(prevstate => ({
-      searchResult: matchedUsers
+    let timestamp = new Date();
+
+    this.setState(prevState => ({
+      filteredResults: matchedUsers,
+      filterResultsUpdatedAt: timestamp.getTime()
       })
     )
   }
@@ -108,6 +114,10 @@ class Home extends Component {
     });
   }
 
+  handleMapPinHover(id) {
+    //document.getElementById(id)
+  }
+
 
   
   render() {
@@ -132,14 +142,19 @@ class Home extends Component {
           </section>
           <section className="searchResults">
             <div className="search-list">
-            { 
-              this.state.searchResult.map((user, i) => {
+            { this.state.filteredResults.length > 0 ?
+              this.state.filteredResults.map((user, i) => {
                 return <ListItem user={ user } key={ user.user }/>
-              })
+              }) :
+              <p>Keine Resultate zu Ihren Filterkriterien.</p>
             }
             </div>
-            <div className="search-map">
-            
+            <div className="search-map">                            
+              <GoogleMaps 
+                onPinHover={this.handleMapPinHover} 
+                filterResult={ this.state.filteredResults } 
+                updatedAt={this.state.filterResultsUpdatedAt }
+              />
             </div>
           
           </section>

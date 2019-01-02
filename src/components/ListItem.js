@@ -16,10 +16,27 @@ class ListItem extends Component {
     }
   }
 
+  handleMouseEnter(event) {
+    console.log('mouse enter');
+    let id = event.target.id.split('-')[1];
+    let pin = document.getElementById('pin-' + id);
+    //pin.classList.add("hovered");
+  }
+
+  handleMouseOut(event) {
+    let id = event.target.id.split('-')[1];
+    let pin = document.getElementById('pin-' + id);
+    //pin.classList.remove("hovered");
+  }
+
   render() {
     return (
       <Link to={`/user/${this.props.user.user}`}>
-        <div className={ "list-item " + this.props.user.status }>
+        <div 
+          className={ "list-item " + this.props.user.status } id={'listitem-' + this.props.user.user} 
+          onMouseEnter={this.handleMouseEnter} 
+          onMouseLeave={this.handleMouseOut}
+        >
           <div className="column left">
             <div className="img-cropper">
               <img 

@@ -12,7 +12,8 @@
     text-decoration: underline; 
   }
 
-  &.biete:hover {
+  &.biete:hover,
+  &.biete.hovered {
     background-color: $biete-light; 
   }
 
@@ -28,7 +29,8 @@
     }
   }
 
-  &.suche:hover {
+  &.suche:hover,
+  &.suche.hovered {
     background-color: $suche-light; 
   }
 
