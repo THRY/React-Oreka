@@ -38,6 +38,7 @@ class StatusSelector extends Component {
         <label htmlFor="status2" className={ status }>
         <p>biete</p>  
         </label>
+        <p className="label">Nachbarn, die Hilfe {this.props.searchingFor}n</p>
       </div>
     )
   }

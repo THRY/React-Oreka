@@ -45,7 +45,10 @@ class CategorySelector extends Component {
         <div className="category-bar">
         {                    
           categories.map((field, index) => 
-            <div key={index} name={field.name}>
+            <div 
+              key={index} 
+              name={field.name}
+            >
               <input 
               id={field.name} 
               name={field.name} 
@@ -57,7 +60,11 @@ class CategorySelector extends Component {
                 this.props.categories[field.name].checked : false ) 
               } 
               />
-              <label htmlFor={field.name} className={this.props.userValues ? this.props.userValues.status : this.props.searchingFor}>
+              <label 
+                htmlFor={field.name} 
+                className={this.props.userValues ? this.props.userValues.status : this.props.searchingFor}
+                data-label={field.label}
+              >
                 <div className={field.name + ' logo'}></div>
               </label>
             </div>

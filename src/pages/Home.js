@@ -130,16 +130,14 @@ class Home extends Component {
             </h1>
           </div>
         </nav>
+        <nav className="filter">
+          <div className="container">
+          <StatusSelector change={this.handleRadioChange} searchingFor={this.state.searchingFor} />
+          <div className="break"></div>
+          <CategorySelector change={this.handleCheckboxChange} categories={this.state.searchCat} searchCat={this.state.searchCat} searchingFor={this.state.searchingFor} />
+          </div>
+        </nav>
         <div className="container home">
-          <section className="filter-bar">
-            <div className="options">      
-              <StatusSelector change={this.handleRadioChange} searchingFor={this.state.searchingFor} />
-              <p className="label">Nachbarn, die Hilfe {this.state.searchingFor}n</p>
-            </div>
-            
-            <CategorySelector change={this.handleCheckboxChange} categories={this.state.searchCat} searchCat={this.state.searchCat} searchingFor={this.state.searchingFor} />
-                              
-          </section>
           <section className="searchResults">
             <div className="search-list">
             { this.state.filteredResults.length > 0 ?

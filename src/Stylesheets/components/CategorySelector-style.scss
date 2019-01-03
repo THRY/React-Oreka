@@ -1,5 +1,8 @@
 @import '../base/variables';
 
+.category-selector {
+  flex: 1;
+}
 .category-bar { 
   display: flex;
   flex-direction: row;
@@ -9,10 +12,15 @@
   box-sizing: border-box;
   height: 55px;
   position: relative;
-  margin: 2em 1em;
+  margin: 0em 1em;
   margin-bottom: 0.5em;
+  flex-wrap: wrap;
 
-  div {
+  @media (max-width: $xs) {
+    height: auto; 
+  }
+
+  div:not(.logo) {
     display: inline-block;
     position: relative;
     height: 100%;
@@ -22,18 +30,55 @@
     align-items: flex-end;
     overflow: hidden;
 
-    &:not(:first-child) {
-      border-left: 1px solid black;
+    @media (max-width: $xs) {
+      width: 50%; 
+      height: 55px; 
+      border: 0; 
+      border-radius: 0; 
+      border-bottom: 1px solid black; 
+      border-left: 1px solid black; 
+
+
+      &:nth-child(odd) {
+        border-left: 0; 
+      }
+
+      &:nth-child(1) {
+        border-top-left-radius: 5px;
+      }
+      
+      &:nth-child(7) {
+        border-bottom-left-radius: 5px;
+        border-bottom: 0; 
+        border-left: 0; 
+      }
+
+      &:nth-child(2),
+      &:nth-child(8) {
+        border-top-right-radius: 5px;
+      }
+
+      &:nth-child(8) {
+        border-bottom: 0; 
+        border-bottom-right-radius: 5px;
+      }
     }
 
-    &:first-child {
-      border-top-left-radius: 5px;
-      border-bottom-left-radius: 5px;
-    }
+    @media (min-width: $xs) {
 
-    &:last-child {
-      border-top-right-radius: 5px;
-      border-bottom-right-radius: 5px;
+      &:not(:first-child) {
+        border-left: 1px solid black;
+      }
+
+      &:first-child {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+
+      &:last-child {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
     }
   }
 
@@ -53,59 +98,72 @@
     width: 100%;
     height: 100%;
     position: relative;
-    background-color: #F5F5F5;
+    background-color: rgb(252, 252, 252);
     display: inline-block;
     text-align: center;
     vertical-align: middle;
-    padding: 0.5em;
+    padding: 0 0.5em 0.5em 0.5em;
     cursor: pointer;
+
+    @media (max-width: $xs) {
+      .logo {
+        top: -10px !important; 
+      }
+      
+      &:after {
+        content: attr(data-label);
+        position: relative;
+        font-size: 0.6em; 
+        top: -15px;
+      }
+    }
   }
 
   div.logo {
     display: inline-block;
     margin: 0 auto;
     position: relative;
-    top: 0;
-    width: 50%;
-    height: 33px;
+    top: -3px;
+    width: 100%;
+    height: 100%;
     background-size: 100% 100%; 
     background-position: center;
     background-repeat: no-repeat;
   
     &.haushalt {
-      background-image: url(../../images/haushalt.svg);  
+      background-image: url(../../images/haushalt-n.svg);  
     }
 
     &.garten {
-      background-image: url(../../images/garten.svg);  
+      background-image: url(../../images/garten-n.svg);  
     }
 
     &.einkaufen {
-      background-image: url(../../images/einkaufen.svg);  
+      background-image: url(../../images/einkaufen-n.svg);  
     }
 
     &.einkaufen {
-      background-image: url(../../images/einkaufen.svg);  
+      background-image: url(../../images/einkaufen-n.svg);  
     }
 
     &.behoerden {
-      background-image: url(../../images/behoerden.svg);  
+      background-image: url(../../images/behoerden-n.svg);  
     }
 
     &.finanzen {
-      background-image: url(../../images/finanzen.svg);  
+      background-image: url(../../images/finanzen-n.svg);  
     }
 
     &.computer {
-      background-image: url(../../images/computer.svg);  
+      background-image: url(../../images/computer-n.svg);  
     }
 
     &.transport {
-      background-image: url(../../images/transport.svg);  
+      background-image: url(../../images/transport-n.svg);  
     }
 
     &.spezial {
-      background-image: url(../../images/spezial.svg);  
+      background-image: url(../../images/spezial-n.svg);  
       
       span {
         font-size: 0.5em;
@@ -130,12 +188,17 @@
   display: inline-block;
   vertical-align: top; /* here */
 
+  @media (max-width: $xs) {
+    display: none; 
+  }
+
   p {
     width: 12.5%; 
     display: inline-block;
     text-align: center;
     margin: 0; 
     vertical-align:top;
+    font-size: 0.8em;
 
     span:nth-child(2) {
       display: block;

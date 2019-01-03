@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import GoogleMapsLoader from 'google-maps';
-import pinSuche from '../images/pin-suche.svg';
-import pinBiete from '../images/pin-biete.svg';
+import pinSuche from '../images/pin-suche-b.svg';
+import pinBiete from '../images/pin-biete-b.svg';
 import style from '../functions/googleMapStyles.js';
 
 
@@ -51,10 +51,10 @@ class GoogleMaps extends Component {
       console.log(icons[user.status].url);
       var icon = {
         url: icons[user.status].url,
-        size: new google.maps.Size(25, 25),
+        size: new google.maps.Size(35, 35),
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(17, 34),
-        scaledSize: new google.maps.Size(25, 25)
+        scaledSize: new google.maps.Size(35, 35)
       };
 
       console.log(user.location); 
@@ -105,12 +105,13 @@ class GoogleMaps extends Component {
       });
     })
 
-    var bounds = new google.maps.LatLngBounds();
-    for (var i = 0; i < currentMarkers.length; i++) {
-      bounds.extend(currentMarkers[i].getPosition());
+    if(currentMarkers.length > 0) {
+      var bounds = new google.maps.LatLngBounds();
+      for (var i = 0; i < currentMarkers.length; i++) {
+        bounds.extend(currentMarkers[i].getPosition());
+      }
+      map.fitBounds(bounds);
     }
-
-    map.fitBounds(bounds);
 
     this.setState(prevState => ({
         markers: currentMarkers
@@ -132,7 +133,8 @@ class GoogleMaps extends Component {
         mapTypeId: 'roadmap', 
         mapTypeControl: false,
         streetViewControl: false,
-        styles: style
+        styles: style,
+        fullscreenControl: false
       });
 
       const geocoder = new google.maps.Geocoder();

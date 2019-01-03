@@ -1,9 +1,15 @@
 @import '../base/variables';
 
 .status-selector {
-  display: flex;
-  flex-direction: row; 
-  justify-content: flex-start;
+  margin: 0 1em; 
+
+  p.label {
+    position: relative;
+    text-align: center;
+    margin-top: 0.5em;
+    font-size: 0.8em;
+    top: -2px;
+  }
 
   input[type=radio] {
     display:none;
@@ -31,6 +37,7 @@
     margin: 0;
     overflow: hidden;
     border: 1px solid black;
+    background-color: rgb(252, 252, 252);
 
     p {
       position: relative;
@@ -46,5 +53,13 @@
 
   input[type=radio]:checked + label.biete {
     background-color: $biete;
+  }
+
+  @media (max-width: $xs) {
+    width: 100%; 
+
+    input[type=radio] + label {
+      width: 50%; 
+    }
   }
 }
