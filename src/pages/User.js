@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import Layout from '../components/Layout';
 import { Link } from "react-router-dom";
-import { storageRef, db } from "../firebase";
+import { db } from "../firebase";
 import GoogleMapsLoader from 'google-maps';
-import { radios } from '../functions/fields.js';
-import StatusSelector from '../components/StatusSelector.js';
-import CategorySelector from '../components/CategorySelector.js';
 import CategoryDisplay from '../components/CategoryDisplay.js';
-import getInputFields from '../functions/getInputFields.js';
-import styles from '../Stylesheets/pages/user.scss';
+import '../Stylesheets/pages/user.scss';
+import avatar from '../images/avatar.svg';
+
 
 
 
@@ -63,7 +61,11 @@ class User extends Component {
             <section className="top">
               <div className="left">
                 <div className="image-cropper">
-                  <img src={this.state.userValues.profilePicUrl} />
+                  <img 
+                    alt={this.state.userValues.profilePicUrl}
+                    src={ this.state.userValues.profilePicUrl ? this.state.userValues.profilePicUrl : avatar } 
+                  />
+                  
                 </div>
               </div>
 

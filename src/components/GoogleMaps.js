@@ -3,6 +3,8 @@ import GoogleMapsLoader from 'google-maps';
 import pinSuche from '../images/pin-suche-b.svg';
 import pinBiete from '../images/pin-biete-b.svg';
 import style from '../functions/googleMapStyles.js';
+import avatar from '../images/avatar.svg';
+
 
 
 
@@ -70,10 +72,17 @@ class GoogleMaps extends Component {
         })
       );
 
+      let profilePicUrl;
+      if(user.profilePicUrl) {
+        profilePicUrl = user.profilePicUrl
+      } else {
+        profilePicUrl = avatar;
+      }
+
       var contentString = 
         `<div id="map-popup" class=${user.status}>`+
           `<div class="imageCropper">
-            <img src=${user.profilePicUrl}>
+            <img src=${profilePicUrl}>
           </div>` +
           `<h2>${user.username}</h2>`+
           `<p>${user.description}</p>`+
@@ -135,7 +144,7 @@ class GoogleMaps extends Component {
       const map = new google.maps.Map(document.getElementById('component-map'), {
         center: {lat: 47.43142, lng: 8.49187},
         zoom: 8,
-        maxZoom: 13,
+        maxZoom: 15,
         mapTypeId: 'roadmap', 
         mapTypeControl: false,
         streetViewControl: false,

@@ -5,6 +5,7 @@ import { storageRef, db } from "../firebase";
 import qs from 'query-string';
 import styles from '../Stylesheets/pages/messages.scss';
 import * as firebase from 'firebase';
+import avatar from '../images/avatar.svg';
 
 
 
@@ -177,20 +178,6 @@ class Messages extends Component {
     return partnerName[0].name;
   }
 
-  /*
-  getProfilePicUrl(conversation) {
-    let partnerName = conversation.participants.filter( participant => {
-      return participant.id != this.state.userValues.user;
-    })
-
-    let partnerId = partnerName[0].id;
-
-    db.collection('users').doc(partnerId).get().then((doc) => {
-      resolve(doc.data().profilePicUrl);
-    });
-  }
-  */
-
   async getConversationProfilePicUrls() {
     let urls = {};
     for(let i = 0; i < this.state.userConversations.length; i++) {
@@ -290,9 +277,6 @@ class Messages extends Component {
           <div className="column left">
           { this.state.existingMessagesLoaded && this.state.userConversations.map((conversation, index) => {
             let partnerName = this.getPartnerName(conversation);
-            console.log(partnerName);
-            console.log(conversation);
-            console.log(this.state.profilePicUrls);
             return (
               <div 
                 className={'conversation ' + (conversation.id == this.state.currentConversationId ? 'active' : '' ) + ' ' + this.state.userValues.status} 
@@ -303,8 +287,8 @@ class Messages extends Component {
                 <div className="column left">
                   <div className="img-cropper">   
                     <img 
-                      src={ this.state.profilePicUrls[conversation.id] } 
-                      style={ ( !this.state.profilePicUrls[conversation.id] ) ? {display: 'none'}: {} }
+                      alt={ partnerName }
+                      src={this.state.profilePicUrls[conversation.id] ?  this.state.profilePicUrls[conversation.id] : avatar }
                     />
                   </div>
                 </div>

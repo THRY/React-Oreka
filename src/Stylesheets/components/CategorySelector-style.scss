@@ -90,12 +90,20 @@
   input[type=checkbox]:checked + label.suche {
     background-color: $suche;
   }
+
+  input[type=checkbox]:checked + label.suche:hover {
+    background-color: $suche;
+  }
   
   input[type=checkbox] + label.suche:hover {
     background-color: $suche-light;
   }
 
   input[type=checkbox]:checked + label.biete {
+    background-color: $biete;
+  }
+
+  input[type=checkbox]:checked + label.biete:hover {
     background-color: $biete;
   }
 

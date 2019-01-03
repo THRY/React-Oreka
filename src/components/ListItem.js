@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom"; 
 import { storageRef, db } from "../firebase";
 import styles from '../Stylesheets/components/ListItem-style.scss';
+import avatar from '../images/avatar.svg';
 
 class ListItem extends Component {
 
@@ -41,8 +42,7 @@ class ListItem extends Component {
             <div className="img-cropper">
               <img 
                 alt={this.props.user.username}
-                src={ this.props.user.profilePicUrl } 
-                style={ (!this.props.user.profilePicUrl) ? {display: 'none'}: {} }
+                src={ this.props.user.profilePicUrl ? this.props.user.profilePicUrl : avatar }               
               />
             </div>
           </div>

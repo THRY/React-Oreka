@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Layout from '../components/Layout';
 import ListItem from '../components/ListItem.js';
-import { auth, signUp, signOut, logIn, db } from "../firebase";
+import { db } from "../firebase";
 import CategorySelector from '../components/CategorySelector.js'
 import StatusSelector from '../components/StatusSelector.js'
 import GoogleMaps from '../components/GoogleMaps.js'
-import styles from '../Stylesheets/pages/home.scss';
+import '../Stylesheets/pages/home.scss';
 
 
 
@@ -174,8 +174,8 @@ class Home extends Component {
             { this.state.filteredResults.length > 0 ?
               this.state.filteredResults.map((user, i) => {
                 return <ListItem user={ user } key={ user.user }/>
-              }) :
-              <p>Keine Resultate zu Ihren Filterkriterien.</p>
+              }) : 
+                <p>Keine Resultate zu Ihren Filterkriterien.</p>
             }
             </div>
             <div className="search-map">                            

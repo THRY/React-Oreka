@@ -5,6 +5,7 @@ section.status {
     display: flex;
     flex-direction: row; 
     justify-content: flex-start;
+    flex-wrap: wrap;
   
     input[type=checkbox] {
       display:none;
@@ -46,8 +47,14 @@ section.status {
       border: 1px solid black; 
       border-radius: 5px; 
       margin-left: auto; 
+      margin-right: 1em; 
       font-size: 1em; 
       cursor: pointer; 
+
+      @media (max-width: $xs) {
+        width: 100%;
+        margin: 1em;
+      }
   
       &.biete:hover {
         background-color: $biete-light;
@@ -79,10 +86,15 @@ section.category-selection {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    flex-wrap: wrap;
   
     .left {
       width: 30%; 
       margin-right: 25px;
+
+      @media (max-width: $xs) {
+        width: 100%; 
+      }
 
       .image-cropper {
         position: relative;
@@ -144,6 +156,9 @@ section.category-selection {
       width: 55%; 
       flex: 1;
 
+      @media (max-width: $xs) {
+        width: 100%; 
+      }
 
       div:first-child label {
         margin-top: 0;

@@ -1,6 +1,6 @@
 @import '../base/variables';
 
-.status-selector {
+.publish-selector {
   margin: 0 1em; 
 
   p.label {
@@ -21,7 +21,6 @@
     border-right: 0;
   }
 
-  input[type=radio]#status2 + label,
   input[type=radio]#publish2 + label {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;

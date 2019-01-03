@@ -4,9 +4,11 @@ import { Link } from "react-router-dom";
 import { storageRef, db } from "../firebase";
 import GoogleMapsLoader from 'google-maps';
 import StatusSelector from '../components/StatusSelector.js';
+import PublishSelector from '../components/PublishSelector.js';
 import CategorySelector from '../components/CategorySelector.js';
 import getInputFields from '../functions/getInputFields.js';
-import styles from '../Stylesheets/pages/profile.scss';
+import '../Stylesheets/pages/profile.scss';
+import avatar from '../images/avatar.svg';
 
 class Profile extends Component {
   state = {
@@ -81,6 +83,26 @@ class Profile extends Component {
         [id]: checked
      }
     }), () => console.log(this.state));
+  }
+
+  handlePublishChange = event => {
+    const { name, value } = event.target
+
+    let isPublic = false; 
+    if(value === 'published') {
+      isPublic = true; 
+    }
+
+    this.setState( prevState => ({
+      safed: false,
+      userValues: {
+        ...prevState.userValues,
+        public: isPublic,
+     }
+    }), () => console.log(this.state));
+
+
+    console.log(name + ' ' + value);
   }
 
   handleCatCheckboxChange = event => { 
@@ -237,24 +259,8 @@ class Profile extends Component {
                     <p className="title">Mein Status:</p>
                     { isReadyToLoop && 
                     <div className="options">
-                      <StatusSelector change={this.handleRadioChange} userValues={this.state.userValues} />
-                      <div> 
-                        <input 
-                          id="public"
-                          name="public"
-                          type="checkbox"
-                          data-label="Veröffentlicht"
-                          onChange={this.handleCheckboxChange} 
-                          checked={
-                            this.state.userValues.public ?
-                            this.state.userValues.public : false 
-                          } 
-                        />
-                      
-                        <label htmlFor="public" className={this.state.userValues.status}>
-                          <p>{this.state.userValues.public ? 'Veröffentlicht': 'Entwurf'}</p>  
-                        </label>
-                      </div>
+                      <StatusSelector change={this.handleRadioChange} searchingFor={this.state.userValues.status} userValues={this.state.userValues} />
+                      <PublishSelector change={this.handlePublishChange} userValues={this.state.userValues} />
                       <button 
                         onClick={this.checkIfSaved} 
                         className={(isReadyToLoop && this.state.userValues.status) + " " + (isReadyToLoop && this.state.safed ? 'saved' : 'not-saved') }>
@@ -269,7 +275,11 @@ class Profile extends Component {
                       <div className="profile left">
                         <div className={"image-cropper " + (isReadyToLoop && this.state.userValues.status) } >
                           { isReadyToLoop ?
-                          <img alt=" " id="myimg" src={this.state.userValues.profilePicUrl} />
+                          <img 
+                            alt=" " 
+                            id="myimg" 
+                            src={this.state.userValues.profilePicUrl ?  this.state.userValues.profilePicUrl : avatar } 
+                          />
                             : '' }
                         </div>
                         <input type="file" id="selectedFile" ref={input => this.inputRef = input} onChange={ this.uploadFile } style={{display: 'none'}} />
