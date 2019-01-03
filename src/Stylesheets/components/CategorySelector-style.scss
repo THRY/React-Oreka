@@ -3,6 +3,7 @@
 .category-selector {
   flex: 1;
 }
+
 .category-bar { 
   display: flex;
   flex-direction: row;
@@ -89,9 +90,17 @@
   input[type=checkbox]:checked + label.suche {
     background-color: $suche;
   }
+  
+  input[type=checkbox] + label.suche:hover {
+    background-color: $suche-light;
+  }
 
   input[type=checkbox]:checked + label.biete {
     background-color: $biete;
+  }
+
+  input[type=checkbox] + label.biete:hover{
+    background-color: $biete-light;
   }
 
   label {

@@ -20,8 +20,19 @@ class Home extends Component {
   }
 
   componentWillMount() {
-    console.log('huhu');
-    this.searchForUsers(); 
+    if(sessionStorage.getItem("filterValues") !== null) {
+      let filterValues = JSON.parse(sessionStorage.filterValues);
+      console.log(filterValues);
+      this.setState(prevState => ({
+          searchCat: filterValues.searchCat ? filterValues.searchCat : {},
+          searchingFor: filterValues.searchingFor ? filterValues.searchingFor : 'biete'
+        }), () => {
+          this.searchForUsers(); 
+        }
+      )
+    } else {
+      this.searchForUsers(); 
+    }   
   }
 
   searchForUsers() {
@@ -99,7 +110,16 @@ class Home extends Component {
         [id]: checked,
       },
     }), () => {
-      console.log(this.state);
+      let filterValues
+      if(sessionStorage.getItem("filterValues") !== null) {
+        filterValues = JSON.parse(sessionStorage.filterValues);
+        filterValues['searchCat'] = this.state.searchCat;
+      } else {
+        console.log('OVERWRITE');
+        filterValues = {};
+        filterValues['searchCat'] = this.state.searchCat;
+      }
+      sessionStorage.setItem('filterValues', JSON.stringify(filterValues));   
       this.searchForUsers();
     });
   }
@@ -109,7 +129,18 @@ class Home extends Component {
     this.setState( prevState => ({
       searchingFor: value,        
     }), () => {
-      console.log(this.state);
+      let filterValues;
+      if(sessionStorage.getItem("filterValues") !== null) {
+        filterValues = JSON.parse(sessionStorage.filterValues);
+        filterValues['searchingFor'] = value;
+        console.log(filterValues);
+      } else {
+        console.log('OVERWRITE');
+        filterValues = {};
+        filterValues['searchingFor'] = value;
+      }
+      sessionStorage.setItem('filterValues', JSON.stringify(filterValues));      
+      
       this.searchForUsers()
     });
   }

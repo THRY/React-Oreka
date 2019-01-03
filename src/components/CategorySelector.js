@@ -57,7 +57,7 @@ class CategorySelector extends Component {
               onChange={this.props.change}
               checked={
                 ( Object.keys(this.props.categories).length > 0 && this.props.categories[field.name] ?
-                this.props.categories[field.name].checked : false ) 
+                this.props.categories[field.name] : false ) 
               } 
               />
               <label 

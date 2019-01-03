@@ -71,11 +71,13 @@ class GoogleMaps extends Component {
       );
 
       var contentString = 
-        '<div id="map-popup">'+
-          `<h1 id="firstHeading" class="firstHeading">${user.username}</h1>`+
-          '<div id="bodyContent">'+
+        `<div id="map-popup" class=${user.status}>`+
+          `<div class="imageCropper">
+            <img src=${user.profilePicUrl}>
+          </div>` +
+          `<h2>${user.username}</h2>`+
           `<p>${user.description}</p>`+
-          '</div>'+
+          `<p><a href="./user/${user.user}">zum Profil</a></p>`+
         '</div>';
 
       var infowindow = new google.maps.InfoWindow({
@@ -102,6 +104,10 @@ class GoogleMaps extends Component {
         const listItem = document.getElementById('listitem-' + user.user);
         listItem.classList.remove("hovered");
         console.log('hovery');
+      });
+
+      google.maps.event.addListener(map, "click", function(event) {
+        infowindow.close();
       });
     })
 

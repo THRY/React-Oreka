@@ -173,6 +173,16 @@ class Profile extends Component {
     });
   }
 
+  getCatsAsList = (userCats) => {
+    let catsAsList = {}; 
+    
+    Object.keys(userCats).forEach((key, index) => {
+      catsAsList[key] = userCats[key].checked;
+    })
+
+    return catsAsList;
+  }
+
   render() {
     const { isSignedIn, isReadyToLoop } = this.state;
 
@@ -278,11 +288,14 @@ class Profile extends Component {
                       </div>
                     </div>
                   </section>
-                  <section>
+                  <section className="category-selection">
                     <p className="title">Bereiche, in denen ich Hilfe {isReadyToLoop && this.state.userValues.status === 'suche' ? 'suche' : 'anbiete' }:</p>
                     {
                       isReadyToLoop &&   
-                      <CategorySelector userValues={this.state.userValues} categories={this.state.userValues.categories} change={this.handleCatCheckboxChange} />
+                      <CategorySelector 
+                        userValues={this.state.userValues} 
+                        categories={this.getCatsAsList(this.state.userValues.categories)} 
+                        change={this.handleCatCheckboxChange} />
                     }
 
                   </section>
