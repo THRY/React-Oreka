@@ -46,14 +46,25 @@
       padding-left: 2em; 
     }
 
-    div.infos {    
+    div.infos {   
+      
+      h2 {
+        margin: 0.5em 0;
+      }
+
       .message {
         display: inline-block; 
         border: 1px solid black; 
         padding: 0.5em 1em; 
+        margin: 0.5em 0; 
         border-radius: 3px;
         cursor: pointer; 
         text-decoration: none; 
+
+        &.disabled {
+          pointer-events: none;
+          opacity: 0.5;
+        }
 
         &.biete:hover {
           background-color: $biete
@@ -62,6 +73,13 @@
         &.suche:hover {
           background-color: $biete
         }
+      }
+
+      .hint {
+        font-style: italic;
+        font-size: 0.8em;
+        max-width: 250px;
+        margin-top: 0.3em;
       }
     }
   }

@@ -144,28 +144,31 @@ class Profile extends Component {
 
     const input = event.target;
     var file = input.files[0];
-    var imageRef = storageRef.child(`${file.name}`);
-    let filenameThumb = 'thumb_' + file.name;
-
-    console.log(filenameThumb);
-
-    this.setState(prevState => ({
-        userValues: {
-          ...prevState.userValues,
-          'profilePic': filenameThumb
-        },
-        isUploadingFile: true,
-      }), () => {
-        console.log('put file to server');
-        imageRef.put(file).then((snapshot) => {
-          console.log('Uploaded a blob or file!');
-          this.handleSubmit(); 
-          setTimeout(() => {
-            this.saveProfilePicUrl(filenameThumb);
-          }, 4000);
-          
-      });
-    })  
+    if(file.size > 1000000) {
+      alert("Ihr Bild ist zu gross. Bitte nicht grösser als 1MB.");
+    } else {
+      var imageRef = storageRef.child(`${file.name}`);
+      let filenameThumb = 'thumb_' + file.name;
+  
+      console.log(filenameThumb);
+  
+      this.setState(prevState => ({
+          userValues: {
+            ...prevState.userValues,
+            'profilePic': filenameThumb
+          },
+          isUploadingFile: true,
+        }), () => {
+          console.log('put file to server');
+          imageRef.put(file).then((snapshot) => {
+            console.log('Uploaded a blob or file!');
+            this.handleSubmit(); 
+            setTimeout(() => {
+              this.saveProfilePicUrl(filenameThumb);
+            }, 8000); 
+        });
+      })  
+    }
   }
 
   saveProfilePicUrl(filenameThumb) {
@@ -245,10 +248,13 @@ class Profile extends Component {
           <Layout>
             { isSignedIn ? (
               <>
-              <nav className={isReadyToLoop && this.state.userValues.status}>
+              <nav className={isReadyToLoop && this.state.userValues.status }> 
                 <div className="container">
                   <a onClick={ this.context.router.history.goBack }>zurück</a>
-                  <span className="site-title">Mein Profil</span>
+                  <span className="site-title">Mein Profil berabeiten</span>
+                  { isReadyToLoop &&
+                    <Link className="link-right" to={`/user/${this.state.userValues.user}`}>Profil ansehen</Link>
+                  }
                 </div>
               </nav>
               <div className="container">

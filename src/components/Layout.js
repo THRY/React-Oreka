@@ -10,7 +10,7 @@ class Layout extends Component {
 
   componentDidMount() {
     this.unregisterAuthObserver = auth.onAuthStateChanged(user => {
-      if (user) {
+      if(user) {
         console.log(user)
         this.setState({
           isSignedIn: true,

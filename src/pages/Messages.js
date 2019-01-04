@@ -16,6 +16,7 @@ class Messages extends Component {
     profilePicUrlsLoaded: false,
     messageTo: '',
     currentConversationId: '',
+    currentPartnerId: '',
     userConversations: [],
     profilePicUrls: {},
     messagesInCurrentConversation: []
@@ -95,9 +96,10 @@ class Messages extends Component {
           if(this.state.messageTo !== '') {
             let existingConv = this.checkExistingConv();
             if(existingConv.exists) {
-              console.log('open existing cinversation with ID: ' + existingConv.id); 
+              console.log('open existing conversation with ID: ' + existingConv.id); 
               this.setState(prevState => ({
-                  currentConversationId: existingConv.id
+                  currentConversationId: existingConv.id,
+                  currentPartnerId: this.getPartnerId(existingConv)
                 })
               )
             } else {
@@ -108,7 +110,8 @@ class Messages extends Component {
             console.log('just show all current conversations');
             if(this.state.userConversations.length > 0) {
               this.setState(prevState => ({
-                  currentConversationId: this.state.userConversations[0].id
+                  currentConversationId: this.state.userConversations[0].id,
+                  currentPartnerId: this.getPartnerId(this.state.userConversations[0])
                 })
               )
             } else {
@@ -162,8 +165,10 @@ class Messages extends Component {
         console.log("Created new conversation");
         console.log(conversationRef);
         const convId = conversationRef.id;
+        this.getExistingMessages(); 
         this.setState(prevState => ({
-            currentConversationId: convId
+            currentConversationId: convId,
+            currentPartnerId: conversationPartner.user
           })
         )
       });
@@ -176,6 +181,14 @@ class Messages extends Component {
     })
     console.log(partnerName);
     return partnerName[0].name;
+  }
+
+  getPartnerId(conversation) {
+    let partnerName = conversation.participants.filter( participant => {
+      return participant.id != this.state.userValues.user;
+    })
+    console.log(partnerName);
+    return partnerName[0].id;
   }
 
   async getConversationProfilePicUrls() {
@@ -196,6 +209,8 @@ class Messages extends Component {
   }
 
   getProfilePicUrl(conversation) {
+    console.log(conversation);
+
     return new Promise((resolve, reject) => {
       let partnerName = conversation.participants.filter( participant => {
         return participant.id != this.state.userValues.user;
@@ -212,10 +227,12 @@ class Messages extends Component {
 
   openConversation = (event) => {
     const currentConvId = event.currentTarget.getAttribute('data-conversationid');
+    const partnerId = event.currentTarget.getAttribute('data-partnerid');
     console.log(currentConvId);
 
     this.setState(prevState => ({
-        currentConversationId: currentConvId
+        currentConversationId: currentConvId,
+        currentPartnerId: partnerId
       })
     )
   }
@@ -275,13 +292,16 @@ class Messages extends Component {
         </nav>
         <div className="container messages">
           <div className="column left">
-          { this.state.existingMessagesLoaded && this.state.userConversations.map((conversation, index) => {
+          { (existingMessagesLoaded && this.state.userConversations.length > 0) ?  this.state.userConversations.map((conversation, index) => {
+            console.log(conversation);
             let partnerName = this.getPartnerName(conversation);
+            let partnerId = this.getPartnerId(conversation);
             return (
               <div 
                 className={'conversation ' + (conversation.id == this.state.currentConversationId ? 'active' : '' ) + ' ' + this.state.userValues.status} 
                 onClick={ this.openConversation } 
                 data-conversationid={ conversation.id } 
+                data-partnerid={ partnerId }
                 key={ conversation.id }
                 >
                 <div className="column left">
@@ -297,7 +317,8 @@ class Messages extends Component {
                 </div>
               </div>
             )
-          })
+          }) : 
+          <p>Noch keine Nachrichten vorhanden.</p>
           }  
           </div>
 
@@ -307,6 +328,7 @@ class Messages extends Component {
             <Messenger 
               currentConversationId={ this.state.currentConversationId }
               currentUser={this.state.userValues}
+              partnerId={ this.state.currentPartnerId }
               handleInputChange={this.handleInputChange}
               handleSubmit={this.submitMessage}
             /> : ''

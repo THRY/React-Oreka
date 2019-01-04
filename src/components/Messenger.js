@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom"; 
 import { storageRef, db } from "../firebase";
-import styles from '../Stylesheets/components/Messenger-style.scss';
+import '../Stylesheets/components/Messenger-style.scss';
 
 
 
@@ -88,7 +88,11 @@ class Messenger extends Component {
   render() {
     return (
       <div className="messenger">
-        <p className='title'>Unterhaltung mit {this.state.partnerName}</p>
+        <div className="title-bar">
+          <p className='title'>Unterhaltung mit {this.state.partnerName}</p>
+          <p><Link to={`/user/${this.props.partnerId}`}>zum Profil</Link></p>
+        </div>
+        
         <div className="messages" ref='messages'>
           { this.state.conversationLoaded && this.state.messagesInCurrentConversation.sort(this.sortMessageFn).map((message, index) => {
               return (

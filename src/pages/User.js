@@ -17,12 +17,19 @@ class User extends Component {
   }
 
   static contextTypes = {
-    router: () => true, // replace with PropTypes.object if you use them
+    router: () => null, // replace with PropTypes.object if you use them
   }
 
   componentWillMount() {
+    let isSignedIn;
+
+    if(localStorage.getItem('user')) {
+      isSignedIn = true;
+    }
+
     this.setState({
       userId: this.props.match.params.value,
+      isSignedIn: isSignedIn
     }, () => {
       db.collection("users").doc(this.state.userId)
       .onSnapshot(this.handleOnNext, this.handleOnError);
@@ -40,7 +47,9 @@ class User extends Component {
       }
     }), () => {
       console.log(this.state);
-      this.loadMap();
+      if(this.state.userValues.public) {
+        this.loadMap();
+      }
     });
   }
 
@@ -49,7 +58,7 @@ class User extends Component {
 
     return (
       <Layout>
-          { this.state.isReadyToLoop &&
+          { isReadyToLoop &&
           <>
           <nav className={isReadyToLoop && this.state.userValues.status}>
             <div className="container">
@@ -58,36 +67,50 @@ class User extends Component {
             </div>
           </nav>
           <div className="container user">
-            <section className="top">
-              <div className="left">
-                <div className="image-cropper">
-                  <img 
-                    alt={this.state.userValues.profilePicUrl}
-                    src={ this.state.userValues.profilePicUrl ? this.state.userValues.profilePicUrl : avatar } 
-                  />
-                  
+            { this.state.userValues.public ?
+              <>
+              <section className="top">
+                <div className="left">
+                  <div className="image-cropper">
+                    <img 
+                      alt={this.state.userValues.profilePicUrl}
+                      src={ this.state.userValues.profilePicUrl ? this.state.userValues.profilePicUrl : avatar } 
+                    />
+                    
+                  </div>
                 </div>
-              </div>
 
-              <div className="right">
-                <div className="infos">
-                  <h1>{this.state.userValues.username}</h1>
-                  <h2 className="caption">«{this.state.userValues.description}»</h2>
-                  <Link className={"message " + this.state.userValues.status} to={`/messages?to=${this.state.userValues.user}`}>Nachricht senden</Link>
+                <div className="right">
+                  <div className="infos">
+                    <h1>{this.state.userValues.username}</h1>
+                    { this.state.userValues.description !== '' &&
+                      <h2 className="caption">«{this.state.userValues.description}»</h2>
+                    }
+                    <Link 
+                      className={"message " + this.state.userValues.status + ' ' + ((this.state.isSignedIn && this.state.userValues.user !== localStorage.getItem('user')) ? '' : 'disabled') } 
+                      to={`/messages?to=${this.state.userValues.user}`}
+                    >Nachricht senden</Link>
+                    { !this.state.isSignedIn &&
+                      <p className="hint">Sie müssen angemeldet sein, um einem Benutzer eine Nachricht senden zu können.</p>
+                    }
+                  </div>
                 </div>
-              </div>
-            </section>
-            <section className="categories">
-            <p>In diesen Bereichen {this.state.userValues.status } ich Hilfe{this.state.userValues.status == 'biete' ? ' an' : ''}:</p>
-            { isReadyToLoop &&
-              <CategoryDisplay userValues={this.state.userValues}/>
-            }
-              
-            </section>
-            <section className="map">
-              <p>Hier wohnt {this.state.userValues.username}:</p>
-              <div style={{display:'block',position:'relative',width:'100%',height:'500px'}} id="map"></div>
-            </section>
+              </section>
+              <section className="categories">
+              <p>In diesen Bereichen {this.state.userValues.status } ich Hilfe{this.state.userValues.status == 'biete' ? ' an' : ''}:</p>
+              { isReadyToLoop &&
+                <CategoryDisplay userValues={this.state.userValues}/>
+              }
+                
+              </section>
+              <section className="map">
+                <p>Hier wohnt {this.state.userValues.username}:</p>
+                <div style={{display:'block',position:'relative',width:'100%',height:'500px'}} id="map"></div>
+              </section>
+              </>
+              :
+              <p>Dieses Profil ist nicht öffentlich</p>
+            } 
           </div> 
           </>
           }

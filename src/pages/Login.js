@@ -69,7 +69,7 @@ class Signin extends Component {
       <Layout>
          <nav className="plakat">
           <div className="container">
-            <a onClick={ this.context.router.history.goBack }>zurück</a>
+            <Link to="./">zurück</Link>
             <span className="site-title">Melden Sie sich an</span>
           </div>
         </nav>
