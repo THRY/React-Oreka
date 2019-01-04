@@ -7,8 +7,6 @@ import StatusSelector from '../components/StatusSelector.js'
 import GoogleMaps from '../components/GoogleMaps.js'
 import '../Stylesheets/pages/home.scss';
 
-
-
 class Home extends Component {
 
   state = {

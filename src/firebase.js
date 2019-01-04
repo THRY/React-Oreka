@@ -27,14 +27,17 @@ db.settings({
   timestampsInSnapshots: true
 })
 
-export const signUp = (email, password, callback) => {
+export const signUp = (email, password, onsignup, onfail) => {
   firebase.auth().createUserWithEmailAndPassword(email, password).then(function() {
-    callback();
+    onsignup();
   }).catch(function(error) {
     var errorCode = error.code;
     var errorMessage = error.message;
     console.log(errorCode);
     console.log(errorMessage);
+    if(onfail) {
+      onfail(errorMessage, errorCode);
+    } 
   });
 } 
 
@@ -47,7 +50,7 @@ export const logIn = (email, password, onSuccess, onError) => {
     var errorMessage = error.message;
     console.log(errorCode);
     console.log(errorMessage);
-    onError(errorMessage);
+    onError(errorMessage, errorCode);
   });
 }
 

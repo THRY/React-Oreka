@@ -43,7 +43,10 @@ class Header extends Component {
           { isSignedIn ?
               <a onClick={this.handleSignOut}>Abmelden</a>
             :
+            <>
+            <Link to="/signup">Registrieren</Link>
             <Link to="/login">Anmelden</Link>
+            </>
           }
         </div>
         

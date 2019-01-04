@@ -21,7 +21,7 @@ class Profile extends Component {
   imageUplaodWaitMessageRef = createRef();
 
   static contextTypes = {
-    router: () => true, // replace with PropTypes.object if you use them
+    router: () => null, // replace with PropTypes.object if you use them
   }
 
   componentWillMount() {
@@ -252,8 +252,6 @@ class Profile extends Component {
                 </div>
               </nav>
               <div className="container">
-                
-                
                 <form onSubmit={this.handleSubmit}>
                   <section className="status">
                     <p className="title">Mein Status:</p>

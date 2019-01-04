@@ -3,7 +3,7 @@ import Layout from '../components/Layout';
 import { auth, signUp, signOut, logIn, db} from "../firebase";
 import { Link } from "react-router-dom";
 import StatusSelector from '../components/StatusSelector.js'
-import { radios } from '../functions/fields.js';
+import '../Stylesheets/pages/signup.scss'; 
 
 
 class Signin extends Component {
@@ -20,9 +20,15 @@ class Signin extends Component {
       public: false,
       spezialDescr: "",
       username: "",
-      user: ""
+      user: "",
+      location: ""
     }
   };  
+
+  static contextTypes = {
+    router: () => null, // replace with PropTypes.object if you use them
+  }
+
 
   handlePassword = (e) => {
     this.setState ({
@@ -45,21 +51,59 @@ class Signin extends Component {
     )
   }   
 
+  handleUsername = (e) => {
+    const username = e.target.value;
+    console.log(username);
+
+    this.setState(prevState => ({
+        username: username,
+        userValues: {
+          ...prevState.userValues,
+          username: username
+        }
+      })
+    )
+  }   
+
   handleSignUp = () => {
     const onSignedUp = () => {
       const userId = auth.currentUser.uid;
       console.log(userId)
+
       this.setState(prevState => ({
-          userValues: {
-            ...prevState.userValues,
-            user: userId
-          }
-        }), () => {
-          this.createUserProfile();
-          //this.props.history.push('/')
-        })
+        userValues: {
+          ...prevState.userValues,
+          user: userId
+        }
+      }), () => {
+        this.createUserProfile();
+        this.props.history.push('/profile')
+      })
     }
-    signUp(this.state.email, this.state.password, onSignedUp);
+
+    const onError = (errorMessage, errorCode) => {
+      console.log(errorCode + ' ' + errorMessage);
+
+      switch(errorCode) {
+        case 'auth/invalid-email':
+          errorMessage = 'Fehler: Bitte gebe Sie eine gültige E-Mail-Adresse an.';
+          break;
+        case 'auth/weak-password':
+          errorMessage = 'Fehler: Ihr Passwort muss mindestens 6 Zeichen enthalten.';
+          break;
+        case 'auth/email-already-in-use':
+          errorMessage = 'Fehler: Diese E-Mail-Adresse wird bereits verwendet.';
+          break;
+        default: 
+      }
+      document.getElementsByClassName('error-message')[0].innerHTML = errorMessage;
+    }
+
+    if(!this.state.username) {
+      document.getElementsByClassName('error-message')[0].innerHTML = 'Bitte geben Sie einen Benutzernamen an.';
+    } else {
+      signUp(this.state.email, this.state.password, onSignedUp, onError);
+    }
   }
 
   handleRadioChange = event => {
@@ -79,28 +123,30 @@ class Signin extends Component {
   }
 
   render() {
-    let statusFields = radios.map(field => {
-      field.change = this.handleRadioChange;
-      return field;
-    })
-
     return (
       <Layout>
         <nav className="plakat">
           <div className="container">
-            <Link to="/">zurück</Link>
+            <a onClick={ this.context.router.history.goBack }>zurück</a>
             <span className="site-title">Erstellen Sie einen Login</span>
           </div>
         </nav>
         <div className="container signup">
-          <p>Erstellen Sie Ihren eigenen Account:</p>
-          <StatusSelector change={this.handleRadioChange} userValues={this.state.userValues} />
-       
-          <label htmlFor='email'>E-Mail-Adresse</label>
-          <input type="text" name="email" id="email" onChange={this.handleEmail}></input>
-          <label htmlFor='password'>Passwort</label>
-          <input type="text" name="password" id="password" onChange={this.handlePassword}></input>
-          <button onClick={this.handleSignUp}>Sign Up</button>
+          <div className="form">
+            <p>Bieten Sie Hilfe an, oder suchen Sie Hilfe?</p>
+            <StatusSelector change={this.handleRadioChange} userValues={this.state.userValues} />
+
+            <div className="fields">
+              <label htmlFor='email'>Benutzername <span>(frei wählbar, kann später geändert werden)</span></label>
+              <input type="text" name="username" id="username" onChange={this.handleUsername}></input>
+              <label htmlFor='email'>E-Mail-Adresse</label>
+              <input type="text" name="email" id="email" onChange={this.handleEmail}></input>
+              <label htmlFor='password'>Passwort</label>
+              <input type="text" name="password" id="password" onChange={this.handlePassword}></input>
+            </div>
+            <p className="error-message"></p>
+            <button onClick={this.handleSignUp}>Registrieren</button>
+          </div>
         </div>
       </Layout>  
     )

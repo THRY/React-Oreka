@@ -47,78 +47,84 @@ class GoogleMaps extends Component {
       }
     }
 
-    var currentMarkers = [];
+    let currentMarkers = [];
+    let markerIndex = 0; 
 
     this.props.filterResult.forEach((user, index)  => {
-      console.log(icons[user.status].url);
-      var icon = {
-        url: icons[user.status].url,
-        size: new google.maps.Size(35, 35),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(17, 34),
-        scaledSize: new google.maps.Size(35, 35)
-      };
+      if(Object.keys(user.location).length > 0) {
+        console.log(icons[user.status].url);
+        var icon = {
+          url: icons[user.status].url,
+          size: new google.maps.Size(35, 35),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(17, 34),
+          scaledSize: new google.maps.Size(35, 35)
+        };
 
-      console.log(user.location); 
+        console.log(user.location); 
 
-      // Create a marker for each place.
-      currentMarkers.push(new google.maps.Marker({
-          icon: icon,
-          map: map,
-          title: 'pipi',
-          position: user.location,
-          animation: google.maps.Animation.DROP,
-          id: 'pin-' + user.user
-        })
-      );
+        // Create a marker for each place.
+        currentMarkers.push(new google.maps.Marker({
+            icon: icon,
+            map: map,
+            title: 'pipi',
+            position: user.location,
+            animation: google.maps.Animation.DROP,
+            id: 'pin-' + user.user
+          })
+        );
 
-      let profilePicUrl;
-      if(user.profilePicUrl) {
-        profilePicUrl = user.profilePicUrl
-      } else {
-        profilePicUrl = avatar;
+        let profilePicUrl;
+        if(user.profilePicUrl) {
+          profilePicUrl = user.profilePicUrl
+        } else {
+          profilePicUrl = avatar;
+        }
+
+        var contentString = 
+          `<div id="map-popup" class=${user.status}>`+
+            `<div class="imageCropper">
+              <img src=${profilePicUrl}>
+            </div>` +
+            `<h2>${user.username}</h2>`+
+            `<p>${user.description}</p>`+
+            `<p><a href="./user/${user.user}">zum Profil</a></p>`+
+          '</div>';
+
+        let infowindow = new google.maps.InfoWindow({
+          content: contentString,
+          maxWidth: 200
+        });
+
+        google.maps.event.addListener(currentMarkers[markerIndex], 'click', function(event) {
+          infowindow.open(map, this);
+          console.log('klicky');
+        });
+
+        google.maps.event.addListener(currentMarkers[markerIndex], 'mouseover', function() {
+          //window.location.href = this.url;
+          const listItem = document.getElementById('listitem-' + user.user);
+          listItem.classList.add("hovered");
+          console.log('hovery');
+        });
+
+        google.maps.event.addListener(currentMarkers[markerIndex], 'mouseout', function() {
+          //window.location.href = this.url;
+          const listItem = document.getElementById('listitem-' + user.user);
+          listItem.classList.remove("hovered");
+          console.log('hovery');
+        });
+
+        google.maps.event.addListener(map, "click", function(event) {
+          infowindow.close();
+        });
+
+        markerIndex++;
       }
-
-      var contentString = 
-        `<div id="map-popup" class=${user.status}>`+
-          `<div class="imageCropper">
-            <img src=${profilePicUrl}>
-          </div>` +
-          `<h2>${user.username}</h2>`+
-          `<p>${user.description}</p>`+
-          `<p><a href="./user/${user.user}">zum Profil</a></p>`+
-        '</div>';
-
-      var infowindow = new google.maps.InfoWindow({
-        content: contentString,
-        maxWidth: 200
-      });
-
-      google.maps.event.addListener(currentMarkers[index], 'click', function(event) {
-        //window.location.href = this.url;
-        console.log(currentMarkers[index].id)
-        infowindow.open(map, currentMarkers[index]);
-        console.log('klicky');
-      });
-
-      google.maps.event.addListener(currentMarkers[index], 'mouseover', function() {
-        //window.location.href = this.url;
-        const listItem = document.getElementById('listitem-' + user.user);
-        listItem.classList.add("hovered");
-        console.log('hovery');
-      });
-
-      google.maps.event.addListener(currentMarkers[index], 'mouseout', function() {
-        //window.location.href = this.url;
-        const listItem = document.getElementById('listitem-' + user.user);
-        listItem.classList.remove("hovered");
-        console.log('hovery');
-      });
-
-      google.maps.event.addListener(map, "click", function(event) {
-        infowindow.close();
-      });
     })
+
+    console.log(currentMarkers);
+    console.log(markerIndex);
 
     if(currentMarkers.length > 0) {
       var bounds = new google.maps.LatLngBounds();
