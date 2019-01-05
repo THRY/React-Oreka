@@ -23,6 +23,7 @@ class CategoryDisplay extends Component {
             <div 
               key={index} name={field.name}
               name={field.name}
+              style={ (this.state.catList.length > 2 && index > 1 && index % 2 == 0) ? {borderBottom: '0px'} : {}}
               >
               <input 
               id={field.name} 

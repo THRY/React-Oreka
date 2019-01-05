@@ -53,7 +53,8 @@ class Profile extends Component {
   }
 
   handleTextChange = event => {
-    const { id, value} = event.target
+    const { id, value } = event.target
+
     this.setState( prevState => ({
       safed: false,
       userValues: {

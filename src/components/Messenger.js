@@ -102,10 +102,10 @@ class Messenger extends Component {
             })
           }
         </div>
-        <div className="input">
+        <div className="text-input">
           <textarea ref='messageToSend' onChange={this.props.handleInputChange} />
-          <button type="text" onClick={() => {
-            this.props.handleSubmit();
+          <button type="text" onClick={(e) => {
+            this.props.handleSubmit(e);
             this.clearInputField();
           }}>SENDEN</button>
         </div>
