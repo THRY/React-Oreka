@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Layout from '../components/Layout';
 import Messenger from '../components/Messenger';
-import { storageRef, db } from "../firebase";
+import { db } from "../firebase";
 import qs from 'query-string';
-import styles from '../Stylesheets/pages/messages.scss';
+import '../Stylesheets/pages/messages.scss';
 import * as firebase from 'firebase';
 import avatar from '../images/avatar.svg';
 
@@ -99,7 +99,7 @@ class Messages extends Component {
               console.log('open existing conversation with ID: ' + existingConv.id); 
               this.setState(prevState => ({
                   currentConversationId: existingConv.id,
-                  currentPartnerId: this.getPartnerId(existingConv)
+                  currentPartnerId: this.getPartnerId(existingConv.conv)
                 })
               )
             } else {
@@ -128,13 +128,15 @@ class Messages extends Component {
   checkExistingConv = () => {
     let conversation = {
       exists: false,
-      id: ''
+      id: '',
+      conv: '',
     };
 
     for (const [index, el] of this.state.userConversations.entries()) {
       if(el.participantIds.includes(this.state.userValues.user) && el.participantIds.includes(this.state.messageTo)) {
         conversation.exists = true;
         conversation.id = el.id;
+        conversation.conv = el;
         console.log(conversation);
         break;
       }
@@ -230,6 +232,9 @@ class Messages extends Component {
     const partnerId = event.currentTarget.getAttribute('data-partnerid');
     console.log(currentConvId);
 
+    let messenger = document.getElementsByClassName('messenger')[0]
+    messenger.scrollIntoView({ behavior: 'smooth', block: 'start'});
+
     this.setState(prevState => ({
         currentConversationId: currentConvId,
         currentPartnerId: partnerId
@@ -262,25 +267,27 @@ class Messages extends Component {
     );
   }
 
-  submitMessage = () => {
+  submitMessage = (e) => {
+    e.preventDefault();
     let messageRef = db.collection("messages").doc(this.state.currentConversationId);
-    let timestamp = new Date();
+    let timestamp = new Date(); 
 
-    messageRef.update({
-      messages: firebase.firestore.FieldValue.arrayUnion({
-        created: timestamp,
-        message: this.state.currentMessage,
-        sender: {
-          id: this.state.userValues.user,
-          name: this.state.userValues.username
-        } 
+    if(this.state.currentMessage) {
+      messageRef.update({
+        messages: firebase.firestore.FieldValue.arrayUnion({
+          created: timestamp,
+          message: this.state.currentMessage,
+          sender: {
+            id: this.state.userValues.user,
+            name: this.state.userValues.username
+          } 
+        })
       })
-    })
+    }    
   }
 
   render() {
     const { existingMessagesLoaded, isReadyToLoop } = this.state;
-    const sortMessageFn = this.sortMessagesFn;
     
     return (
       <Layout>

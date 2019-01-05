@@ -13,9 +13,14 @@
     display: flex; 
     flex-direction: row; 
     justify-content: flex-start;
+    flex-wrap: wrap; 
 
     .left {
       width: 30%; 
+
+      @media (max-width: $xs) {
+        width: 100%; 
+      }
   
       .image-cropper {
         position: relative;
@@ -44,6 +49,13 @@
     .right {
       width: 70%; 
       padding-left: 2em; 
+
+      @media (max-width: $xs) {
+        width: 100%; 
+        padding-left: 0; 
+        text-align: center; 
+      }
+
     }
 
     div.infos {   
@@ -92,13 +104,20 @@
       justify-content: space-between; 
       flex-direction: row; 
 
-      div {
-        display: flex; 
-        flex: 1; 
-        
-        label {
-          cursor: auto; 
+      @media (min-width: $xs) {
+        div {
+          display: flex; 
+          flex: 1; 
+          
+          label {
+            cursor: auto; 
+          }
         }
+      }
+      
+      
+      @media (max-width: $xs) {
+        width: 100% !important;
       }
     }
 

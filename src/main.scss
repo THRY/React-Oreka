@@ -88,6 +88,10 @@ h1 {
 h2 {
   font-weight: normal; 
   font-size: 2em; 
+
+  @media (max-width: $xs) {
+    font-size: 1.3em; 
+  }
 }
 
 a {
@@ -138,7 +142,7 @@ nav {
   }
 
   a.link-right {
-    right: 0;
+    right: 15px;
 
     &:before {
       display: none;

@@ -91,10 +91,10 @@
 
   .message span {
     border-radius: 4px;
-    padding: 0.4em 0.5em; 
+    padding: 0.3em; 
+    hyphens: auto; 
     max-width: 250px; 
     display: inline-block;
-    word-wrap:break-word;
   }
 
   .message.biete span {

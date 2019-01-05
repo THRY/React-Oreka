@@ -31,12 +31,9 @@ class Signin extends Component {
     })
   }   
 
-  handleSignUp = () => {
-    console.log(this.state);  
-    signUp(this.state.email, this.state.password);
-  }
+  handleLogIn = (e) => {
+    e.preventDefault();
 
-  handleLogIn = () => {
     const onLoggedIn = () => {
       this.props.history.push('/')
     }
@@ -74,21 +71,21 @@ class Signin extends Component {
           </div>
         </nav>
         <div className="container login">
-          <div className="form">
+          <form 
+            onSubmit={ this.handleLogIn }>
             <div className="fields">
               <label htmlFor='email'>E-Mail-Adresse</label>
               <input type="text" name="email" id="email" onChange={this.handleEmail}></input>
               <label htmlFor='password'>Passwort</label>
-              <input type="text" name="password" id="password" onChange={this.handlePassword}></input>
+              <input type="password" name="password" id="password" onChange={this.handlePassword}></input>
             </div>
             <p className="error-message" ref="errorRef"></p>
-            <button onClick={this.handleLogIn}>Anmelden</button>
+            <button type="submit">Anmelden</button>
             <div className="links">
               <p><Link to="/signup">Noch kein Login? Erstellen Sie hier eines.</Link></p>
               <p><Link to="/forgotpassword">Passwort vergessen?</Link></p>
             </div>
-            
-          </div>         
+          </form>         
         </div>
       </Layout>  
     )

@@ -41,7 +41,7 @@ class CategorySelector extends Component {
     ]
 
     return (
-      <div class="category-selector">
+      <div className="category-selector">
         <div className="category-bar">
         {                    
           categories.map((field, index) => 
@@ -74,7 +74,7 @@ class CategorySelector extends Component {
         <div className="label-bar">
         {                    
           categories.map((field, index) => 
-            <p>
+            <p key={index}>
             <span key={index}>{ field.label }</span>
             { (field.name === 'spezial') && this.props.userValues ? 
               <span>

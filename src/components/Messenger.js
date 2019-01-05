@@ -69,11 +69,8 @@ class Messenger extends Component {
   }
 
   sortMessagesFn(a, b) {
-    const timeA = a.created.seconds;
-    const timeB = b.created.seconds;
-
-    console.log("TIMES " + timeA + " " + timeB);
-
+    const timeA = parseFloat(a.created.seconds + "." + a.created.nanoseconds);
+    const timeB = parseFloat(b.created.seconds + "." + b.created.nanoseconds);
     
     if (timeA < timeB) {
       return -1;
@@ -94,7 +91,7 @@ class Messenger extends Component {
         </div>
         
         <div className="messages" ref='messages'>
-          { this.state.conversationLoaded && this.state.messagesInCurrentConversation.sort(this.sortMessageFn).map((message, index) => {
+          { this.state.conversationLoaded && this.state.messagesInCurrentConversation.sort(this.sortMessagesFn).map((message, index) => {
               return (
                 <p className={'message ' + (message.sender.id == this.state.userValues.user ? 'right' : 'left') + ' ' + this.state.userValues.status } key={ index }>
                   <span>

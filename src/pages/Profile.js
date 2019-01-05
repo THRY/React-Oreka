@@ -1,7 +1,7 @@
 import React, { Component, createRef, useRef } from 'react';
 import Layout from '../components/Layout';
 import { Link } from "react-router-dom";
-import { storageRef, db } from "../firebase";
+import { storageRef, db, auth } from "../firebase";
 import GoogleMapsLoader from 'google-maps';
 import StatusSelector from '../components/StatusSelector.js';
 import PublishSelector from '../components/PublishSelector.js';
@@ -208,6 +208,28 @@ class Profile extends Component {
     return catsAsList;
   }
 
+  deleteUserData = () => {
+    let response = window.confirm("Wollen Sie wirklich Ihr Konto und Profilseite löschen?");
+
+    if(response) {
+      console.log('yes delete');
+      db.collection("users").doc(this.state.userValues.user).delete().then(() => {
+        console.log("Document successfully deleted!");
+        
+        var user = auth.currentUser;
+        
+        user.delete().then(() => {
+          console.log("User successfully deleted!");
+          this.props.history.push(`/?deleted=true`)
+        }).catch(function(error) {
+          console.log("Error removing user: ", error);
+        });
+      }).catch(function(error) {
+          console.error("Error removing document: ", error);
+      });
+    }
+  }
+
   render() {
     const { isSignedIn, isReadyToLoop } = this.state;
 
@@ -248,10 +270,10 @@ class Profile extends Component {
           <Layout>
             { isSignedIn ? (
               <>
-              <nav className={isReadyToLoop && this.state.userValues.status }> 
+              <nav className={isReadyToLoop ? this.state.userValues.status : undefined }> 
                 <div className="container">
                   <a onClick={ this.context.router.history.goBack }>zurück</a>
-                  <span className="site-title">Mein Profil berabeiten</span>
+                  <span className="site-title">Mein Profil bearbeiten</span>
                   { isReadyToLoop &&
                     <Link className="link-right" to={`/user/${this.state.userValues.user}`}>Profil ansehen</Link>
                   }
@@ -321,11 +343,22 @@ class Profile extends Component {
                     </div>
                   </section>
                 </form>
+                <section className="verwaltung">
+                  <p className="title">Verwaltung</p>
+                  <p 
+                    onClick={this.deleteUserData} 
+                    className={ isReadyToLoop ? this.state.userValues.status + " action" : undefined}
+                  >
+                    Alle meine Daten löschen
+                  </p>
+                </section>
               </div>
               </>
             ) : 
             (
-              <p>Sie müssen eingeloggt sein, um Ihr Profil ansehen zu können.</p>
+              <div className="container">
+                <p>Sie müssen eingeloggt sein, um Ihr Profil ansehen zu können.</p>
+              </div>
             )
           }
         </Layout>  

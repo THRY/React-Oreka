@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from '../Stylesheets/components/CategorySelector-style.scss';
+import '../Stylesheets/components/CategorySelector-style.scss';
 
 
 class CategoryDisplay extends Component {
@@ -14,20 +14,28 @@ class CategoryDisplay extends Component {
 
   render() {
     return (
-      <div class="category-selector">
-      <div className="category-bar" style={ {width: this.state.catList.length * 12.5 + "%" } }>
+      <div className="category-display">
+      <div 
+        className="category-bar" 
+        style={ {width: this.state.catList.length * 12.5 + "%" } }>
         {                    
           this.state.catList.map((field, index) => 
-            <div key={index} name={field.name}>
+            <div 
+              key={index} name={field.name}
+              name={field.name}
+              >
               <input 
               id={field.name} 
               name={field.name} 
               type='checkbox'
-              data-label={field.label}
               onChange={this.props.change}
-              checked={ true }
+              defaultChecked
               />
-              <label htmlFor={field.name} className={this.props.userValues ? this.props.userValues.status : this.props.searchingFor}>
+              <label 
+                htmlFor={field.name} 
+                data-label={field.label}
+                className={this.props.userValues ? this.props.userValues.status : this.props.searchingFor}
+                >
                 <div className={field.name + ' logo'}></div>
               </label>
             </div>
@@ -37,7 +45,7 @@ class CategoryDisplay extends Component {
         <div className="label-bar">
         {                    
            this.state.catList.map((field, index) => 
-            <p>
+            <p key={index}>
             <span key={index}>{ field.label }</span>
             { (field.name === 'spezial') && this.props.userValues ? 
               <span>

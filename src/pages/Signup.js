@@ -33,8 +33,10 @@ class Signin extends Component {
 
 
   handlePassword = (e) => {
+    let name = e.target.name;
+
     this.setState ({
-      password: e.target.value
+      [name]: e.target.value
     })
     console.log(e.target.value);
   }
@@ -67,7 +69,9 @@ class Signin extends Component {
     )
   }   
 
-  handleSignUp = () => {
+  handleSignUp = (e) => {
+    e.preventDefault(); 
+
     const onSignedUp = () => {
       const userId = auth.currentUser.uid;
       console.log(userId)
@@ -105,6 +109,8 @@ class Signin extends Component {
 
     if(!this.state.username) {
       document.getElementsByClassName('error-message')[0].innerHTML = 'Bitte geben Sie einen Benutzernamen an.';
+    } else if(this.state.password !== this.state.passwordrepeat) {
+      document.getElementsByClassName('error-message')[0].innerHTML = 'Die eingegebenen Passöwrter stimmen nicht überein.';
     } else {
       signUp(this.state.email, this.state.password, onSignedUp, onError);
     }
@@ -136,7 +142,7 @@ class Signin extends Component {
           </div>
         </nav>
         <div className="container signup">
-          <div className="form">
+          <form onSubmit={this.handleSignUp}>
             <p>Bieten Sie Hilfe an, oder suchen Sie Hilfe?</p>
             <StatusSelector change={this.handleRadioChange} userValues={this.state.userValues} />
 
@@ -146,11 +152,13 @@ class Signin extends Component {
               <label htmlFor='email'>E-Mail-Adresse</label>
               <input type="text" name="email" id="email" onChange={this.handleEmail}></input>
               <label htmlFor='password'>Passwort</label>
-              <input type="text" name="password" id="password" onChange={this.handlePassword}></input>
+              <input type="password" name="password" id="password" onChange={this.handlePassword}></input>
+              <label htmlFor='password-repeat'>Passwort wiederholen</label>
+              <input type="password" name="passwordrepeat" id="password-repeat" onChange={this.handlePassword}></input>
             </div>
             <p className="error-message"></p>
-            <button onClick={this.handleSignUp}>Registrieren</button>
-          </div>
+            <button type="submit">Registrieren</button>
+          </form>
         </div>
       </Layout>  
     )

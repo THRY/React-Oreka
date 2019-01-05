@@ -50,6 +50,14 @@ section.searchResults {
 
 .search-list {
   padding-right: 15px;
+  max-height: 100vh;
+  overflow: hidden;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar { 
+    width: 0 !important; 
+    background-color: white;
+  }
 }
 
 .search-map {

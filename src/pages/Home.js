@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Layout from '../components/Layout';
 import ListItem from '../components/ListItem.js';
 import { db } from "../firebase";
+import qs from 'query-string';
 import CategorySelector from '../components/CategorySelector.js'
 import StatusSelector from '../components/StatusSelector.js'
 import GoogleMaps from '../components/GoogleMaps.js'
@@ -18,6 +19,16 @@ class Home extends Component {
   }
 
   componentWillMount() {
+    var parsedUrl = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }); 
+    console.log(parsedUrl); 
+
+    if(parsedUrl) {
+      if(parsedUrl.deleted) {
+        window.alert('Profil wurde erfolgreich gelöscht.')
+      }
+    }
+
+
     if(sessionStorage.getItem("filterValues") !== null) {
       let filterValues = JSON.parse(sessionStorage.filterValues);
       console.log(filterValues);
@@ -56,8 +67,6 @@ class Home extends Component {
 
   filterForCats() {
     console.log('filterForCats');
-    console.log(this.state.searchResult);
-    console.log(this.state.searchUpdatedAt);
     let matchedUsers = [];
 
     this.state.searchResult.forEach(user => {
@@ -123,7 +132,7 @@ class Home extends Component {
   }
 
   handleRadioChange = event => {
-    const { name, value} = event.target
+    const { value } = event.target
     this.setState( prevState => ({
       searchingFor: value,        
     }), () => {
@@ -147,8 +156,6 @@ class Home extends Component {
     //document.getElementById(id)
   }
 
-
-  
   render() {
     return  (
       <Layout>
