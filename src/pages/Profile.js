@@ -9,6 +9,7 @@ import CategorySelector from '../components/CategorySelector.js';
 import getInputFields from '../functions/getInputFields.js';
 import '../Stylesheets/pages/profile.scss';
 import avatar from '../images/avatar.svg';
+import style from '../functions/googleMapStyles.js';
 
 class Profile extends Component {
   state = {
@@ -377,17 +378,7 @@ class Profile extends Component {
         center: {lat: 47.43142, lng: 8.49187},
         zoom: 8,
         mapTypeId: 'roadmap', 
-        styles: [
-          {
-            featureType: 'poi',
-            stylers: [{visibility: 'off'}]
-          },
-          {
-            featureType: 'transit',
-            elementType: 'labels.icon',
-            stylers: [{visibility: 'off'}]
-          }
-        ]
+        styles: style
       });
 
       const geocoder = new google.maps.Geocoder();

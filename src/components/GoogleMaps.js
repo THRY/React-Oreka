@@ -104,15 +104,19 @@ class GoogleMaps extends Component {
         google.maps.event.addListener(currentMarkers[markerIndex], 'mouseover', function() {
           //window.location.href = this.url;
           const listItem = document.getElementById('listitem-' + user.user);
-          listItem.classList.add("hovered");
-          console.log('hovery');
+          if(listItem) {
+            listItem.classList.add("hovered");
+            console.log('hovery');
+          }
         });
 
         google.maps.event.addListener(currentMarkers[markerIndex], 'mouseout', function() {
           //window.location.href = this.url;
           const listItem = document.getElementById('listitem-' + user.user);
-          listItem.classList.remove("hovered");
-          console.log('hovery');
+          if(listItem) {
+            listItem.classList.remove("hovered");
+            console.log('hovery');
+          }
         });
 
         google.maps.event.addListener(map, "click", function(event) {
