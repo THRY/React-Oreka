@@ -3,6 +3,10 @@
 .status-selector {
   margin: 0 1em; 
 
+  @media (max-width: $xs) {
+    margin: 0; 
+  }
+
   p.label {
     position: relative;
     text-align: center;

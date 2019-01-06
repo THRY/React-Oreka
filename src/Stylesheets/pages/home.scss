@@ -6,13 +6,18 @@
 
 nav.plakat {
   margin-bottom: 0;
-  background-color: #73859E;
+  background-color: #73859E; 
   height: auto;
   color: white;  
 
   .container {
     padding-left: 30px;
     padding-right: 30px;
+
+    @media (max-width: $xs) {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
   }
 }
 
@@ -20,6 +25,10 @@ nav.filter {
   background-color: #F0F0F0;
   height: auto; 
   padding-top: 1em; 
+
+  @media (max-width: $xs) {
+    padding-bottom: 1em; 
+  }
 
   .container {
     align-items: flex-start;
@@ -74,7 +83,13 @@ section.searchResults {
   .search-map {
     margin-top: 1em; 
   }
-  
+}
+
+@media (max-width: $xs) {
+  .search-list,
+  .search-map {
+    padding: 0px;
+  }
 }
 
 .gm-style-iw {

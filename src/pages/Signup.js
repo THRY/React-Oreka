@@ -135,7 +135,7 @@ class Signin extends Component {
   render() {
     return (
       <Layout>
-        <nav className="plakat">
+        <nav className="neutral">
           <div className="container">
             <Link to="./">zurück</Link>
             <span className="site-title">Erstellen Sie einen Login</span>

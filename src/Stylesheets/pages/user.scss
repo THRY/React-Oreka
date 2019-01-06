@@ -92,6 +92,10 @@
         font-size: 0.8em;
         max-width: 250px;
         margin-top: 0.3em;
+
+        @media(max-width: $xs) {
+          margin: 0.3em auto;
+        }
       }
     }
   }

@@ -19,6 +19,7 @@
 
   @media (max-width: $xs) {
     height: auto; 
+    margin: 0; 
   }
 
   div:not(.logo) {
@@ -95,8 +96,10 @@
     background-color: $suche;
   }
   
-  input[type=checkbox] + label.suche:hover {
-    background-color: $suche-light;
+  @media (min-width: $sm) {
+    input[type=checkbox] + label.suche:hover {
+      background-color: $suche-light;
+    }
   }
 
   input[type=checkbox]:checked + label.biete {
@@ -107,9 +110,12 @@
     background-color: $biete;
   }
 
-  input[type=checkbox] + label.biete:hover{
-    background-color: $biete-light;
+  @media (min-width: $sm) {
+    input[type=checkbox] + label.biete:hover{
+      background-color: $biete-light;
+    }
   }
+  
 
   label {
     width: 100%;
