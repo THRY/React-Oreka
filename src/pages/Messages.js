@@ -5,7 +5,8 @@ import { db } from "../firebase";
 import qs from 'query-string';
 import '../Stylesheets/pages/messages.scss';
 import * as firebase from 'firebase';
-import avatar from '../images/avatar.svg';
+import avatar from '../images/avatar.svg'
+import $ from 'jquery';
 
 
 
@@ -232,8 +233,9 @@ class Messages extends Component {
     const partnerId = event.currentTarget.getAttribute('data-partnerid');
     console.log(currentConvId);
 
-    let messenger = document.getElementsByClassName('messenger')[0]
-    messenger.scrollIntoView({ behavior: 'smooth', block: 'start'});
+    $("html, body").animate({ 
+      scrollTop: $('.messenger').offset().top - 25
+    }, 550);
 
     this.setState(prevState => ({
         currentConversationId: currentConvId,

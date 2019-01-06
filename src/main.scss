@@ -6,6 +6,22 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  // preload background images
+  &:after {
+    position:absolute; 
+    width:0; 
+    height:0; 
+    overflow:hidden; 
+    z-index:-1;
+    content: url(./images/close.svg);
+  }
+}
+
 Footer {
   display: block;
   background-color: black; 
