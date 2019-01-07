@@ -150,7 +150,7 @@ class Signin extends Component {
               <label htmlFor='email'>Benutzername <span>(frei wählbar, kann später geändert werden)</span></label>
               <input type="text" name="username" id="username" onChange={this.handleUsername}></input>
               <label htmlFor='email'>E-Mail-Adresse</label>
-              <input type="text" name="email" id="email" onChange={this.handleEmail}></input>
+              <input type="email" name="email" id="email" onChange={this.handleEmail}></input>
               <label htmlFor='password'>Passwort</label>
               <input type="password" name="password" id="password" onChange={this.handlePassword}></input>
               <label htmlFor='password-repeat'>Passwort wiederholen</label>

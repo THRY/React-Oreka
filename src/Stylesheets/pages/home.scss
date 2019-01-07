@@ -17,6 +17,7 @@ nav.plakat {
     @media (max-width: $xs) {
       padding-left: 15px;
       padding-right: 15px;
+      hyphens: auto; 
     }
   }
 }

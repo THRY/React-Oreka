@@ -28,7 +28,7 @@ class PublishSelector extends Component {
           checked={ this.props.userValues.public ? true : false }
         />
         <label htmlFor="publish2" className={ this.props.userValues.status }>
-        <p>Publizert</p>  
+        <p>Publiziert</p>  
         </label>
         <p className="label">Ihr Profil ist { this.props.userValues.public ? 'publiziert' : 'nicht veröffentlicht'}</p>
       </div>

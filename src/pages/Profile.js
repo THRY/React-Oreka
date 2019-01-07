@@ -149,8 +149,10 @@ class Profile extends Component {
     if(file.size > 1000000) {
       alert("Ihr Bild ist zu gross. Bitte nicht grösser als 1MB.");
     } else {
-      var imageRef = storageRef.child(`${file.name}`);
-      let filenameThumb = 'thumb_' + file.name;
+      var date = new Date();
+      var time = date.getTime();
+      var imageRef = storageRef.child(`${time}_${file.name}`);
+      let filenameThumb = 'thumb_' + time + '_' + file.name;
   
       console.log(filenameThumb);
   
@@ -211,7 +213,9 @@ class Profile extends Component {
   }
 
   deleteUserData = () => {
-    let response = window.confirm("Wollen Sie wirklich Ihr Konto und Profilseite löschen?");
+    console.log('asking for confirmation')
+    let response = window.confirm("Wollen Sie wirklich Ihr Konto und Ihre Profilseite löschen?");
+    console.log("response: " + response);
 
     if(response) {
       console.log('yes delete');

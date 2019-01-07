@@ -24,7 +24,7 @@ class ForgotPassword extends Component {
     })
   }   
 
-  handleLogIn = () => {
+  handleResetPassword = () => {
     auth.sendPasswordResetEmail(this.state.email).then(function() {
       // Email sent
     }).catch((error) => {
@@ -37,21 +37,21 @@ class ForgotPassword extends Component {
   render() {
     return (
       <Layout>
-         <nav className="plakat">
+         <nav className="neutral">
           <div className="container">
             <a onClick={ this.context.router.history.goBack }>zurück</a>
             <span className="site-title">Fordern Sie ein neues Passwort an</span>
           </div>
         </nav>
         <div className="container login">
-          <div className="form">
+        <form onSubmit={this.handleResetPassword}>
             <div className="fields">
               <label htmlFor='email'>E-Mail-Adresse</label>
               <input type="text" name="email" id="email" onChange={this.handleEmail}></input>
             </div>
             <p className="error-message" ref="errorRef"></p>
-            <button onClick={this.handleLogIn}>Senden</button>
-          </div>         
+            <button type="submit">Senden</button>
+          </form>         
         </div>
       </Layout>  
     )
