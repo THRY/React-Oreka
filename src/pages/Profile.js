@@ -27,6 +27,7 @@ class Profile extends Component {
 
   componentWillMount() {
     console.log(localStorage.getItem('user'));
+    console.log(this.props.location)
     if(localStorage.getItem('user')) {
       this.setState({
         isSignedIn: true,
@@ -278,7 +279,11 @@ class Profile extends Component {
               <>
               <nav className={isReadyToLoop ? this.state.userValues.status : undefined }> 
                 <div className="container">
-                  <a onClick={ this.context.router.history.goBack }>zurück</a>
+                  {
+                    this.props.location.state !== 'signup' &&
+                    <a onClick={ this.context.router.history.goBack }>zurück</a>
+                  }
+                  
                   <span className="site-title">Mein Profil bearbeiten</span>
                   { isReadyToLoop &&
                     <Link className="link-right" to={`/user/${this.state.userValues.user}`}>Profil ansehen</Link>
@@ -288,6 +293,12 @@ class Profile extends Component {
               <div className="container">
                 <form onSubmit={this.handleSubmit}>
                   <section className="status">
+                    {
+                      this.props.location.state == 'signup' &&
+                      <p className="title" style={{lineHeight: '1.3em', fontSize: '1.5em'}}>
+                        <i>Willkommen bei Oreka! Bitte füllen Sie ihr Profil möglichst vollständig aus.</i>
+                      </p>
+                    }
                     <p className="title">Mein Status:</p>
                     { isReadyToLoop && 
                     <div className="options">

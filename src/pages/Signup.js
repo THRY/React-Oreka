@@ -85,7 +85,12 @@ class Signin extends Component {
         }
       }), () => {
         this.createUserProfile();
-        this.props.history.push(`/profile/${userId}`)
+        this.props.history.push(
+          {
+            pathname: `/profile/${userId}`,
+            state: 'signup'
+          }
+        )
       })
     }
 
