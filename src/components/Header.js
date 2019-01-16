@@ -70,11 +70,13 @@ class Header extends Component {
           
             { isSignedIn ?
               <ul>
+              <li><Link style={{borderBottom:'2px solid black'}} to="/">Home</Link></li>
               <li><Link style={{borderBottom:'2px solid black'}} to={`/profile/${this.props.user.uid}`}>Mein Profil</Link></li>
               <li><Link style={{borderBottom:'2px solid black'}} to="/messages">Meine Nachrichten</Link></li>
               </ul>
               : ''
             }
+          
           
             { isSignedIn ?
               <ul>
@@ -84,6 +86,7 @@ class Header extends Component {
               </ul>
               :
               <ul>
+              <li><Link style={{borderBottom:'2px solid black'}} to="/">Home</Link></li>
               <li><Link style={{borderBottom:'2px solid black'}} to="/signup">Registrieren</Link></li>
               <li><Link style={{borderBottom:'2px solid black'}} to="/login">Anmelden</Link></li>
               </ul>

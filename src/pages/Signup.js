@@ -23,7 +23,8 @@ class Signin extends Component {
       profilePicUrl: "",
       username: "",
       user: "",
-      location: ""
+      location: "",
+      updated: ""
     }
   };  
 
@@ -77,11 +78,13 @@ class Signin extends Component {
       console.log(userId)
 
       localStorage.setItem('user', userId);
+      let now = new Date();
 
       this.setState(prevState => ({
         userValues: {
           ...prevState.userValues,
-          user: userId
+          user: userId,
+          updated: now
         }
       }), () => {
         this.createUserProfile();
@@ -142,7 +145,7 @@ class Signin extends Component {
       <Layout>
         <nav className="neutral">
           <div className="container">
-            <Link to="./">zurück</Link>
+            <a onClick={ this.context.router.history.goBack }>zurück</a>
             <span className="site-title">Erstellen Sie einen Login</span>
           </div>
         </nav>

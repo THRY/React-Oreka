@@ -49,6 +49,8 @@
     .right {
       width: 70%; 
       padding-left: 2em; 
+      display: flex;
+      align-items: center;
 
       @media (max-width: $xs) {
         width: 100%; 
@@ -59,6 +61,9 @@
     }
 
     div.infos {   
+      @media (max-width: $xs) {
+        margin: 0 auto;
+      }
       
       h2 {
         margin: 0.5em 0;

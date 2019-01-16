@@ -32,7 +32,7 @@ const getInputFields = function(field, state) {
           <textarea 
             id={field.name} 
             name={field.name} 
-            maxlength="250"
+            maxLength="250"
             type={field.type} 
             onChange={field.change}
             value={state.userValues[field.name]}
@@ -58,6 +58,7 @@ const getInputFields = function(field, state) {
             type={field.type} 
             onChange={field.change}
             defaultValue={state.userValues[field.name]}
+            disabled={field.disabled}
           />
       );
   }

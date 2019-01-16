@@ -10,7 +10,6 @@ import avatar from '../images/avatar.svg';
 
 
 
-
 class User extends Component {
   state = {
     isReadyToLoop: false,
@@ -50,6 +49,11 @@ class User extends Component {
     );
   }
 
+  getDateString = (seconds) => {
+    let currentDate = new Date(seconds*1000)
+    return currentDate.toLocaleDateString() + ", " + currentDate.toLocaleTimeString();
+  }
+
   render() {
     const { isSignedIn, isReadyToLoop } = this.state
 
@@ -83,6 +87,12 @@ class User extends Component {
                     { this.state.userValues.description !== '' &&
                       <h2 className="caption">«{this.state.userValues.description}»</h2>
                     }
+                    { (this.state.userValues.categories.spezial) ?
+                      (this.state.userValues.spezialDescr !== '' && this.state.userValues.categories.spezial.checked) ?
+                        <p>Mein Spezial-Skill: {this.state.userValues.spezialDescr}</p>
+                        : ''
+                       : '' 
+                    } 
                     <Link 
                       className={"message " + this.state.userValues.status + ' ' + ((this.state.isSignedIn && this.state.userValues.user !== localStorage.getItem('user')) ? '' : 'disabled') } 
                       to={`/messages?to=${this.state.userValues.user}`}
@@ -107,6 +117,11 @@ class User extends Component {
                   filterResult={ [this.state.userValues] } 
                   updatedAt={ 0 }
                 />
+              </section>
+              <section className="updated">
+                <p className="title">Profil zuletzt aktualisiert: {this.state.userValues.updated ? 
+                  this.getDateString(this.state.userValues.updated.seconds)
+                : ''}</p>
               </section>
               </>
               :

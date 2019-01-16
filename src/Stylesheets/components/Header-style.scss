@@ -24,7 +24,7 @@ Header {
     }
 
     &.left {
-      justify-content: flex-start;
+      justify-content: flex-end;
     }
 
     a {
@@ -83,6 +83,10 @@ Header {
       li {
         font-size: 1.5em;
         line-height: 1.5em;
+
+        a:hover {
+          text-decoration: none;
+        }
       } 
     }
 

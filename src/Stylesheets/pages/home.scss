@@ -63,6 +63,7 @@ section.searchResults {
   max-height: 100vh;
   overflow: hidden;
   overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 
   &::-webkit-scrollbar { 
     width: 0 !important; 

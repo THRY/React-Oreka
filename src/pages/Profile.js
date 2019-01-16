@@ -10,6 +10,9 @@ import getInputFields from '../functions/getInputFields.js';
 import '../Stylesheets/pages/profile.scss';
 import avatar from '../images/avatar.svg';
 import style from '../functions/googleMapStyles.js';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 
 class Profile extends Component {
   state = {
@@ -131,15 +134,19 @@ class Profile extends Component {
     if(event) {
       event.preventDefault();  
     }
+
+    let now = new Date(); 
     
     this.setState( prevState => ({
-        safed: true
+        safed: true,
+        userValues: {
+          ...prevState.userValues,
+          updated: now
+        }
+      }), () => {
+        db.collection("users").doc(this.state.user).set(this.state.userValues);
       }
-    ));
-
-    console.log(this.state.userValues);
-
-    db.collection("users").doc(this.state.user).set(this.state.userValues);
+    );
   }
 
   uploadFile = event => {
@@ -256,14 +263,9 @@ class Profile extends Component {
         {
           type: 'text',
           name: 'email',
-          change: this.handleTextChange,
-          label: 'E-Mail'
-        },
-        {
-          type: 'text',
-          name: 'birthdate',
-          change: this.handleTextChange,
-          label: 'Geburtstag'
+          change: null,
+          label: 'E-Mail',
+          disabled: true
         },
         {
           type: 'text',
@@ -305,7 +307,6 @@ class Profile extends Component {
                       <StatusSelector change={this.handleRadioChange} searchingFor={this.state.userValues.status} userValues={this.state.userValues} />
                       <PublishSelector change={this.handlePublishChange} userValues={this.state.userValues} />
                       <button 
-                        onClick={this.checkIfSaved} 
                         className={(isReadyToLoop && this.state.userValues.status) + " " + (isReadyToLoop && this.state.safed ? 'saved' : 'not-saved') }>
                           { (isReadyToLoop && this.state.safed ? 'Gespeichert' : 'Speichern') }
                       </button>
