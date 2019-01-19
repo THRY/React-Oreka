@@ -23,7 +23,8 @@ class Signin extends Component {
       profilePicUrl: "",
       username: "",
       user: "",
-      location: ""
+      location: "",
+      updated: ""
     }
   };  
 
@@ -77,15 +78,22 @@ class Signin extends Component {
       console.log(userId)
 
       localStorage.setItem('user', userId);
+      let now = new Date();
 
       this.setState(prevState => ({
         userValues: {
           ...prevState.userValues,
-          user: userId
+          user: userId,
+          updated: now
         }
       }), () => {
         this.createUserProfile();
-        this.props.history.push(`/profile/${userId}`)
+        this.props.history.push(
+          {
+            pathname: `/profile/${userId}`,
+            state: 'signup'
+          }
+        )
       })
     }
 
@@ -137,7 +145,7 @@ class Signin extends Component {
       <Layout>
         <nav className="neutral">
           <div className="container">
-            <Link to="./">zurück</Link>
+            <a onClick={ this.context.router.history.goBack }>zurück</a>
             <span className="site-title">Erstellen Sie einen Login</span>
           </div>
         </nav>
@@ -150,7 +158,7 @@ class Signin extends Component {
               <label htmlFor='email'>Benutzername <span>(frei wählbar, kann später geändert werden)</span></label>
               <input type="text" name="username" id="username" onChange={this.handleUsername}></input>
               <label htmlFor='email'>E-Mail-Adresse</label>
-              <input type="text" name="email" id="email" onChange={this.handleEmail}></input>
+              <input type="email" name="email" id="email" onChange={this.handleEmail}></input>
               <label htmlFor='password'>Passwort</label>
               <input type="password" name="password" id="password" onChange={this.handlePassword}></input>
               <label htmlFor='password-repeat'>Passwort wiederholen</label>

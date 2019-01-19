@@ -66,7 +66,7 @@ class Signin extends Component {
       <Layout>
          <nav className="neutral">
           <div className="container">
-            <Link to="./">zurück</Link>
+            <a onClick={ this.context.router.history.goBack }>zurück</a>
             <span className="site-title">Melden Sie sich an</span>
           </div>
         </nav>
@@ -75,7 +75,7 @@ class Signin extends Component {
             onSubmit={ this.handleLogIn }>
             <div className="fields">
               <label htmlFor='email'>E-Mail-Adresse</label>
-              <input type="text" name="email" id="email" onChange={this.handleEmail}></input>
+              <input type="email" name="email" id="email" onChange={this.handleEmail}></input>
               <label htmlFor='password'>Passwort</label>
               <input type="password" name="password" id="password" onChange={this.handlePassword}></input>
             </div>

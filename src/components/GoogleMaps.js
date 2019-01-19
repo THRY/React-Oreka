@@ -79,7 +79,7 @@ class GoogleMaps extends Component {
           profilePicUrl = user.profilePicUrl
         } else {
           profilePicUrl = avatar;
-        }
+        } 
 
         var contentString = 
           `<div id="map-popup" class=${user.status}>`+

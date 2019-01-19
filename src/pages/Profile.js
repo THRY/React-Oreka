@@ -10,6 +10,9 @@ import getInputFields from '../functions/getInputFields.js';
 import '../Stylesheets/pages/profile.scss';
 import avatar from '../images/avatar.svg';
 import style from '../functions/googleMapStyles.js';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 
 class Profile extends Component {
   state = {
@@ -27,6 +30,7 @@ class Profile extends Component {
 
   componentWillMount() {
     console.log(localStorage.getItem('user'));
+    console.log(this.props.location)
     if(localStorage.getItem('user')) {
       this.setState({
         isSignedIn: true,
@@ -130,15 +134,19 @@ class Profile extends Component {
     if(event) {
       event.preventDefault();  
     }
+
+    let now = new Date(); 
     
     this.setState( prevState => ({
-        safed: true
+        safed: true,
+        userValues: {
+          ...prevState.userValues,
+          updated: now
+        }
+      }), () => {
+        db.collection("users").doc(this.state.user).set(this.state.userValues);
       }
-    ));
-
-    console.log(this.state.userValues);
-
-    db.collection("users").doc(this.state.user).set(this.state.userValues);
+    );
   }
 
   uploadFile = event => {
@@ -149,8 +157,10 @@ class Profile extends Component {
     if(file.size > 1000000) {
       alert("Ihr Bild ist zu gross. Bitte nicht grösser als 1MB.");
     } else {
-      var imageRef = storageRef.child(`${file.name}`);
-      let filenameThumb = 'thumb_' + file.name;
+      var date = new Date();
+      var time = date.getTime();
+      var imageRef = storageRef.child(`${time}_${file.name}`);
+      let filenameThumb = 'thumb_' + time + '_' + file.name;
   
       console.log(filenameThumb);
   
@@ -211,7 +221,9 @@ class Profile extends Component {
   }
 
   deleteUserData = () => {
-    let response = window.confirm("Wollen Sie wirklich Ihr Konto und Profilseite löschen?");
+    console.log('asking for confirmation')
+    let response = window.confirm("Wollen Sie wirklich Ihr Konto und Ihre Profilseite löschen?");
+    console.log("response: " + response);
 
     if(response) {
       console.log('yes delete');
@@ -251,14 +263,9 @@ class Profile extends Component {
         {
           type: 'text',
           name: 'email',
-          change: this.handleTextChange,
-          label: 'E-Mail'
-        },
-        {
-          type: 'text',
-          name: 'birthdate',
-          change: this.handleTextChange,
-          label: 'Geburtstag'
+          change: null,
+          label: 'E-Mail',
+          disabled: true
         },
         {
           type: 'text',
@@ -274,7 +281,11 @@ class Profile extends Component {
               <>
               <nav className={isReadyToLoop ? this.state.userValues.status : undefined }> 
                 <div className="container">
-                  <a onClick={ this.context.router.history.goBack }>zurück</a>
+                  {
+                    this.props.location.state !== 'signup' &&
+                    <a onClick={ this.context.router.history.goBack }>zurück</a>
+                  }
+                  
                   <span className="site-title">Mein Profil bearbeiten</span>
                   { isReadyToLoop &&
                     <Link className="link-right" to={`/user/${this.state.userValues.user}`}>Profil ansehen</Link>
@@ -284,13 +295,18 @@ class Profile extends Component {
               <div className="container">
                 <form onSubmit={this.handleSubmit}>
                   <section className="status">
+                    {
+                      this.props.location.state == 'signup' &&
+                      <p className="title" style={{lineHeight: '1.3em', fontSize: '1.5em'}}>
+                        <i>Willkommen bei Oreka! Bitte füllen Sie ihr Profil möglichst vollständig aus.</i>
+                      </p>
+                    }
                     <p className="title">Mein Status:</p>
                     { isReadyToLoop && 
                     <div className="options">
                       <StatusSelector change={this.handleRadioChange} searchingFor={this.state.userValues.status} userValues={this.state.userValues} />
                       <PublishSelector change={this.handlePublishChange} userValues={this.state.userValues} />
                       <button 
-                        onClick={this.checkIfSaved} 
                         className={(isReadyToLoop && this.state.userValues.status) + " " + (isReadyToLoop && this.state.safed ? 'saved' : 'not-saved') }>
                           { (isReadyToLoop && this.state.safed ? 'Gespeichert' : 'Speichern') }
                       </button>

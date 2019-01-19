@@ -47,11 +47,6 @@ class Messages extends Component {
         .onSnapshot(this.handleOnNext, this.handleOnError);
       });
     }
-
-
-    console.log('CHECK IF CONVERSATION WITH THAT PERSON ALREADY EXISTS'); 
-    console.log('IF NOT, CREATE NEW CONVERSATION'); 
-    console.log('IF YES, SHOW CONEVERSATION WITH THAT USER');  
   } 
 
     handleOnNext = (doc) =>  {
@@ -77,7 +72,6 @@ class Messages extends Component {
       console.log(querySnapshot);
       var allData = [];
         querySnapshot.forEach( doc => {
-            // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, " => ", doc.data());
             var data = doc.data();
             data.id = doc.id;
@@ -222,7 +216,12 @@ class Messages extends Component {
       let partnerId = partnerName[0].id;
   
       db.collection('users').doc(partnerId).get().then((doc) => {
-        let url = doc.data().profilePicUrl;
+        let url = '';
+
+        if(doc.data()) {
+          url = doc.data().profilePicUrl;
+        }
+        
         resolve(url);
       });
     });
@@ -327,7 +326,7 @@ class Messages extends Component {
               </div>
             )
           }) : 
-          <p>Noch keine Nachrichten vorhanden.</p>
+            <p>Noch keine Nachrichten vorhanden. Um einer Person eine Nachricht zu senden, gehen Sie auf das Profil dieser Person und klicken Sie auf "Nachricht senden".</p>
           }  
           </div>
 

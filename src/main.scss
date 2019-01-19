@@ -22,14 +22,6 @@ body {
   }
 }
 
-Footer {
-  display: block;
-  background-color: black; 
-  height: 100px; 
-  width: 100%;
-  position: absolute;
-}
-
 main {
   padding: 0;
   min-height: 80vh;
@@ -90,7 +82,7 @@ nav {
     display: flex; 
     align-items: center;
     flex-direction: row;
-    width: 100%;
+    width: 100%;; 
   }
 
   .site-title {

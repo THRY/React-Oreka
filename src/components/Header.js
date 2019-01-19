@@ -70,22 +70,25 @@ class Header extends Component {
           
             { isSignedIn ?
               <ul>
-              <li><Link to={`/profile/${this.props.user.uid}`}>Mein Profil</Link></li>
-              <li><Link to="/messages">Meine Nachrichten</Link></li>
+              <li><Link style={{borderBottom:'2px solid black'}} to="/">Home</Link></li>
+              <li><Link style={{borderBottom:'2px solid black'}} to={`/profile/${this.props.user.uid}`}>Mein Profil</Link></li>
+              <li><Link style={{borderBottom:'2px solid black'}} to="/messages">Meine Nachrichten</Link></li>
               </ul>
               : ''
             }
+          
           
             { isSignedIn ?
               <ul>
               <li><i>Angemeldet als:</i></li>
               <li>{ this.props.user.email }</li>
-              <li><a onClick={this.handleSignOut}>Abmelden</a></li>
+              <li><a style={{borderBottom:'2px solid black'}} onClick={this.handleSignOut}>Abmelden</a></li>
               </ul>
               :
               <ul>
-              <li><Link to="/signup">Registrieren</Link></li>
-              <li><Link to="/login">Anmelden</Link></li>
+              <li><Link style={{borderBottom:'2px solid black'}} to="/">Home</Link></li>
+              <li><Link style={{borderBottom:'2px solid black'}} to="/signup">Registrieren</Link></li>
+              <li><Link style={{borderBottom:'2px solid black'}} to="/login">Anmelden</Link></li>
               </ul>
             }
         </div>

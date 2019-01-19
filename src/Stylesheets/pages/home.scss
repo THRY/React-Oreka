@@ -17,6 +17,7 @@ nav.plakat {
     @media (max-width: $xs) {
       padding-left: 15px;
       padding-right: 15px;
+      hyphens: auto; 
     }
   }
 }
@@ -62,6 +63,7 @@ section.searchResults {
   max-height: 100vh;
   overflow: hidden;
   overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 
   &::-webkit-scrollbar { 
     width: 0 !important; 

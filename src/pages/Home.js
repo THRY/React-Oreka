@@ -19,6 +19,8 @@ class Home extends Component {
   }
 
   componentWillMount() {
+    window.scrollTo(0, 0);
+
     var parsedUrl = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }); 
     console.log(parsedUrl); 
 
@@ -162,7 +164,7 @@ class Home extends Component {
         <nav className="plakat">
           <div className="container">
             <h1>
-              Oreka Schweiz fördert die Idee der Nachbarschaftshilfe mit Zeitgutschriften. Suchen Sie hier nach Hilfe – oder bieten Sie Hilfe an.
+              Oreka Schweiz fördert die Idee der Nachbarschafts&shy;hilfe mit Zeitgutschriften. Suchen Sie hier nach Hilfe oder bieten Sie Hilfe an.
             </h1>
           </div>
         </nav>

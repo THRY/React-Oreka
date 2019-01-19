@@ -93,8 +93,8 @@ class CategoryDisplay extends Component {
               id={field.name} 
               name={field.name} 
               type='checkbox'
-              onChange={this.props.change}
               defaultChecked
+              disabled="disabled"
               />
               <label 
                 htmlFor={field.name} 
