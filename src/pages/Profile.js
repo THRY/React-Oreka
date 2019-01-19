@@ -1,4 +1,4 @@
-import React, { Component, createRef, useRef } from 'react';
+import React, { Component, createRef } from 'react';
 import Layout from '../components/Layout';
 import { Link } from "react-router-dom";
 import { storageRef, db, auth } from "../firebase";
