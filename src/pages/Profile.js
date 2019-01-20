@@ -6,6 +6,7 @@ import GoogleMapsLoader from 'google-maps';
 import StatusSelector from '../components/StatusSelector.js';
 import PublishSelector from '../components/PublishSelector.js';
 import CategorySelector from '../components/CategorySelector.js';
+import GoogleMapsWithInput from '../components/GoogleMapsWithInput';
 import getInputFields from '../functions/getInputFields.js';
 import loadImage from 'blueimp-load-image';
 import '../Stylesheets/pages/profile.scss';
@@ -44,14 +45,13 @@ class Profile extends Component {
     const data = doc.data();
 
     this.setState( prevState => ({
-      isReadyToLoop: true,
-      userValues: {
-        ...prevState.userValues,
-        ...data
-      }
-    }), () => {
-      this.loadMap();
-    });
+        isReadyToLoop: true,
+        userValues: {
+          ...prevState.userValues,
+          ...data
+        }
+      })
+    )
   }
 
   handleTextChange = event => {
@@ -203,6 +203,17 @@ class Profile extends Component {
         } 
       )
     });
+  }
+
+  saveLocation = (location) => {
+    this.setState(prevState => ({
+      safed: false,
+      userValues: {
+        ...prevState.userValues,
+        'location': location
+        }
+      })
+    )
   }
 
   getProfilePicUrl = () => {
@@ -357,8 +368,12 @@ class Profile extends Component {
                   <section>
                     <p className="title">Mein Wohnort</p>
                     <div className="map">
-                      <input type="text" id="search" />
-                      <div style={{display:'block',position:'relative',width:'100%',height:'500px'}} id="map"></div>
+                    { isReadyToLoop && 
+                      <GoogleMapsWithInput 
+                        location={this.state.userValues.location}
+                        saveLocation={this.saveLocation}
+                      />
+                    }
                     </div>
                   </section>
                   <section className="verwaltung">
@@ -391,112 +406,6 @@ class Profile extends Component {
           }
         </Layout>  
     )
-  }
-
-  loadMap() {
-    GoogleMapsLoader.KEY = process.env.REACT_APP_MAPS_KEY;
-    GoogleMapsLoader.LIBRARIES = ['geometry', 'places'];
-    GoogleMapsLoader.LANGUAGE = 'de';
-    GoogleMapsLoader.REGION = 'DE';
-
-    GoogleMapsLoader.load( (google) => {
-      const map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 47.43142, lng: 8.49187},
-        zoom: 8,
-        mapTypeId: 'roadmap', 
-        styles: style
-      });
-
-      const geocoder = new google.maps.Geocoder();
-
-
-      if(this.state.userValues.location) {
-        geocoder.geocode({'location': this.state.userValues.location}, (results, status) => {
-          if (status === 'OK') {
-            if (results[0]) {
-              map.panTo(this.state.userValues.location);
-              map.setZoom(18);
-              var marker = new google.maps.Marker({
-                position: this.state.userValues.location,
-                map: map
-              });
-              document.getElementById('search').value = results[0].formatted_address;
-            } else {
-              window.alert('No results found');
-            }
-          } else {
-            window.alert('Geocoder failed due to: ' + status);
-          }
-        });
-      }
-
-      var input = document.getElementById('search');
-      var searchBox = new google.maps.places.SearchBox(input);
-
-      map.addListener('bounds_changed', function() {
-        searchBox.setBounds(map.getBounds());
-      });
-
-      var markers = [];
-      // Listen for the event fired when the user selects a prediction and retrieve
-      // more details for that place.
-      searchBox.addListener('places_changed', () => {
-        var places = searchBox.getPlaces();
-        const location = {lat: places[0].geometry.location.lat(), lng: places[0].geometry.location.lng() }; 
-
-        this.setState(prevState => ({
-          safed: false,
-          userValues: {
-            ...prevState.userValues,
-            'location': location
-            }
-          })
-        )
-
-        if(places.length === 0) {
-          return;
-        }
-
-        // Clear out the old markers.
-        markers.forEach(function(marker) {
-          marker.setMap(null);
-        });
-        markers = [];
-
-        // For each place, get the icon, name and location.
-        var bounds = new google.maps.LatLngBounds();
-        places.forEach(function(place) {
-          if (!place.geometry) {
-            // returned place contains no geometry");
-            return;
-          }
-
-          var icon = {
-            url: place.icon,
-            size: new google.maps.Size(71, 71),
-            origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(17, 34),
-            scaledSize: new google.maps.Size(25, 25)
-          };
-
-          // Create a marker for each place.
-          markers.push(new google.maps.Marker({
-            map: map,
-            icon: icon,
-            title: place.name,
-            position: place.geometry.location
-          }));
-
-          if (place.geometry.viewport) {
-            // Only geocodes have viewport.
-            bounds.union(place.geometry.viewport);
-          } else {
-            bounds.extend(place.geometry.location);
-          }
-        });
-        map.fitBounds(bounds);
-      });
-    });
   }
 }
 

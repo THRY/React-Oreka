@@ -26,6 +26,7 @@ class Home extends Component {
     if(parsedUrl) {
       if(parsedUrl.deleted) {
         window.alert('Profil wurde erfolgreich gelöscht.')
+        this.props.history.push('/');
       }
     }
 
