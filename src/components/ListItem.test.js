@@ -1,9 +1,7 @@
 import React from 'react'
 import ListItem from './ListItem'
-import Header from './Header'
 import Adapter from 'enzyme-adapter-react-16'
 import {shallow, mount, configure} from 'enzyme'
-import StatusSelector from './StatusSelector';
 import { StaticRouter } from 'react-router'
 
 
