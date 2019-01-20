@@ -7,7 +7,7 @@ class Footer extends Component {
     return (
       <footer className="App-footer">
         <div className="container">
-          <img src={logoWhite}></img>
+          <img alt="logo" src={logoWhite}></img>
           <p>Die Schweizer Zeitvorsorge</p>
         </div>
       </footer>

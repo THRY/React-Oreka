@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Layout from '../components/Layout';
 import { Link } from "react-router-dom";
 import { db } from "../firebase";
-import GoogleMapsLoader from 'google-maps';
 import CategoryDisplay from '../components/CategoryDisplay.js';
 import GoogleMaps from '../components/GoogleMaps.js';
 import '../Stylesheets/pages/user.scss';
@@ -55,7 +54,7 @@ class User extends Component {
   }
 
   render() {
-    const { isSignedIn, isReadyToLoop } = this.state
+    const { isReadyToLoop } = this.state
 
     return (
       <Layout>
@@ -104,7 +103,7 @@ class User extends Component {
                 </div>
               </section>
               <section className="categories">
-              <p className="title">In diesen Bereichen {this.state.userValues.status } ich Hilfe{this.state.userValues.status == 'biete' ? ' an' : ''}:</p>
+              <p className="title">In diesen Bereichen {this.state.userValues.status } ich Hilfe{this.state.userValues.status === 'biete' ? ' an' : ''}:</p>
               { isReadyToLoop &&
                 <CategoryDisplay userValues={this.state.userValues}/>
               }

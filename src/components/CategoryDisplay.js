@@ -17,10 +17,10 @@ class CategoryDisplay extends Component {
 
     if(window.innerWidth < 576) {
       // liste gerade zahl, dann bei allen kleiner als die beiden zweitletzten elemente eine border hinzufügen
-      if(listLenght % 2 == 0 && currentIndex < listLenght-2) {
+      if(listLenght % 2 === 0 && currentIndex < listLenght-2) {
         style = {borderBottom: '1px solid black'}
       // liste ungerade zahl, dann bei allen kleiner als das letzte element eine border hinzufügen
-      } else if(listLenght % 2 != 0 && currentIndex < listLenght-1) {
+      } else if(listLenght % 2 !== 0 && currentIndex < listLenght-1) {
         style = {borderBottom: '1px solid black'}
       } else {
         style = {borderBottom: '0px'};
@@ -35,15 +35,15 @@ class CategoryDisplay extends Component {
     
     if(window.innerWidth < 576) {
       // zweitletztes element
-      if((currentIndex > 1 || listLenght <= 2) && currentIndex == listLenght-2) {
+      if((currentIndex > 1 || listLenght <= 2) && currentIndex === listLenght-2) {
         // links
-        if(currentIndex % 2 == 0) {
+        if(currentIndex % 2 === 0) {
           style = {borderBottomLeftRadius: '5px'};
         }
       // letztes element
-      } else if((currentIndex > 1 || listLenght <= 2) && currentIndex == listLenght-1) {
+      } else if((currentIndex > 1 || listLenght <= 2) && currentIndex === listLenght-1) {
         // links
-        if(currentIndex % 2 == 0) {
+        if(currentIndex % 2 === 0) {
           style = {borderBottomLeftRadius: '5px'};
         // rechts
         } else {
@@ -61,7 +61,7 @@ class CategoryDisplay extends Component {
     let style = {};
     
     if(window.innerWidth < 576) {
-      if(currentIndex == listLenght-1 && currentIndex % 2 == 0) {
+      if(currentIndex === listLenght-1 && currentIndex % 2 === 0) {
         style = {boxSizing: 'content-box', borderRight: '1px solid black'};
       } else {
         style = {borderRight: '0px'};
@@ -126,10 +126,7 @@ class CategoryDisplay extends Component {
     )
   }
 
-  createCatList = () => {
-
-    console.log(this.props.userValues); 
-    
+  createCatList = () => {    
     let filtered = Object.keys(this.props.userValues.categories).filter(key => {
       return this.props.userValues.categories[key].checked === true;
     });

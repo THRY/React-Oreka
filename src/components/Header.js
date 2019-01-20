@@ -14,7 +14,6 @@ class Header extends Component {
   }
 
   toggleMenuButton() {
-    console.log('toggle');
     var mobileMenu = document.querySelector('.mobile-header') // Using a class instead, see note below.
     mobileMenu.classList.toggle('open');
 
@@ -42,7 +41,7 @@ class Header extends Component {
 
         <div className="banner">
           <Link to="/">
-            <img className="logo" src="/assets/logo.svg"></img>
+            <img alt="logo" className="logo" src="/assets/logo.svg"></img>
           </Link>
         </div>
          

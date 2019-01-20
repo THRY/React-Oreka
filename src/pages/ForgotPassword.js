@@ -1,8 +1,6 @@
-
 import React, { Component } from 'react';
 import Layout from '../components/Layout';
-import { auth, signUp, signOut, logIn } from "../firebase";
-import { Link } from "react-router-dom"; 
+import { auth } from "../firebase";
   
 
 class ForgotPassword extends Component {
@@ -18,7 +16,6 @@ class ForgotPassword extends Component {
   }
 
   handleEmail = (e) => {
-    console.log(e.target.value);
     this.setState ({
       email: e.target.value
     })
@@ -28,7 +25,6 @@ class ForgotPassword extends Component {
     auth.sendPasswordResetEmail(this.state.email).then(function() {
       // Email sent
     }).catch((error) => {
-      console.log(error.code);
       //this.props.history.push('/login');
       this.refs.errorRef.innerHTML = 'Eine Mail zum Zurücksetzen des Passwortes wurde an die oben angegebene Adresse geschickt.';
     });    

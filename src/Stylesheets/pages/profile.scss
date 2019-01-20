@@ -40,7 +40,7 @@ section.status {
         transform: translate(0, 100%); 
       }
     }
-  
+
     button {
       height: 55px; 
       background-color: white; 
@@ -51,6 +51,10 @@ section.status {
       font-size: 1em; 
       cursor: pointer; 
 
+      @media (max-width: $xs) {
+        display: none; 
+      }
+  
       @media (max-width: $xs) {
         width: 100%;
         margin: 1em 0;
@@ -71,6 +75,57 @@ section.status {
       &.saved.biete {
         background-color: $biete;
       }
+    }
+  }
+}
+
+section.save {
+  display: flex; 
+  flex-direction: row;
+  
+  flex-wrap: wrap;
+
+  p.title {
+    align-self: flex-start; 
+  }
+
+  div {
+    width: 100%; 
+    display: flex; 
+    justify-content: flex-end;
+    align-items: flex-start; 
+  }
+
+  button {
+    height: 55px; 
+    background-color: white; 
+    border: 1px solid black; 
+    border-radius: 5px; 
+    margin-left: auto; 
+    margin-top: 1em; 
+    margin-right: 1em; 
+    font-size: 1em; 
+    cursor: pointer; 
+
+    @media (max-width: $xs) {
+      width: 100%;
+      margin: 1em 0;
+    }
+
+    &.biete:hover {
+      background-color: $biete-light;
+    }
+
+    &.suche:hover {
+      background-color: $suche-light;
+    }
+
+    &.saved.suche {
+      background-color: $suche;
+    }
+
+    &.saved.biete {
+      background-color: $biete;
     }
   }
 }
@@ -119,6 +174,7 @@ section.verwaltung {
 
       @media (max-width: $xs) {
         width: 100%; 
+        margin-right: 0;
       }
 
       .image-cropper {

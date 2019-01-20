@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-
+import React from 'react';
 
 const getInputFields = function(field, state) {
   switch(field.type) {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Layout from '../components/Layout';
-import { auth, signUp, signOut, logIn } from "../firebase";
+import { logIn } from "../firebase";
 import { Link } from "react-router-dom"; 
   
 
@@ -21,11 +21,9 @@ class Signin extends Component {
     this.setState ({
       password: e.target.value
     })
-    console.log(e.target.value);
   }
 
   handleEmail = (e) => {
-    console.log(e.target.value);
     this.setState ({
       email: e.target.value
     })

@@ -21,7 +21,6 @@ class GoogleMaps extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log(this.props.updatedAt);
     if(prevProps.updatedAt !== this.props.updatedAt) {
       this.updateMarkers();
     }
@@ -30,11 +29,7 @@ class GoogleMaps extends Component {
   updateMarkers() {
     let { google, map } = this.state;
 
-    console.log('updating markers');
-    console.log(this.props.filterResult);
-
     this.state.markers.forEach(function(marker) {
-      console.log('set marker to zero');
       marker.setMap(null);
     });
 
@@ -52,7 +47,6 @@ class GoogleMaps extends Component {
 
     this.props.filterResult.forEach((user, index)  => {
       if(Object.keys(user.location).length > 0) {
-        console.log(icons[user.status].url);
         var icon = {
           url: icons[user.status].url,
           size: new google.maps.Size(35, 35),
@@ -60,8 +54,6 @@ class GoogleMaps extends Component {
           anchor: new google.maps.Point(17, 34),
           scaledSize: new google.maps.Size(35, 35)
         };
-
-        console.log(user.location); 
 
         // Create a marker for each place.
         currentMarkers.push(new google.maps.Marker({
@@ -98,7 +90,6 @@ class GoogleMaps extends Component {
 
         google.maps.event.addListener(currentMarkers[markerIndex], 'click', function(event) {
           infowindow.open(map, this);
-          console.log('klicky');
         });
 
         google.maps.event.addListener(currentMarkers[markerIndex], 'mouseover', function() {
@@ -106,7 +97,6 @@ class GoogleMaps extends Component {
           const listItem = document.getElementById('listitem-' + user.user);
           if(listItem) {
             listItem.classList.add("hovered");
-            console.log('hovery');
           }
         });
 
@@ -115,7 +105,6 @@ class GoogleMaps extends Component {
           const listItem = document.getElementById('listitem-' + user.user);
           if(listItem) {
             listItem.classList.remove("hovered");
-            console.log('hovery');
           }
         });
 
@@ -126,9 +115,6 @@ class GoogleMaps extends Component {
         markerIndex++;
       }
     })
-
-    console.log(currentMarkers);
-    console.log(markerIndex);
 
     if(currentMarkers.length > 0) {
       var bounds = new google.maps.LatLngBounds();
@@ -161,19 +147,6 @@ class GoogleMaps extends Component {
         styles: style,
         fullscreenControl: false
       });
-
-      const geocoder = new google.maps.Geocoder();
-
-      /*
-      var input = document.getElementById('search-component-map');
-      var searchBox = new google.maps.places.SearchBox(input);
-      */
-
-      console.log(this.props.filterResult);
-
-    GoogleMapsLoader.onLoad(function(google) {
-      console.log('I just loaded google maps api');
-    });
 
     this.setState(prevState => ({
         google: google,

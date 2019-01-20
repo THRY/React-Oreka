@@ -22,7 +22,6 @@ class Home extends Component {
     window.scrollTo(0, 0);
 
     var parsedUrl = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }); 
-    console.log(parsedUrl); 
 
     if(parsedUrl) {
       if(parsedUrl.deleted) {
@@ -33,7 +32,6 @@ class Home extends Component {
 
     if(sessionStorage.getItem("filterValues") !== null) {
       let filterValues = JSON.parse(sessionStorage.filterValues);
-      console.log(filterValues);
       this.setState(prevState => ({
           searchCat: filterValues.searchCat ? filterValues.searchCat : {},
           searchingFor: filterValues.searchingFor ? filterValues.searchingFor : 'biete'
@@ -50,7 +48,6 @@ class Home extends Component {
     db.collection("users").where("status", "==", this.state.searchingFor)
     .get()
     .then( querySnapshot => {
-      console.log(querySnapshot);
       var allData = [];
         querySnapshot.forEach( doc => {
             // doc.data() is never undefined for query doc snapshots
@@ -68,12 +65,9 @@ class Home extends Component {
   }
 
   filterForCats() {
-    console.log('filterForCats');
     let matchedUsers = [];
 
     this.state.searchResult.forEach(user => {
-      console.log(user);
-      console.log(this.state.searchCat);
       let filterCatIsSet = false;   
 
       // Check if any filter is selected
@@ -99,7 +93,6 @@ class Home extends Component {
         matchedUsers.push(user);
       }
     })
-    console.log(matchedUsers)
 
     let timestamp = new Date();
 
@@ -124,7 +117,6 @@ class Home extends Component {
         filterValues = JSON.parse(sessionStorage.filterValues);
         filterValues['searchCat'] = this.state.searchCat;
       } else {
-        console.log('OVERWRITE');
         filterValues = {};
         filterValues['searchCat'] = this.state.searchCat;
       }
@@ -142,9 +134,7 @@ class Home extends Component {
       if(sessionStorage.getItem("filterValues") !== null) {
         filterValues = JSON.parse(sessionStorage.filterValues);
         filterValues['searchingFor'] = value;
-        console.log(filterValues);
       } else {
-        console.log('OVERWRITE');
         filterValues = {};
         filterValues['searchingFor'] = value;
       }

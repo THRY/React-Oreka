@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Layout from '../components/Layout';
-import { auth, signUp, signOut, logIn, db} from "../firebase";
-import { Link } from "react-router-dom";
+import { auth, signUp, db} from "../firebase";
 import StatusSelector from '../components/StatusSelector.js'
 import '../Stylesheets/pages/signup.scss'; 
 
@@ -39,12 +38,10 @@ class Signin extends Component {
     this.setState ({
       [name]: e.target.value
     })
-    console.log(e.target.value);
   }
 
   handleEmail = (e) => {
     const email = e.target.value;
-    console.log(email);
 
     this.setState(prevState => ({
         email: email,
@@ -58,7 +55,6 @@ class Signin extends Component {
 
   handleUsername = (e) => {
     const username = e.target.value;
-    console.log(username);
 
     this.setState(prevState => ({
         username: username,
@@ -75,7 +71,6 @@ class Signin extends Component {
 
     const onSignedUp = () => {
       const userId = auth.currentUser.uid;
-      console.log(userId)
 
       localStorage.setItem('user', userId);
       let now = new Date();
@@ -98,8 +93,6 @@ class Signin extends Component {
     }
 
     const onError = (errorMessage, errorCode) => {
-      console.log(errorCode + ' ' + errorMessage);
-
       switch(errorCode) {
         case 'auth/invalid-email':
           errorMessage = 'Fehler: Bitte gebe Sie eine gültige E-Mail-Adresse an.';
@@ -127,16 +120,16 @@ class Signin extends Component {
   handleRadioChange = event => {
     const { name, value} = event.target
     this.setState( prevState => ({
-      safed: false,
-      userValues: {
-        ...prevState.userValues,
-        [name]: value,
-     }
-    }), () => console.log(this.state));
+        safed: false,
+        userValues: {
+          ...prevState.userValues,
+          [name]: value,
+        }
+      })
+    );
   }
 
   createUserProfile() {
-    console.log(this.state.userValues.user);
     db.collection("users").doc(this.state.userValues.user).set(this.state.userValues);
   }
 

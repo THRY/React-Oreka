@@ -4,7 +4,7 @@ import Messenger from '../components/Messenger';
 import { db } from "../firebase";
 import qs from 'query-string';
 import '../Stylesheets/pages/messages.scss';
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
 import avatar from '../images/avatar.svg'
 import $ from 'jquery';
 
@@ -24,7 +24,7 @@ class Messages extends Component {
   }
 
   static contextTypes = {
-    router: () => true, // replace with PropTypes.object if you use them
+    router: () => null, // replace with PropTypes.object if you use them
   }
 
   componentWillMount() {
@@ -36,7 +36,6 @@ class Messages extends Component {
       messageTo = parsedUrl.to;
     }
 
-    console.log(localStorage.getItem('user'));
     if(localStorage.getItem('user')) {
       this.setState({
         isSignedIn: true,
@@ -59,7 +58,6 @@ class Messages extends Component {
         ...data
       }
     }), () => {
-      console.log('Saved User Values to State');
       this.getExistingMessages(); 
     });
   }
@@ -69,10 +67,8 @@ class Messages extends Component {
     db.collection("messages").where("participantIds", "array-contains", this.state.userValues.user)
     .get()
     .then( (querySnapshot) => {
-      console.log(querySnapshot);
       var allData = [];
         querySnapshot.forEach( doc => {
-            console.log(doc.id, " => ", doc.data());
             var data = doc.data();
             data.id = doc.id;
             allData.push(data);
@@ -82,16 +78,12 @@ class Messages extends Component {
           userConversations: allData,
           existingMessagesLoaded: true
         }), () => {
-          console.log('conversations added to state');
-          console.log(this.state.userConversations);
-          console.log(this.state.messageTo);
-
           this.getConversationProfilePicUrls();
           
           if(this.state.messageTo !== '') {
             let existingConv = this.checkExistingConv();
             if(existingConv.exists) {
-              console.log('open existing conversation with ID: ' + existingConv.id); 
+              //open existing conversation with ID 
               this.setState(prevState => ({
                   currentConversationId: existingConv.id,
                   currentPartnerId: this.getPartnerId(existingConv.conv)
@@ -99,18 +91,15 @@ class Messages extends Component {
               )
             } else {
               this.createNewConversation();
-              console.log('create new conversation')
             }
           } else {
-            console.log('just show all current conversations');
+            //just show all current conversations
             if(this.state.userConversations.length > 0) {
               this.setState(prevState => ({
                   currentConversationId: this.state.userConversations[0].id,
                   currentPartnerId: this.getPartnerId(this.state.userConversations[0])
                 })
               )
-            } else {
-              console.log('show empty state');
             }
           }
         });
@@ -132,7 +121,6 @@ class Messages extends Component {
         conversation.exists = true;
         conversation.id = el.id;
         conversation.conv = el;
-        console.log(conversation);
         break;
       }
     }
@@ -159,8 +147,7 @@ class Messages extends Component {
           }
         ]
       }).then(() => {
-        console.log("Created new conversation");
-        console.log(conversationRef);
+        // new conversation was created
         const convId = conversationRef.id;
         this.getExistingMessages(); 
         this.setState(prevState => ({
@@ -174,17 +161,15 @@ class Messages extends Component {
 
   getPartnerName(conversation) {
     let partnerName = conversation.participants.filter( participant => {
-      return participant.id != this.state.userValues.user;
+      return participant.id !== this.state.userValues.user;
     })
-    console.log(partnerName);
     return partnerName[0].name;
   }
 
   getPartnerId(conversation) {
     let partnerName = conversation.participants.filter( participant => {
-      return participant.id != this.state.userValues.user;
+      return participant.id !== this.state.userValues.user;
     })
-    console.log(partnerName);
     return partnerName[0].id;
   }
 
@@ -196,7 +181,6 @@ class Messages extends Component {
       })
     };
 
-    console.log(urls);
 
     this.setState(prevState => ({
         profilePicUrls: urls,
@@ -206,11 +190,9 @@ class Messages extends Component {
   }
 
   getProfilePicUrl(conversation) {
-    console.log(conversation);
-
     return new Promise((resolve, reject) => {
       let partnerName = conversation.participants.filter( participant => {
-        return participant.id != this.state.userValues.user;
+        return participant.id !== this.state.userValues.user;
       })
   
       let partnerId = partnerName[0].id;
@@ -230,7 +212,6 @@ class Messages extends Component {
   openConversation = (event) => {
     const currentConvId = event.currentTarget.getAttribute('data-conversationid');
     const partnerId = event.currentTarget.getAttribute('data-partnerid');
-    console.log(currentConvId);
 
     $("html, body").animate({ 
       scrollTop: $('.messenger').offset().top - 25
@@ -246,9 +227,6 @@ class Messages extends Component {
   sortMessagesFn(a, b) {
     const timeA = a.created.seconds;
     const timeB = b.created.seconds;
-
-    console.log("TIMES " + timeA + " " + timeB);
-
     
     if (timeA < timeB) {
       return -1;
@@ -301,12 +279,11 @@ class Messages extends Component {
         <div className="container messages">
           <div className="column left">
           { (existingMessagesLoaded && this.state.userConversations.length > 0) ?  this.state.userConversations.map((conversation, index) => {
-            console.log(conversation);
             let partnerName = this.getPartnerName(conversation);
             let partnerId = this.getPartnerId(conversation);
             return (
               <div 
-                className={'conversation ' + (conversation.id == this.state.currentConversationId ? 'active' : '' ) + ' ' + this.state.userValues.status} 
+                className={'conversation ' + (conversation.id === this.state.currentConversationId ? 'active' : '' ) + ' ' + this.state.userValues.status} 
                 onClick={ this.openConversation } 
                 data-conversationid={ conversation.id } 
                 data-partnerid={ partnerId }
@@ -332,7 +309,7 @@ class Messages extends Component {
 
           <div className="column right">
           {
-            this.state.currentConversationId != '' && isReadyToLoop ?
+            this.state.currentConversationId !== '' && isReadyToLoop ?
             <Messenger 
               currentConversationId={ this.state.currentConversationId }
               currentUser={this.state.userValues}

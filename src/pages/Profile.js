@@ -7,10 +7,10 @@ import StatusSelector from '../components/StatusSelector.js';
 import PublishSelector from '../components/PublishSelector.js';
 import CategorySelector from '../components/CategorySelector.js';
 import getInputFields from '../functions/getInputFields.js';
+import loadImage from 'blueimp-load-image';
 import '../Stylesheets/pages/profile.scss';
 import avatar from '../images/avatar.svg';
 import style from '../functions/googleMapStyles.js';
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 
@@ -29,8 +29,6 @@ class Profile extends Component {
   }
 
   componentWillMount() {
-    console.log(localStorage.getItem('user'));
-    console.log(this.props.location)
     if(localStorage.getItem('user')) {
       this.setState({
         isSignedIn: true,
@@ -52,7 +50,6 @@ class Profile extends Component {
         ...data
       }
     }), () => {
-      console.log(this.state);
       this.loadMap();
     });
   }
@@ -61,38 +58,41 @@ class Profile extends Component {
     const { id, value } = event.target
 
     this.setState( prevState => ({
-      safed: false,
-      userValues: {
-        ...prevState.userValues,
-        [id]: value
-     }
-    }), () => console.log(this.state));
+        safed: false,
+        userValues: {
+          ...prevState.userValues,
+          [id]: value
+        }
+      })
+    );
   }
 
   handleRadioChange = event => {
     const { name, value} = event.target
     this.setState( prevState => ({
-      safed: false,
-      userValues: {
-        ...prevState.userValues,
-        [name]: value,
-     }
-    }), () => console.log(this.state));
+        safed: false,
+        userValues: {
+          ...prevState.userValues,
+          [name]: value,
+        }
+      })
+    );
   }
 
   handleCheckboxChange = event => {
     const { id, checked } = event.target
     this.setState( prevState => ({
-      safed: false,
-      userValues: {
-        ...prevState.userValues,
-        [id]: checked
-     }
-    }), () => console.log(this.state));
+        safed: false,
+        userValues: {
+          ...prevState.userValues,
+          [id]: checked
+        }
+      })
+    );
   }
 
   handlePublishChange = event => {
-    const { name, value } = event.target
+    const { value } = event.target
 
     let isPublic = false; 
     if(value === 'published') {
@@ -100,34 +100,32 @@ class Profile extends Component {
     }
 
     this.setState( prevState => ({
-      safed: false,
-      userValues: {
-        ...prevState.userValues,
-        public: isPublic,
-     }
-    }), () => console.log(this.state));
-
-
-    console.log(name + ' ' + value);
+        safed: false,
+        userValues: {
+          ...prevState.userValues,
+          public: isPublic,
+        }
+      })
+    );
   }
 
   handleCatCheckboxChange = event => { 
     const { id, checked } = event.target
     const label = event.target.dataset.label
-    console.log(label);
     this.setState( prevState => ({
-      safed: false,
-      userValues: {
-        ...prevState.userValues,
-        categories: {
-          ...prevState.userValues.categories,
-          [id]: {
-            label: label,
-            checked: checked
+        safed: false,
+        userValues: {
+          ...prevState.userValues,
+          categories: {
+            ...prevState.userValues.categories,
+            [id]: {
+              label: label,
+              checked: checked
+            }
           }
         }
-      }
-    }), () => console.log(this.state));
+      })
+    );
   }
 
   handleSubmit = event => {  
@@ -150,20 +148,15 @@ class Profile extends Component {
   }
 
   uploadFile = event => {
-    console.log('filed changed');
-
     const input = event.target;
     var file = input.files[0];
-    if(file.size > 1000000) {
-      alert("Ihr Bild ist zu gross. Bitte nicht grösser als 1MB.");
-    } else {
+
+    let uploadImage = (resizedImage) => {
       var date = new Date();
       var time = date.getTime();
       var imageRef = storageRef.child(`${time}_${file.name}`);
       let filenameThumb = 'thumb_' + time + '_' + file.name;
-  
-      console.log(filenameThumb);
-  
+    
       this.setState(prevState => ({
           userValues: {
             ...prevState.userValues,
@@ -171,9 +164,9 @@ class Profile extends Component {
           },
           isUploadingFile: true,
         }), () => {
-          console.log('put file to server');
-          imageRef.put(file).then((snapshot) => {
-            console.log('Uploaded a blob or file!');
+          // put file to server');
+          imageRef.put(resizedImage).then((snapshot) => {
+            // Uploaded a blob or file
             this.handleSubmit(); 
             setTimeout(() => {
               this.saveProfilePicUrl(filenameThumb);
@@ -181,11 +174,24 @@ class Profile extends Component {
         });
       })  
     }
+
+    loadImage(
+      file,
+      function (img) {
+        let imgBlob = img.toBlob(function(blob) {
+          console.log(blob);
+          uploadImage(blob)
+        });
+      },
+      {
+        maxWidth: 600,
+        orientation: true 
+      } 
+    );
   }
 
   saveProfilePicUrl(filenameThumb) {
     storageRef.child(filenameThumb).getDownloadURL().then(url => {
-      console.log(url); 
       this.setState(prevState => ({
         userValues: {
           ...prevState.userValues,
@@ -201,7 +207,6 @@ class Profile extends Component {
 
   getProfilePicUrl = () => {
     storageRef.child(`${this.state.userValues.profilePic}`).getDownloadURL().then(url => {
-      console.log(url); 
       this.setState(prevState => ({
         ...prevState,
         'profilePicUrl': url
@@ -221,19 +226,15 @@ class Profile extends Component {
   }
 
   deleteUserData = () => {
-    console.log('asking for confirmation')
+    // asking for confirmation
     let response = window.confirm("Wollen Sie wirklich Ihr Konto und Ihre Profilseite löschen?");
-    console.log("response: " + response);
 
     if(response) {
-      console.log('yes delete');
+      // yes delete
       db.collection("users").doc(this.state.userValues.user).delete().then(() => {
-        console.log("Document successfully deleted!");
-        
         var user = auth.currentUser;
         
         user.delete().then(() => {
-          console.log("User successfully deleted!");
           this.props.history.push(`/?deleted=true`)
         }).catch(function(error) {
           console.log("Error removing user: ", error);
@@ -307,8 +308,8 @@ class Profile extends Component {
                       <StatusSelector change={this.handleRadioChange} searchingFor={this.state.userValues.status} userValues={this.state.userValues} />
                       <PublishSelector change={this.handlePublishChange} userValues={this.state.userValues} />
                       <button 
-                        className={(isReadyToLoop && this.state.userValues.status) + " " + (isReadyToLoop && this.state.safed ? 'saved' : 'not-saved') }>
-                          { (isReadyToLoop && this.state.safed ? 'Gespeichert' : 'Speichern') }
+                          className={(isReadyToLoop && this.state.userValues.status) + " " + (isReadyToLoop && this.state.safed ? 'saved' : 'not-saved') }>
+                            { (isReadyToLoop && this.state.safed ? 'Gespeichert' : 'Speichern') }
                       </button>
                     </div>
                     }
@@ -360,16 +361,25 @@ class Profile extends Component {
                       <div style={{display:'block',position:'relative',width:'100%',height:'500px'}} id="map"></div>
                     </div>
                   </section>
+                  <section className="verwaltung">
+                    <p className="title">Verwaltung</p>
+                    <p 
+                      onClick={this.deleteUserData} 
+                      className={ isReadyToLoop ? this.state.userValues.status + " action" : undefined}
+                    >
+                      Alle meine Daten löschen
+                    </p>
+                  </section>
+                  <section className="save">
+                    <p className="title">Speichern:</p>
+                    <div>
+                      <button 
+                          className={(isReadyToLoop && this.state.userValues.status) + " " + (isReadyToLoop && this.state.safed ? 'saved' : 'not-saved') }>
+                            { (isReadyToLoop && this.state.safed ? 'Gespeichert' : 'Speichern') }
+                      </button>
+                    </div>
+                  </section>
                 </form>
-                <section className="verwaltung">
-                  <p className="title">Verwaltung</p>
-                  <p 
-                    onClick={this.deleteUserData} 
-                    className={ isReadyToLoop ? this.state.userValues.status + " action" : undefined}
-                  >
-                    Alle meine Daten löschen
-                  </p>
-                </section>
               </div>
               </>
             ) : 
@@ -401,8 +411,6 @@ class Profile extends Component {
 
 
       if(this.state.userValues.location) {
-        console.log(this.state.userValues.location);
-
         geocoder.geocode({'location': this.state.userValues.location}, (results, status) => {
           if (status === 'OK') {
             if (results[0]) {
@@ -412,7 +420,6 @@ class Profile extends Component {
                 position: this.state.userValues.location,
                 map: map
               });
-              console.log(results[0].formatted_address);
               document.getElementById('search').value = results[0].formatted_address;
             } else {
               window.alert('No results found');
@@ -435,7 +442,6 @@ class Profile extends Component {
       // more details for that place.
       searchBox.addListener('places_changed', () => {
         var places = searchBox.getPlaces();
-        console.log(places[0].geometry.location.lat());
         const location = {lat: places[0].geometry.location.lat(), lng: places[0].geometry.location.lng() }; 
 
         this.setState(prevState => ({
@@ -461,7 +467,7 @@ class Profile extends Component {
         var bounds = new google.maps.LatLngBounds();
         places.forEach(function(place) {
           if (!place.geometry) {
-            console.log("Returned place contains no geometry");
+            // returned place contains no geometry");
             return;
           }
 
@@ -490,10 +496,6 @@ class Profile extends Component {
         });
         map.fitBounds(bounds);
       });
-    });
-
-    GoogleMapsLoader.onLoad(function(google) {
-      console.log('I just loaded google maps api');
     });
   }
 }
